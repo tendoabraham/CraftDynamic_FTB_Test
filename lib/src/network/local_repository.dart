@@ -1,5 +1,4 @@
-import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:hive/hive.dart';
+part of craft_dynamic;
 
 class LocalRepository {
   static Future<void> openBoxes() async {

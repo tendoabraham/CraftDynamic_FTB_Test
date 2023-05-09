@@ -56,7 +56,6 @@ import 'dynamic_widget.dart';
 import 'src/app_data/constants.dart';
 import 'src/network/api_util.dart';
 import 'src/network/connectivity_plus.dart';
-import 'src/network/local_repository.dart';
 import 'src/network/network_repository.dart';
 import 'src/network/rsa_util.dart';
 import 'src/session_manager/session_manager.dart';
@@ -103,3 +102,5 @@ part 'src/util/common_lib_util.dart';
 part 'src/repository/profile_repository.dart';
 
 part 'src/util/extensions_util.dart';
+
+part 'src/network/local_repository.dart';

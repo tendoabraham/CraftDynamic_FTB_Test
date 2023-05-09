@@ -1,5 +1,4 @@
 import '../../craft_dynamic.dart';
-import 'local_repository.dart';
 
 final _sharedPref = CommonSharedPref();
 final _bankAccountRepository = BankAccountRepository();

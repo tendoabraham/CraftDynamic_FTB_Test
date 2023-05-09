@@ -6,8 +6,6 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../../network/local_repository.dart';
-
 class ModulesListWidget extends StatefulWidget {
   final Orientation orientation;
   final ModuleItem? moduleItem;

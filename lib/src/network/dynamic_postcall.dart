@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:provider/provider.dart';
 
-import 'local_repository.dart';
-
 class DynamicPostCall {
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {

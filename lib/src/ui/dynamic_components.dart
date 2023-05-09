@@ -24,8 +24,6 @@ import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 
-import '../network/local_repository.dart';
-
 class DynamicInput {
   static List<Map<String?, dynamic>> formInputValues = [];
   static Map<String?, dynamic> encryptedField = {};
