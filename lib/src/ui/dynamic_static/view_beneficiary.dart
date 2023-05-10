@@ -6,7 +6,6 @@ import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../../dynamic_widget.dart';
-import '../../network/local_repository.dart';
 
 class ViewBeneficiary extends StatefulWidget {
   final ModuleItem moduleItem;

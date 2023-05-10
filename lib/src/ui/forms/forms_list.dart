@@ -10,7 +10,6 @@ import 'package:craft_dynamic/src/ui/forms/tab_form.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'package:provider/provider.dart';
 
-import '../../network/local_repository.dart';
 import 'radio_form.dart';
 
 class FormsListWidget extends StatelessWidget {
