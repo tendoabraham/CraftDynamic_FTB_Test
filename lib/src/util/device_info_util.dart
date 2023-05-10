@@ -3,7 +3,7 @@ part of craft_dynamic;
 class DeviceInfo {
   static getDeviceUniqueID() async {
     if (kIsWeb) {
-      return html.window.navigator.userAgent.split(' ')[0];
+      return "123";
     }
     return await UniqueIdentifier.serial;
   }

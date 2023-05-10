@@ -6,14 +6,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-import 'dart:html' as html;
 import 'package:craft_dynamic/src/builder/request_builder.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/util/config_util.dart';
 import 'package:craft_dynamic/src/util/location_util.dart';
 import 'package:craft_dynamic/src/util/permissions_util.dart';
 import 'package:hive/hive.dart';
-import 'package:platform_device_id/platform_device_id.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart' hide Key;
@@ -31,7 +29,6 @@ import 'package:local_session_timeout/local_session_timeout.dart'
 
 // import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:logger/logger.dart';
-import 'package:floor/floor.dart';
 import 'package:archive/archive.dart';
 import 'package:encrypt/encrypt.dart' as encryptcrpto hide SecureRandom;
 import 'package:crypto/crypto.dart';
