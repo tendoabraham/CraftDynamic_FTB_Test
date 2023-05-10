@@ -72,6 +72,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     Hive.registerAdapter(ModuleToDisableAdapter());
     Hive.registerAdapter(PendingTrxDisplayAdapter());
     Hive.registerAdapter(OnlineAccountProductAdapter());
+    LocalRepository.openBoxes();
   }
 
   getAppLaunchCount() async {
