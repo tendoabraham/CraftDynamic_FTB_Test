@@ -7,7 +7,6 @@ import 'package:craft_dynamic/src/ui/dynamic_static/connection_error_screen.dart
 import 'package:flutter/foundation.dart';
 
 import '../../craft_dynamic.dart';
-import '../util/logger_util.dart';
 
 final _initRepository = InitRepository();
 

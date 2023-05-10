@@ -50,7 +50,6 @@ class VerticalOutlinedMenuItem implements IMenuUtil {
   @override
   Widget getMenuItem() => VerticalModule(
         moduleItem: moduleItem,
-        hasBorder: true,
       );
 }
 
@@ -72,6 +71,5 @@ class HorizontalOutlinedMenuItem implements IMenuUtil {
   @override
   Widget getMenuItem() => HorizontalModule(
         moduleItem: moduleItem,
-        hasBorder: true,
       );
 }

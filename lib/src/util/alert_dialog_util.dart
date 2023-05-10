@@ -2,7 +2,12 @@ part of craft_dynamic;
 
 class AlertUtil {
   static showAlertDialog(BuildContext context, String message,
-      {isConfirm = false, isInfoAlert = false, formFields}) {
+      {isConfirm = false,
+      isInfoAlert = false,
+      showTitleIcon = true,
+      formFields,
+      title,
+      confirmButtonText = "Ok"}) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -17,22 +22,55 @@ class AlertUtil {
             child: Align(
               alignment: FractionalOffset.bottomCenter,
               child: AlertDialog(
-                insetPadding: const EdgeInsets.symmetric(horizontal: 34),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+                titlePadding: const EdgeInsets.only(
+                    top: 12, left: 12, right: 12, bottom: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                    borderRadius: BorderRadius.all(Radius.circular(14.0))),
                 title: Center(
-                    child: Row(
+                    child: Container(
+                        child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    isInfoAlert
-                        ? Lottie.asset(
-                            "packages/craft_dynamic/assets/lottie/info_lottie.json")
-                        : Lottie.asset(
-                            "packages/craft_dynamic/assets/lottie/error.json",
-                            height: 88,
-                            width: 88)
+                    // showTitleIcon
+                    //     ? isInfoAlert
+                    //         ? Lottie.asset(
+                    //             "packages/craft_dynamic/assets/lottie/info_lottie.json",
+                    //             height: 54,
+                    //             width: 54)
+                    //         : Lottie.asset(
+                    //             "packages/craft_dynamic/assets/lottie/error.json",
+                    //             height: 54,
+                    //             width: 54)
+                    //     : const SizedBox(),
+
+                    title == null
+                        ? const SizedBox()
+                        : Text(
+                            title,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    showTitleIcon
+                        ? isInfoAlert
+                            ? Icon(
+                                Icons.info_outline,
+                                color:
+                                    APIService.appPrimaryColor.withOpacity(.4),
+                                size: 28,
+                              )
+                            : const Icon(
+                                Icons.error_outline,
+                                color: Colors.redAccent,
+                                size: 28,
+                              )
+                        : const SizedBox()
                   ],
-                )),
+                ))),
                 content: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
@@ -45,6 +83,12 @@ class AlertUtil {
                               fontSize: 18, fontWeight: FontWeight.normal),
                           textAlign: TextAlign.center,
                         )),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Divider(
+                          color: APIService.appPrimaryColor.withOpacity(.2),
+                        )
                       ],
                     ))),
                 actions: <Widget>[
@@ -60,19 +104,26 @@ class AlertUtil {
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
-                                    child: const Text("cancel").tr()),
+                                    child: const Text(
+                                      "Cancel",
+                                      style: TextStyle(fontSize: 18),
+                                    ).tr()),
                                 const SizedBox(
                                   width: 12,
                                 ),
                               ],
                             )
                           : const SizedBox(),
-                      Align(
-                          child: TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(true);
-                              },
-                              child: const Text("ok").tr())),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text(
+                            confirmButtonText,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ).tr()),
                     ],
                   )
                 ],

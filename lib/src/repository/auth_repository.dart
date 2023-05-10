@@ -52,7 +52,7 @@ class AuthRepository {
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
       CommonUtils.getxNavigate(
           widget: DynamicWidget(
-        moduleItem: _moduleRepository.getModuleById(ModuleId.PIN.name),
+        moduleItem: await _moduleRepository.getModuleById(ModuleId.PIN.name),
       ));
     }
     return activationResponse;

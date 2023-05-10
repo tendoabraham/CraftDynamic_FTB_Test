@@ -1,14 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../../../craft_dynamic.dart';
+part of craft_dynamic;
 
 class MenuItemImage extends StatelessWidget {
   final String imageUrl;
-  double iconSize = 48;
+  double iconSize;
 
-  MenuItemImage({super.key, required this.imageUrl});
+  MenuItemImage({super.key, required this.imageUrl, this.iconSize = 54});
 
   @override
   Widget build(BuildContext context) => CachedNetworkImage(
@@ -36,11 +32,11 @@ class MenuItemTitle extends StatelessWidget {
   const MenuItemTitle({super.key, required this.title});
 
   @override
-  Widget build(BuildContext context) => Flexible(
-          child: Text(
+  Widget build(BuildContext context) => Text(
         title,
         // overflow: TextOverflow.fade,
         textAlign: TextAlign.center,
-        overflow: TextOverflow.visible,
-      ));
+        overflow: TextOverflow.fade,
+        softWrap: true,
+      );
 }

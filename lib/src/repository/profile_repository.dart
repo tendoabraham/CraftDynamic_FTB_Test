@@ -5,8 +5,8 @@ class ProfileRepository {
   final _sharedPref = CommonSharedPref();
   final _services = APIService();
 
-  List<BankAccount> getUserBankAccounts() =>
-      _bankRepository.getAllBankAccounts();
+  Future<List<BankAccount>> getUserBankAccounts() async =>
+      await _bankRepository.getAllBankAccounts() ?? [];
 
   getUserInfo(UserAccountData key) => _sharedPref.getUserAccountInfo(key);
 

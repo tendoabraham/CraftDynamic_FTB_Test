@@ -52,7 +52,7 @@ class CommonSharedPref {
   }
 
   getAppIdleTimeout() async {
-    return int.parse(await storage.read(key: "appIdleTimeout") ?? "1");
+    return int.parse(await storage.read(key: "appIdleTimeout")??"100000");
   }
 
   getRoute(String routeName) async {

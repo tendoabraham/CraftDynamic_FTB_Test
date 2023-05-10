@@ -18,23 +18,27 @@ final _formRepository = FormsRepository();
 final _actionControlRepository = ActionControlRepository();
 
 class UIDataRepository {
-  addUIDataToDB({required UIResponse? uiResponse}) {
+  addUIDataToDB({required UIResponse? uiResponse}) async {
     if (uiResponse?.formControl != null) {
-      _formRepository.clearTable();
+      await _formRepository.clearTable();
       uiResponse?.formControl?.forEach((item) {
         _formRepository.insertFormItem(FormItem.fromJson(item));
       });
     }
     if (uiResponse?.actionControl != null) {
-      _actionControlRepository.clearTable();
+      await _actionControlRepository.clearTable();
       uiResponse?.actionControl?.forEach((item) {
         _actionControlRepository.insertActionControl(ActionItem.fromJson(item));
       });
     }
     if (uiResponse?.module != null) {
-      _moduleRepository.clearTable();
+      await _moduleRepository.clearTable();
       uiResponse?.module?.forEach((item) {
-        _moduleRepository.insertModuleItem(ModuleItem.fromJson(item));
+        try {
+          _moduleRepository.insertModuleItem(ModuleItem.fromJson(item));
+        } catch (e) {
+          AppLogger.appLogE(tag: "module insertion", message: e.toString());
+        }
       });
     }
   }
@@ -94,7 +98,8 @@ class StaticDataRepository {
           .insertOnlineAccountProduct(OnlineAccountProduct.fromJson(item));
     });
     staticResponse?.bankBranch?.forEach((item) {
-      _bankBranchRepository.insertBankBranch(BankBranch.fromJson(item));
+      _bankBranchRepository
+          .insertBankBranch(BankBranch.fromJson(item)); //TODO UNCOMMENT THIS
     });
     staticResponse?.image?.forEach((item) {
       _imageDataRepository.insertImageData(ImageData.fromJson(item));
@@ -120,11 +125,11 @@ class ClearDB {
   }
 
   static clearAllStaticData() async {
-    _userCodeRepository.clearTable();
-    _onlineAccountProductRepository.clearTable();
-    _bankBranchRepository.clearTable();
-    _imageDataRepository.clearTable();
-    _branchLocationRepository.clearTable();
-    _atmLocationRepository.clearTable();
+    await _userCodeRepository.clearTable();
+    await _onlineAccountProductRepository.clearTable();
+    await _bankBranchRepository.clearTable();
+    await _imageDataRepository.clearTable();
+    await _branchLocationRepository.clearTable();
+    await _atmLocationRepository.clearTable();
   }
 }

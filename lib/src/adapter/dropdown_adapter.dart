@@ -24,7 +24,7 @@ class _UserCodeDropDown implements IDropDownAdapter {
 
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
-    var userCodes = _userCodeRepository.getUserCodesById(dataSourceID);
+    var userCodes = await _userCodeRepository.getUserCodesById(dataSourceID);
     return userCodes.fold<Map<String, dynamic>>(
         {}, (acc, curr) => acc..[curr.subCodeId] = curr.description!);
   }
@@ -38,8 +38,8 @@ class _BankAccountDropDown implements IDropDownAdapter {
 
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
-    var bankAccounts = _bankAccountRepository.getAllBankAccounts();
-    return bankAccounts.fold<Map<String, dynamic>>(
+    var bankAccounts = await _bankAccountRepository.getAllBankAccounts();
+    return bankAccounts?.fold<Map<String, dynamic>>(
         {},
         (acc, curr) => acc
           ..[curr.bankAccountId] =
@@ -56,7 +56,7 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
     var beneficiaries =
-        _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
+        await _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
     return beneficiaries?.fold<Map<String, dynamic>>(
         {}, (acc, curr) => acc..[curr.accountID] = curr.accountAlias);
   }

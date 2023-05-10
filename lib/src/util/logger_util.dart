@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart' hide Key;
-import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
+part of craft_dynamic;
 
 class AppLogger {
   static Logger logger = Logger();
@@ -39,7 +35,9 @@ class FileOperations {
 
   writeFile(String fileName, String response) async {
     final file = getLocalFile(fileName);
-    file.then((file) =>
-        {debugPrint("Writing $file..."), file.writeAsString(response)});
+    file.then((file) => {
+          AppLogger.appLogE(tag: "App Logger", message: "File is writing"),
+          file.writeAsString(response)
+        });
   }
 }

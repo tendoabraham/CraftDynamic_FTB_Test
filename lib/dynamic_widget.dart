@@ -14,7 +14,6 @@ import 'src/ui/dynamic_static/biometric_login.dart';
 import 'src/ui/dynamic_static/transactions_list.dart';
 import 'src/ui/dynamic_static/view_beneficiary.dart';
 import 'src/ui/forms/forms_list.dart';
-import 'src/ui/modules/module_assets.dart';
 import 'src/ui/modules/module_util.dart';
 import 'src/ui/modules/modules_list.dart';
 import 'src/ui/platform_components/platform_button.dart';

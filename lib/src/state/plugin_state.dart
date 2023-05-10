@@ -89,6 +89,23 @@ class PluginState extends ChangeNotifier {
   }
 }
 
+class DynamicState extends ChangeNotifier {
+  MenuScreenProperties? _menuScreenProperties;
+  MenuProperties? _menuProperties;
+
+  MenuScreenProperties? get menuScreenProperties => _menuScreenProperties;
+
+  MenuProperties? get menuProperties => _menuProperties;
+
+  setMenuScreen(MenuScreenProperties properties) {
+    _menuScreenProperties = properties;
+  }
+
+  setMenuProperties(MenuProperties menuProperties) {
+    _menuProperties = menuProperties;
+  }
+}
+
 var currentToken = "".obs;
 
 var showLoadingScreen = false.obs;

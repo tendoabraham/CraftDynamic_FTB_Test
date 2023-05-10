@@ -44,12 +44,13 @@ class FormsListWidget extends StatelessWidget {
       });
     }
 
-    return FutureBuilder<List<FormItem>>(
+    return FutureBuilder<List<FormItem>?>(
         future: getFormItems(),
         builder:
-            (BuildContext context, AsyncSnapshot<List<FormItem>> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<FormItem>?> snapshot) {
           Widget child = const SizedBox();
           if (snapshot.hasData) {
+            AppLogger.appLogI(tag: "forms...", message: snapshot.data?.length);
             int? currentFormSequence = nextFormSequence;
             if (currentFormSequence != null) {
               if (currentFormSequence == 0) {

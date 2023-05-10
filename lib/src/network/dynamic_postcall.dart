@@ -130,7 +130,8 @@ class DynamicPostCall {
       PostDynamic postDynamic, ModuleItem moduleItem, context) async {
     final formsRepository = FormsRepository();
     List<FormItem> formItems =
-        formsRepository.getFormsByModuleId(postDynamic.formID ?? "");
+        await formsRepository.getFormsByModuleId(postDynamic.formID ?? "") ??
+            [];
     OTPForm.showModalBottomDialog(context, formItems, moduleItem, []);
   }
 }

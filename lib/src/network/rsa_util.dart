@@ -4,8 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:pointycastle/asn1.dart';
 
 import 'package:craft_dynamic/src/app_data/constants.dart';
-import 'package:craft_dynamic/src/util/logger_util.dart';
 import 'package:pointycastle/export.dart';
+
+import '../../craft_dynamic.dart';
 
 class RSAUtil {
   static Future<String?> readCertificate(String pem) async {

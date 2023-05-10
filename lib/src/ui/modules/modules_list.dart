@@ -44,10 +44,10 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                 title: Text(widget.favouriteModule == null
                     ? widget.moduleItem!.moduleName
                     : widget.favouriteModule!.moduleName)),
-            body: FutureBuilder<List<ModuleItem>>(
+            body: FutureBuilder<List<ModuleItem>?>(
                 future: getModules(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<ModuleItem>> snapshot) {
+                    AsyncSnapshot<List<ModuleItem>?> snapshot) {
                   Widget child = const Center(child: Text("Please wait..."));
                   if (snapshot.hasData) {
                     var modules = snapshot.data?.toList();

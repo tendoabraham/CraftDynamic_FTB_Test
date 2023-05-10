@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 part of craft_dynamic;
 
 class LocalRepository {
@@ -21,57 +23,79 @@ class LocalRepository {
 }
 
 class ModuleRepository {
-  var modulesBox = Hive.box<ModuleItem>('modules');
+  Box<ModuleItem>? modulesBox;
 
-  insertModuleItem(ModuleItem moduleItem) {
-    modulesBox.put(moduleItem.moduleId, moduleItem);
+  openBox() async {
+    modulesBox = await Hive.openBox<ModuleItem>("modules");
   }
 
-  ModuleItem? getModuleById(String moduleID) {
-    return modulesBox.get(moduleID);
+  insertModuleItem(ModuleItem moduleItem) async {
+    await openBox();
+    try {
+      modulesBox?.put(moduleItem.moduleId, moduleItem);
+    } catch (e) {
+      AppLogger.appLogE(tag: "module insertion", message: e.toString());
+    }
   }
 
-  List<ModuleItem> getModulesById(String moduleID) {
-    return modulesBox.values
+  Future<ModuleItem?> getModuleById(String moduleID) async {
+    await openBox();
+    return modulesBox?.get(moduleID);
+  }
+
+  Future<List<ModuleItem>?> getModulesById(String moduleID) async {
+    await openBox();
+    return modulesBox?.values
         .where(
             (item) => item.parentModule == moduleID && item.isHidden == false)
         .toList();
   }
 
-  List<ModuleItem> searchModuleItem(String moduleName) {
-    return modulesBox.values
+  Future<List<ModuleItem>?> searchModuleItem(String moduleName) async {
+    await openBox();
+    return modulesBox?.values
         .where(
             (item) => item.moduleName == moduleName && item.isHidden == false)
         .toList();
   }
 
   Future<List<ModuleItem>?> getTabModules() async {
-    return modulesBox.values
+    await openBox();
+    var modules = modulesBox?.values
         .where((item) => item.isMainMenu == true && item.isHidden == false)
         .toList();
+    return modules;
   }
 
-  clearTable() {
-    modulesBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    modulesBox?.clear();
   }
 }
 
 class FormsRepository {
-  var formsBox = Hive.box<FormItem>("forms");
+  Box<FormItem>? formsBox;
 
-  insertFormItem(FormItem formItem) {
-    formsBox.put(formItem.no, formItem);
+  openBox() async {
+    formsBox = await Hive.openBox<FormItem>("forms");
   }
 
-  List<FormItem> getFormsByModuleId(String moduleID) {
-    return formsBox.values
+  insertFormItem(FormItem formItem) async {
+    await openBox();
+    formsBox?.add(formItem);
+  }
+
+  Future<List<FormItem>?> getFormsByModuleId(String moduleID) async {
+    await openBox();
+    return formsBox?.values
         .where((item) => item.moduleId == moduleID && item.hidden == false)
         .toList();
   }
 
-  List<FormItem>? getFormsByModuleIdAndFormSequence(
-      String moduleID, int formSequence) {
-    return formsBox.values
+  Future<List<FormItem>?>? getFormsByModuleIdAndFormSequence(
+      String moduleID, int formSequence) async {
+    await openBox();
+    return formsBox?.values
         .where((item) =>
             item.moduleId == moduleID &&
             item.formSequence == formSequence &&
@@ -79,9 +103,10 @@ class FormsRepository {
         .toList();
   }
 
-  List<FormItem>? getFormsByModuleIdAndControlID(
-      String moduleID, String controlID) {
-    return formsBox.values
+  Future<List<FormItem>?>? getFormsByModuleIdAndControlID(
+      String moduleID, String controlID) async {
+    await openBox();
+    return formsBox?.values
         .where((item) =>
             item.moduleId == moduleID &&
             item.controlId == controlID &&
@@ -89,227 +114,330 @@ class FormsRepository {
         .toList();
   }
 
-  clearTable() {
-    formsBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    formsBox?.clear();
   }
 }
 
 class ActionControlRepository {
-  var actionsBox = Hive.box<ActionItem>("actions");
+  var actionsBox;
 
-  insertActionControl(ActionItem actionItem) {
-    actionsBox.put(actionItem.no, actionItem);
+  openBox() async {
+    actionsBox = await HiveBox(ActionItem).getBox("actions");
   }
 
-  ActionItem? getActionControlByModuleIdAndControlId(
-      String moduleID, controlID) {
+  insertActionControl(ActionItem actionItem) async {
+    await openBox();
+    actionsBox.add(actionItem);
+  }
+
+  Future<ActionItem>? getActionControlByModuleIdAndControlId(
+      String moduleID, controlID) async {
+    await openBox();
     return actionsBox.values.firstWhere(
         (item) => item.moduleID == moduleID && item.controlID == controlID);
   }
 
-  void clearTable() async {
-    actionsBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    actionsBox.clear();
   }
 }
 
 class UserCodeRepository {
-  var userCodeBox = Hive.box<UserCode>("usercodes");
-  void insertUserCode(UserCode userCode) {
-    userCodeBox.put(userCode.no, userCode);
+  var userCodeBox;
+
+  openBox() async {
+    userCodeBox = await HiveBox(UserCode).getBox("usercodes");
   }
 
-  List<UserCode> getUserCodesById(String? id) {
+  insertUserCode(UserCode userCode) async {
+    await openBox();
+    userCodeBox.put(userCode.no ?? "", userCode);
+  }
+
+  Future<List<UserCode>> getUserCodesById(String? id) async {
+    await openBox();
     return userCodeBox.values.where((item) => item.id == id).toList();
   }
 
-  void clearTable() async {
-    userCodeBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    userCodeBox.clear();
   }
 }
 
 class OnlineAccountProductRepository {
-  var onlineAccountBox = Hive.box<OnlineAccountProduct>("onlineaccounts");
+  var onlineAccountBox;
 
-  void insertOnlineAccountProduct(
-      OnlineAccountProduct onlineAccountProduct) async {
+  openBox() async {
+    onlineAccountBox =
+        await HiveBox(OnlineAccountProduct).getBox("onlineaccounts");
+  }
+
+  insertOnlineAccountProduct(OnlineAccountProduct onlineAccountProduct) async {
+    await openBox();
     onlineAccountBox.put(onlineAccountProduct.no, onlineAccountProduct);
   }
 
-  List<OnlineAccountProduct> getAllOnlineAccountProducts() {
+  Future<List<OnlineAccountProduct>> getAllOnlineAccountProducts() async {
+    await openBox();
     return onlineAccountBox.values.toList();
   }
 
-  void clearTable() async {
-    onlineAccountBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    onlineAccountBox.clear();
   }
 }
 
 class BankBranchRepository {
-  var bankBranchBox = Hive.box<BankBranch>("bankbranches");
-
-  void insertBankBranch(BankBranch bankBranch) async {
-    bankBranchBox.put(bankBranch.no, bankBranch);
+  insertBankBranch(BankBranch bankBranch) async {
+    var bankBranchBox = await HiveBox(BankBranch).getBox("bankbranches");
+    bankBranchBox?.put(bankBranch.no ?? "", bankBranch);
   }
 
-  List<BankBranch> getAllBankBranches() {
+  Future<List<BankBranch>> getAllBankBranches() async {
+    Box<BankBranch> bankBranchBox =
+        await HiveBox(BankBranch).getBox("bankbranches") as Box<BankBranch>;
     return bankBranchBox.values.toList();
   }
 
-  void clearTable() async {
-    bankBranchBox.deleteFromDisk();
+  clearTable() async {
+    var bankBranchBox = await HiveBox(BankBranch).getBox("bankbranches");
+    bankBranchBox?.clear();
   }
 }
 
 class ImageDataRepository {
-  var imageDataBox = Hive.box<ImageData>("imagedata");
+  var imageDataBox;
 
-  void insertImageData(ImageData imageData) {
-    imageDataBox.put(imageData.no, imageData);
+  openBox() async {
+    imageDataBox = await HiveBox(ImageData).getBox("imagedata");
   }
 
-  List<ImageData> getAllImages(String imageType) {
+  insertImageData(ImageData imageData) async {
+    await openBox();
+    imageDataBox.put(imageData.no ?? "", imageData);
+  }
+
+  Future<List<ImageData>> getAllImages(String imageType) async {
+    await openBox();
     return imageDataBox.values.toList();
   }
 
-  void clearTable() async {
-    imageDataBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    imageDataBox.clear();
   }
 }
 
 class BankAccountRepository {
-  var bankAccountBox = Hive.box<BankAccount>("bankaccount");
+  Box<BankAccount>? bankAccountBox;
 
-  void insertBankAccount(BankAccount bankAccount) async {
-    bankAccountBox.put(bankAccount.no, bankAccount);
+  openBox() async {
+    bankAccountBox = await Hive.openBox<BankAccount>("bankaccount");
   }
 
-  List<BankAccount> getAllBankAccounts() {
-    return bankAccountBox.values.toList();
+  insertBankAccount(BankAccount bankAccount) async {
+    await openBox();
+    try {
+      AppLogger.appLogI(
+          tag: "add bank accont", message: bankAccount.bankAccountId);
+      bankAccountBox?.add(bankAccount);
+    } catch (e) {
+      AppLogger.appLogE(tag: "add bank account", message: e.toString());
+    }
   }
 
-  void clearTable() async {
-    bankAccountBox.deleteFromDisk();
+  Future<List<BankAccount>?> getAllBankAccounts() async {
+    await openBox();
+    var accounts = bankAccountBox?.values.toList();
+    AppLogger.appLogI(tag: "all accounts", message: accounts);
+    return accounts;
+  }
+
+  clearTable() async {
+    await openBox();
+    bankAccountBox?.clear();
   }
 }
 
 class FrequentAccessedModuleRepository {
-  var frequentModulesBox = Hive.box<FrequentAccessedModule>("frequentmodules");
-  void insertFrequentModule(FrequentAccessedModule frequentAccessedModule) {
+  var frequentModulesBox;
+
+  openBox() async {
+    frequentModulesBox =
+        await HiveBox(FrequentAccessedModule).getBox("frequentmodules");
+  }
+
+  insertFrequentModule(FrequentAccessedModule frequentAccessedModule) async {
+    await openBox();
     frequentModulesBox.put(frequentAccessedModule.no, frequentAccessedModule);
   }
 
-  List<FrequentAccessedModule> getAllFrequentModules() {
+  Future<List<FrequentAccessedModule>> getAllFrequentModules() async {
+    await openBox();
     return frequentModulesBox.values.toList();
   }
 
-  void clearTable() async {
-    frequentModulesBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    frequentModulesBox.clear();
   }
 }
 
 class BeneficiaryRepository {
-  var beneficiaryBox = Hive.box<Beneficiary>("beneficiaries");
+  var beneficiaryBox;
 
-  void insertBeneficiary(Beneficiary beneficiary) {
+  openBox() async {
+    beneficiaryBox = await HiveBox(Beneficiary).getBox("beneficiaries");
+  }
+
+  insertBeneficiary(Beneficiary beneficiary) async {
+    await openBox();
     beneficiaryBox.put(beneficiary.rowId, beneficiary);
   }
 
-  List<Beneficiary>? getAllBeneficiaries() {
+  Future<List<Beneficiary>>? getAllBeneficiaries() async {
+    await openBox();
     return beneficiaryBox.values.toList();
   }
 
-  List<Beneficiary>? getBeneficiariesByMerchantID(String merchantID) {
+  Future<List<Beneficiary>>? getBeneficiariesByMerchantID(
+      String merchantID) async {
+    await openBox();
     return beneficiaryBox.values
         .where((item) => item.merchantID == merchantID)
         .toList();
   }
 
-  deleteBeneficiary(int rowId) {
+  deleteBeneficiary(int rowId) async {
+    await openBox();
     beneficiaryBox.delete(rowId);
   }
 
-  Future<void> clearTable() async {
-    beneficiaryBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    beneficiaryBox.clear();
   }
 }
 
 class ModuleToHideRepository {
-  var modulesToHideBox = Hive.box<ModuleToHide>("modulestohide");
+  Box<ModuleToHide>? modulesToHideBox;
 
-  void insertModuleToHide(ModuleToHide moduleToHide) async {
-    modulesToHideBox.put(moduleToHide.moduleId, moduleToHide);
+  openBox() async {
+    modulesToHideBox = await Hive.openBox<ModuleToHide>("modulestohide");
   }
 
-  List<ModuleToHide>? getAllModulesToHide() {
-    return modulesToHideBox.values.toList();
+  insertModuleToHide(ModuleToHide moduleToHide) async {
+    await openBox();
+    modulesToHideBox?.put(moduleToHide.moduleId, moduleToHide);
   }
 
-  void clearTable() async {
-    modulesToHideBox.deleteFromDisk();
+  Future<List<ModuleToHide>?>? getAllModulesToHide() async {
+    await openBox();
+    return modulesToHideBox?.values.toList();
+  }
+
+  clearTable() async {
+    await openBox();
+    modulesToHideBox?.clear();
   }
 }
 
 class ModuleToDisableRepository {
-  var modulesToDisableBox = Hive.box<ModuleToDisable>("modulestodisable");
+  var modulesToDisableBox;
 
-  void insertModuleToDisable(ModuleToDisable moduleToDisable) async {
+  openBox() async {
+    modulesToDisableBox =
+        await HiveBox(ModuleToDisable).getBox("modulestodisable");
+  }
+
+  insertModuleToDisable(ModuleToDisable moduleToDisable) async {
+    await openBox();
     modulesToDisableBox.put(moduleToDisable.moduleID, moduleToDisable);
   }
 
-  List<ModuleToDisable>? getAllModulesToDisable() {
+  Future<List<ModuleToDisable>>? getAllModulesToDisable() async {
+    await openBox();
     return modulesToDisableBox.values.toList();
   }
 
-  void clearTable() async {
-    modulesToDisableBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    modulesToDisableBox.clear();
   }
 }
 
 class AtmLocationRepository {
-  var atmsBox = Hive.box<AtmLocation>("atms");
+  var atmsBox;
 
-  void insertAtmLocation(AtmLocation atmLocation) {
+  openBox() async {
+    atmsBox = await HiveBox(AtmLocation).getBox("atmlocations");
+  }
+
+  insertAtmLocation(AtmLocation atmLocation) async {
+    await openBox();
     atmsBox.put(atmLocation.no, atmLocation);
   }
 
-  List<AtmLocation> getAllAtmLocations() {
+  Future<List<AtmLocation>> getAllAtmLocations() async {
+    await openBox();
     return atmsBox.values.toList();
   }
 
-  void clearTable() async {
-    atmsBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    atmsBox.clear();
   }
 }
 
 class BranchLocationRepository {
-  var branchLocationRepo = Hive.box<BranchLocation>("branchlocations");
+  var branchLocationRepo;
 
-  void insertBranchLocation(BranchLocation branchLocation) async {
+  openBox() async {
+    branchLocationRepo =
+        await HiveBox(BranchLocation).getBox("branchlocations");
+  }
+
+  insertBranchLocation(BranchLocation branchLocation) async {
+    await openBox();
     branchLocationRepo.put(branchLocation.no, branchLocation);
   }
 
-  List<BranchLocation> getAllBranchLocations() {
+  Future<List<BranchLocation>> getAllBranchLocations() async {
+    await openBox();
     return branchLocationRepo.values.toList();
   }
 
-  void clearTable() async {
-    branchLocationRepo.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    branchLocationRepo.clear();
   }
 }
 
 class PendingTrxDisplayRepository {
-  var pendingTransactionsBox =
-      Hive.box<PendingTrxDisplay>("pendingtransactions");
+  var pendingTransactionsBox;
 
-  void insertPendingTransaction(PendingTrxDisplay pendingTrxDisplay) async {
+  openBox() async {
+    pendingTransactionsBox =
+        await HiveBox(PendingTrxDisplay).getBox("pendingtransactions");
+  }
+
+  insertPendingTransaction(PendingTrxDisplay pendingTrxDisplay) async {
+    await openBox();
     pendingTransactionsBox.put(pendingTrxDisplay.no, pendingTrxDisplay);
   }
 
-  List<PendingTrxDisplay> getAllPendingTransactions() {
+  Future<List<PendingTrxDisplay>> getAllPendingTransactions() async {
+    await openBox();
     return pendingTransactionsBox.values.toList();
   }
 
-  void clearTable() async {
-    pendingTransactionsBox.deleteFromDisk();
+  clearTable() async {
+    await openBox();
+    pendingTransactionsBox.clear();
   }
 }

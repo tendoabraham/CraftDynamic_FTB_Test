@@ -50,7 +50,7 @@ class DynamicFormRequest {
 
     if (formItem != null) {
       actionControl =
-          _actionControlRepository.getActionControlByModuleIdAndControlId(
+          await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
     }
 
@@ -72,8 +72,9 @@ class DynamicFormRequest {
 
     confirmationModuleID = actionControl?.confirmationModuleID;
     if (confirmationModuleID != null && confirmationModuleID != "") {
-      List<FormItem> form =
-          _formsRepository.getFormsByModuleId(confirmationModuleID ?? "");
+      List<FormItem> form = await _formsRepository
+              .getFormsByModuleId(confirmationModuleID ?? "") ??
+          [];
       var result = await ConfirmationForm.showModalBottomDialog(
           context,
           form,

@@ -6,9 +6,8 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appTimeoutScreen;
   final Widget appInactivityScreen;
   final ThemeData appTheme;
-  Widget? menuItem;
-  MenuType? menuType;
-  Color? menuColor;
+  MenuScreenProperties? menuScreenProperties;
+  MenuProperties? menuProperties;
   bool localizationIsEnabled;
 
   DynamicCraftWrapper(
@@ -18,9 +17,8 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
       required this.appTheme,
-      this.menuItem,
-      this.menuType,
-      this.menuColor,
+      this.menuScreenProperties,
+      this.menuProperties,
       this.localizationIsEnabled = false});
 
   @override
@@ -32,7 +30,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _initRepository = InitRepository();
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
-  final _dynamicRequest = DynamicFormRequest();
 
   var _appTimeout = 100000;
 
@@ -57,7 +54,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   initializeHive() async {
     await Hive.initFlutter();
-    await LocalRepository.openBoxes();
     Hive.registerAdapter(ModuleItemAdapter());
     Hive.registerAdapter(FormItemAdapter());
     Hive.registerAdapter(ActionItemAdapter());
@@ -89,16 +85,13 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   getAppData() async {
     await _initRepository.getAppToken();
-    getAppAssets();
     await _initRepository.getAppUIData();
     showLoadingScreen.value = false;
     var timeout = await _sharedPref.getAppIdleTimeout();
-    if (timeout != null) {
-      setState(() {
-        _appTimeout = timeout ?? 100000;
-      });
-    }
-    periodicActions(timeout ?? _appTimeout);
+    setState(() {
+      _appTimeout = timeout;
+    });
+    periodicActions(_appTimeout);
   }
 
   periodicActions(int timeout) {
@@ -118,8 +111,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   @override
   Widget build(BuildContext context) {
     return _sessionRepository.getSessionManager(
-        ChangeNotifierProvider(
-          create: (context) => PluginState(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => PluginState()),
+            ChangeNotifierProvider(create: (context) => DynamicState()),
+          ],
           child: GetMaterialApp(
             localizationsDelegates: widget.localizationIsEnabled
                 ? context.localizationDelegates
@@ -131,9 +127,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             debugShowCheckedModeBanner: false,
             theme: widget.appTheme,
             home: Obx(() {
-              debugPrint(
-                  "State change detected:::with connection state:::${connectionState.value}");
-
               return showLoadingScreen.value
                   ? widget.appLoadingScreen
                   : widget.dashboard;
@@ -141,7 +134,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             navigatorKey: Get.key,
             builder: (context, child) {
               setPluginWidgets(widget.appTimeoutScreen, context,
-                  widget.menuType, widget.menuColor, widget.menuItem);
+                  widget.menuProperties, widget.menuScreenProperties);
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: child!,
@@ -155,31 +148,21 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         widget.appTimeoutScreen);
   }
 
-  setPluginWidgets(Widget logoutWidget, BuildContext context,
-      MenuType? menuType, Color? menuColor, Widget? menuItem) {
-    if (menuType != null) {
-      Provider.of<PluginState>(context, listen: false).setMenuType(menuType);
+  setPluginWidgets(
+      Widget logoutWidget,
+      BuildContext context,
+      MenuProperties? menuProperties,
+      MenuScreenProperties? menuScreenProperties) {
+    if (menuProperties != null) {
+      Provider.of<DynamicState>(context, listen: false)
+          .setMenuProperties(menuProperties);
     }
-    if (menuColor != null) {
-      Provider.of<PluginState>(context, listen: false).setMenuColor(menuColor);
-    }
-    if (menuItem != null) {
-      Provider.of<PluginState>(context, listen: false).setMenuItem(menuItem);
+
+    if (menuScreenProperties != null) {
+      Provider.of<DynamicState>(context, listen: false)
+          .setMenuScreen(menuScreenProperties);
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);
-  }
-
-  getAppAssets() {
-    var params = [
-      {"BANKID": APIService.bankID},
-      {"COUNTRY": APIService.countryName},
-      {"CATEGORY": "LOGIN"},
-      {"HEADER": "GetBankImages"}
-    ];
-
-    _dynamicRequest.dynamicRequest(null, dataObj: params).then((value) {
-      debugPrint("All images:::${value?.dynamicList}");
-    });
   }
 }

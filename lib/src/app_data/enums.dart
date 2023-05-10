@@ -47,8 +47,6 @@ enum ControlFormat {
   RADIOGROUPS
 }
 
-enum FormId { MENU, FORMS, ACTIONS, STATICDATA, LOGIN, ALERTCONFIRMATIONFORM }
-
 enum DynamicDataType { Modules, ActionControls, FormControls }
 
 enum ControlID {
@@ -116,7 +114,8 @@ enum RequestParam {
   HEADER,
   DynamicForm,
   CHANGEPIN,
-  CHANGELANGUAGE
+  CHANGELANGUAGE,
+  Paybill,
 }
 
 enum FormFieldProp { ControlID, ControlValue }
@@ -156,6 +155,7 @@ enum StatusCode {
   success("000"),
   failure("091"),
   token("099"),
+  otp("093"),
   changeLanguage("094"),
   changePin("101"),
   unknown("XXXX");
@@ -173,3 +173,28 @@ enum MenuType {
   HorizontalOutlined,
   DefaultMenuItem
 }
+
+enum ParentModule { MAIN, TRANSACTIONHISTORY, MYACCOUNTS }
+
+enum RouteUrl { auth, account, card, other, staticdata }
+
+enum FormId {
+  STATICDATA,
+  LOGIN,
+  ACTIVATIONREQ,
+  ACTIVATE,
+  PAYBILL,
+  MENU,
+  FORMS,
+  ACTIONS,
+  ALERTCONFIRMATIONFORM,
+  DBCALL
+}
+
+const success = "000";
+const failure = "091";
+const token = "099";
+const otp = "093";
+const changeLanguage = "094";
+const changePin = "101";
+const unknown = "xxx";

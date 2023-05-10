@@ -7,7 +7,8 @@ final _frequentAccessedModuleRepository = FrequentAccessedModuleRepository();
 class HomeRepository {
   // Call this method to get main modules
   Future<List<ModuleItem>> getMainModules() async {
-    List<ModuleItem> modules = await _moduleRepository.getModulesById("MAIN");
+    List<ModuleItem> modules =
+        await _moduleRepository.getModulesById("MAIN") ?? [];
     List<ModuleToHide>? hiddenModules =
         await _hiddenModulesRepository.getAllModulesToHide();
     hiddenModules?.forEach((hiddenModule) {

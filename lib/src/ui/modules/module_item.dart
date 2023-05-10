@@ -16,59 +16,64 @@ class ModuleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          ModuleUtil.onItemClick(moduleItem, context);
-        },
-        child: Consumer<PluginState>(
-            builder: (context, state, child) =>
-                state.menuItem ??
-                IMenuUtil(
-                        Provider.of<PluginState>(context, listen: false)
-                                .menuType ??
-                            MenuType.DefaultMenuItem,
-                        moduleItem)
-                    .getMenuItem()));
-    // child: IMenuUtil(
-    //         Provider.of<PluginState>(context, listen: false).menuType ??
-    //             MenuType.DefaultMenuItem,
-    //         moduleItem)
-    //     .getMenuItem());
+    return Consumer<DynamicState>(builder: (context, state, child) {
+      MenuProperties? menuProperties = state.menuProperties;
+
+      return GestureDetector(
+          onTap: () {
+            ModuleUtil.onItemClick(moduleItem, context);
+          },
+          child: IMenuUtil(
+                  Provider.of<PluginState>(context, listen: false).menuType ??
+                      menuProperties?.menuType ??
+                      MenuType.DefaultMenuItem,
+                  moduleItem)
+              .getMenuItem());
+    });
   }
 }
 
 class VerticalModule extends StatelessWidget {
   ModuleItem moduleItem;
-  bool hasBorder;
 
-  VerticalModule({super.key, required this.moduleItem, this.hasBorder = false});
+  VerticalModule({super.key, required this.moduleItem});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-            color: getMenuColor(context) ?? Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            border: hasBorder
-                ? Border.all(width: 1, color: Colors.grey[400]!)
-                : null),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              MenuItemImage(
-                imageUrl: moduleItem.moduleUrl ?? "",
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              MenuItemTitle(title: moduleItem.moduleName)
-            ],
-          ),
-        ));
+    return Consumer<DynamicState>(builder: (context, state, child) {
+      MenuProperties? menuProperties = state.menuProperties;
+      return Card(
+          surfaceTintColor: menuProperties?.backgroundColor ?? Colors.white,
+          elevation: menuProperties?.itemElevation ?? 0,
+          shape: RoundedRectangleBorder(
+              side: menuProperties?.hasBorder ?? false
+                  ? BorderSide(
+                      width: menuProperties?.borderWidth ?? 1.5,
+                      color: menuProperties?.borderColor ?? Colors.transparent)
+                  : BorderSide.none,
+              borderRadius: BorderRadius.all(
+                Radius.circular(menuProperties?.itemRadius ?? 12),
+              )),
+          child: Padding(
+              padding: menuProperties?.itemPadding ?? const EdgeInsets.all(8),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: menuProperties?.mainAxisAlignment ??
+                      MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MenuItemImage(
+                      imageUrl: moduleItem.moduleUrl ?? "",
+                      iconSize: menuProperties?.iconSize ?? 54,
+                    ),
+                    SizedBox(
+                      height: menuProperties?.spaceBetween ?? 12,
+                    ),
+                    Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
+                  ],
+                ),
+              )));
+    });
   }
 
   Color? getMenuColor(context) =>
@@ -77,37 +82,48 @@ class VerticalModule extends StatelessWidget {
 
 class HorizontalModule extends StatelessWidget {
   ModuleItem moduleItem;
-  bool hasBorder;
 
-  HorizontalModule(
-      {super.key, required this.moduleItem, this.hasBorder = false});
+  HorizontalModule({
+    super.key,
+    required this.moduleItem,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-            color: getMenuColor(context) ?? Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            border: hasBorder
-                ? Border.all(width: 1, color: Colors.grey[400]!)
-                : null),
-        child: Center(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MenuItemImage(
-                imageUrl: moduleItem.moduleUrl ?? "",
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              MenuItemTitle(title: moduleItem.moduleName)
-            ],
-          ),
-        ));
+    return Consumer<DynamicState>(builder: (context, state, child) {
+      MenuProperties? menuProperties = state.menuProperties;
+
+      return Card(
+          surfaceTintColor: menuProperties?.backgroundColor ?? Colors.white,
+          elevation: menuProperties?.itemElevation ?? 0,
+          shape: RoundedRectangleBorder(
+              side: menuProperties?.hasBorder ?? false
+                  ? BorderSide(
+                      width: menuProperties?.borderWidth ?? 1.5,
+                      color: menuProperties?.borderColor ?? Colors.transparent)
+                  : BorderSide.none,
+              borderRadius: BorderRadius.all(
+                Radius.circular(menuProperties?.itemRadius ?? 12),
+              )),
+          child: Padding(
+              padding: menuProperties?.itemPadding ?? const EdgeInsets.all(8),
+              child: Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: menuProperties?.mainAxisAlignment ??
+                      MainAxisAlignment.spaceBetween,
+                  children: [
+                    MenuItemImage(
+                      imageUrl: moduleItem.moduleUrl ?? "",
+                    ),
+                    SizedBox(
+                      width: menuProperties?.spaceBetween ?? 8,
+                    ),
+                    MenuItemTitle(title: moduleItem.moduleName)
+                  ],
+                ),
+              )));
+    });
   }
 
   Color? getMenuColor(context) =>
