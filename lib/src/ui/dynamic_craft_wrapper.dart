@@ -57,6 +57,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   initializeHive() async {
     await Hive.initFlutter();
+    await LocalRepository.openBoxes();
     Hive.registerAdapter(ModuleItemAdapter());
     Hive.registerAdapter(FormItemAdapter());
     Hive.registerAdapter(ActionItemAdapter());
@@ -72,7 +73,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     Hive.registerAdapter(ModuleToDisableAdapter());
     Hive.registerAdapter(PendingTrxDisplayAdapter());
     Hive.registerAdapter(OnlineAccountProductAdapter());
-    LocalRepository.openBoxes();
   }
 
   getAppLaunchCount() async {
