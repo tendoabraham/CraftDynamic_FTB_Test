@@ -7,23 +7,29 @@ class MenuItemImage extends StatelessWidget {
   MenuItemImage({super.key, required this.imageUrl, this.iconSize = 54});
 
   @override
-  Widget build(BuildContext context) => CachedNetworkImage(
-        imageUrl: imageUrl,
-        height: iconSize,
-        width: iconSize,
-        placeholder: (context, url) => SpinKitPulse(
-          itemBuilder: (BuildContext context, int index) {
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                color: index.isEven
-                    ? APIService.appPrimaryColor
-                    : APIService.appSecondaryColor,
-              ),
-            );
-          },
-        ),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      );
+  Widget build(BuildContext context) => kIsWeb
+      ? Image.network(
+          imageUrl,
+          height: iconSize,
+          width: iconSize,
+        )
+      : CachedNetworkImage(
+          imageUrl: imageUrl,
+          height: iconSize,
+          width: iconSize,
+          placeholder: (context, url) => SpinKitPulse(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: index.isEven
+                      ? APIService.appPrimaryColor
+                      : APIService.appSecondaryColor,
+                ),
+              );
+            },
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        );
 }
 
 class MenuItemTitle extends StatelessWidget {

@@ -50,10 +50,13 @@ class ModuleRepository {
 
   Future<List<ModuleItem>?> getModulesById(String moduleID) async {
     var box = await openBox();
-    return box.values
+    var modules = box.values
         .where(
             (item) => item.parentModule == moduleID && item.isHidden == false)
         .toList();
+    modules
+        .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+    return modules;
   }
 
   Future<List<ModuleItem>?> searchModuleItem(String moduleName) async {
@@ -96,9 +99,11 @@ class FormsRepository {
 
   Future<List<FormItem>?> getFormsByModuleId(String moduleID) async {
     var box = await openBox();
-    return box.values
+    var forms = box.values
         .where((item) => item.moduleId == moduleID && item.hidden == false)
         .toList();
+    forms.sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+    return forms;
   }
 
   Future<List<FormItem>?>? getFormsByModuleIdAndFormSequence(
