@@ -34,7 +34,7 @@ import 'package:logger/logger.dart';
 import 'package:archive/archive.dart';
 import 'package:encrypt/encrypt.dart' as encryptcrpto hide SecureRandom;
 import 'package:crypto/crypto.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pem/pem.dart';
 import 'package:pointycastle/block/aes_fast.dart';

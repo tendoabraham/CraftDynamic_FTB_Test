@@ -17,7 +17,9 @@ class Constants {
   static String staticIV = "84jfkfndl3ybdfkf";
 
   Constants() {
-    getPackageName();
+    if (!kIsWeb) {
+      getPackageName();
+    }
   }
 
   void getPackageName() async {
