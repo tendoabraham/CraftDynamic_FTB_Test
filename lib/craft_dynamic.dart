@@ -85,4 +85,4 @@ part 'src/util/common_lib_util.dart';
 part 'src/ui/modules/module_assets.dart';
 part 'src/repository/profile_repository.dart';
 part 'src/util/extensions_util.dart';
-part 'src/network/local_repository.dart';
+part 'src/local_db/hive_repository.dart';

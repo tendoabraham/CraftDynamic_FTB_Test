@@ -206,6 +206,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         break;
       case StatusCode.unknown:
         break;
+      case StatusCode.otp:
+        break;
     }
     return "packages/craft_dynamic/assets/lottie/information.json";
   }

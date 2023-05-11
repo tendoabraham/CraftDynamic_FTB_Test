@@ -20,32 +20,39 @@ final _actionControlRepository = ActionControlRepository();
 class UIDataRepository {
   addUIDataToDB({required UIResponse? uiResponse}) async {
     if (uiResponse?.formControl != null) {
-      await _formRepository.clearTable();
-      uiResponse?.formControl?.forEach((item) {
-        _formRepository.insertFormItem(FormItem.fromJson(item));
+      List<FormItem> forms = [];
+      uiResponse?.formControl?.forEach((formItem) {
+        forms.add(FormItem.fromJson(formItem));
       });
+      _formRepository.insertFormItems(forms);
     }
     if (uiResponse?.actionControl != null) {
-      await _actionControlRepository.clearTable();
-      uiResponse?.actionControl?.forEach((item) {
-        _actionControlRepository.insertActionControl(ActionItem.fromJson(item));
+      List<ActionItem> actions = [];
+
+      uiResponse?.actionControl?.forEach((actionItem) {
+        actions.add(ActionItem.fromJson(actionItem));
       });
+      _actionControlRepository.insertActionControls(actions);
     }
     if (uiResponse?.module != null) {
-      await _moduleRepository.clearTable();
+      List<ModuleItem> modules = [];
       uiResponse?.module?.forEach((item) {
         try {
-          _moduleRepository.insertModuleItem(ModuleItem.fromJson(item));
+          modules.add(ModuleItem.fromJson(item));
         } catch (e) {
           AppLogger.appLogE(tag: "module insertion", message: e.toString());
         }
       });
+      _moduleRepository.insertModuleItems(modules);
     }
   }
 }
 
 class UserAccountRepository {
   addUserAccountData(ActivationResponse activationResponse) {
+    List<BankAccount> userAccounts = [];
+    List<Beneficiary> beneficiaries = [];
+
     _sharedPref.addUserAccountInfo(
         key: UserAccountData.FirstName.name,
         value: activationResponse.firstName);
@@ -63,15 +70,20 @@ class UserAccountRepository {
     _sharedPref.addUserAccountInfo(
         key: UserAccountData.Phone.name, value: activationResponse.phone);
     activationResponse.accounts?.forEach((item) {
-      _bankAccountRepository.insertBankAccount(BankAccount.fromJson(item));
+      userAccounts.add(BankAccount.fromJson(item));
     });
+    _bankAccountRepository.insertBankAccounts(userAccounts);
+
     activationResponse.frequentAccessedModules?.forEach((item) {
       _frequentAccessedModulesRepository
           .insertFrequentModule(FrequentAccessedModule.fromJson(item));
     });
+
     activationResponse.beneficiary?.forEach((item) {
-      _beneficiaryRepository.insertBeneficiary(Beneficiary.fromJson(item));
+      beneficiaries.add(Beneficiary.fromJson(item));
     });
+    _beneficiaryRepository.insertBeneficiaries(beneficiaries);
+
     activationResponse.modulesToHide?.forEach((item) {
       _moduleToHideRepository.insertModuleToHide(ModuleToHide.fromJson(item));
     });
@@ -90,9 +102,13 @@ class StaticDataRepository {
   addStaticData(StaticResponse? staticResponse) async {
     await _sharedPref.addAppIdleTimeout(staticResponse?.appIdleTimeout);
     await ClearDB.clearAllStaticData();
+    List<UserCode> userCodes = [];
+
     staticResponse?.usercode?.forEach((item) {
-      _userCodeRepository.insertUserCode(UserCode.fromJson(item));
+      userCodes.add(UserCode.fromJson(item));
     });
+    _userCodeRepository.insertUserCodes(userCodes);
+
     staticResponse?.onlineAccountProduct?.forEach((item) {
       _onlineAccountProductRepository
           .insertOnlineAccountProduct(OnlineAccountProduct.fromJson(item));
@@ -115,17 +131,14 @@ class StaticDataRepository {
 }
 
 class ClearDB {
-  static clearAllUserData() {
-    _bankAccountRepository.clearTable();
-    _frequentAccessedModulesRepository.clearTable();
-    _beneficiaryRepository.clearTable();
-    _moduleToDisableRepository.clearTable();
-    _moduleToHideRepository.clearTable();
-    _pendingTransactionsRepository.clearTable();
+  static clearAllUserData() async {
+    await _frequentAccessedModulesRepository.clearTable();
+    await _moduleToDisableRepository.clearTable();
+    await _moduleToHideRepository.clearTable();
+    await _pendingTransactionsRepository.clearTable();
   }
 
   static clearAllStaticData() async {
-    await _userCodeRepository.clearTable();
     await _onlineAccountProductRepository.clearTable();
     await _bankBranchRepository.clearTable();
     await _imageDataRepository.clearTable();

@@ -189,7 +189,6 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
       if (value?.status == StatusCode.success.statusCode) {
         setState(() {
           _beneficiaryRepository.deleteBeneficiary(beneficiary.rowId);
-          _beneficiaryRepository.clearTable();
           var beneficiaries = value?.beneficiaries;
           if (beneficiaries != null) {
             LocalDataUtil.refreshBeneficiaries(beneficiaries);

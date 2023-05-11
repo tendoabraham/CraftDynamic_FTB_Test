@@ -23,79 +23,88 @@ class LocalRepository {
 }
 
 class ModuleRepository {
-  Box<ModuleItem>? modulesBox;
-
-  openBox() async {
-    modulesBox = await Hive.openBox<ModuleItem>("modules");
+  Future<Box<ModuleItem>> openBox() async {
+    if (Hive.isBoxOpen("modules")) {
+      return Hive.box<ModuleItem>("modules");
+    } else {
+      return await Hive.openBox<ModuleItem>("modules");
+    }
   }
 
-  insertModuleItem(ModuleItem moduleItem) async {
-    await openBox();
+  insertModuleItems(List<ModuleItem> moduleItems) async {
+    var box = await openBox();
+    await box.clear();
     try {
-      modulesBox?.put(moduleItem.moduleId, moduleItem);
+      for (var module in moduleItems) {
+        box.put(module.moduleId, module);
+      }
     } catch (e) {
       AppLogger.appLogE(tag: "module insertion", message: e.toString());
     }
   }
 
   Future<ModuleItem?> getModuleById(String moduleID) async {
-    await openBox();
-    return modulesBox?.get(moduleID);
+    var box = await openBox();
+    return box.get(moduleID);
   }
 
   Future<List<ModuleItem>?> getModulesById(String moduleID) async {
-    await openBox();
-    return modulesBox?.values
+    var box = await openBox();
+    return box.values
         .where(
             (item) => item.parentModule == moduleID && item.isHidden == false)
         .toList();
   }
 
   Future<List<ModuleItem>?> searchModuleItem(String moduleName) async {
-    await openBox();
-    return modulesBox?.values
+    var box = await openBox();
+    return box.values
         .where(
             (item) => item.moduleName == moduleName && item.isHidden == false)
         .toList();
   }
 
   Future<List<ModuleItem>?> getTabModules() async {
-    await openBox();
-    var modules = modulesBox?.values
+    var box = await openBox();
+    var modules = box.values
         .where((item) => item.isMainMenu == true && item.isHidden == false)
         .toList();
     return modules;
   }
-
-  clearTable() async {
-    await openBox();
-    modulesBox?.clear();
-  }
 }
 
 class FormsRepository {
-  Box<FormItem>? formsBox;
-
-  openBox() async {
-    formsBox = await Hive.openBox<FormItem>("forms");
+  Future<Box<FormItem>> openBox() async {
+    if (Hive.isBoxOpen("forms")) {
+      return Hive.box<FormItem>("forms");
+    } else {
+      return await Hive.openBox<FormItem>("forms");
+    }
   }
 
-  insertFormItem(FormItem formItem) async {
-    await openBox();
-    formsBox?.add(formItem);
+  insertFormItems(List<FormItem> formItems) async {
+    var box = await openBox();
+    await box.clear();
+    try {
+      for (var formItem in formItems) {
+        box.add(formItem);
+      }
+    } catch (e) {
+      AppLogger.appLogE(tag: "insert form item", message: e.toString());
+    }
   }
 
   Future<List<FormItem>?> getFormsByModuleId(String moduleID) async {
-    await openBox();
-    return formsBox?.values
+    var box = await openBox();
+    return box.values
         .where((item) => item.moduleId == moduleID && item.hidden == false)
         .toList();
   }
 
   Future<List<FormItem>?>? getFormsByModuleIdAndFormSequence(
       String moduleID, int formSequence) async {
-    await openBox();
-    return formsBox?.values
+    var box = await openBox();
+    return box.values
         .where((item) =>
             item.moduleId == moduleID &&
             item.formSequence == formSequence &&
@@ -105,66 +114,61 @@ class FormsRepository {
 
   Future<List<FormItem>?>? getFormsByModuleIdAndControlID(
       String moduleID, String controlID) async {
-    await openBox();
-    return formsBox?.values
+    var box = await openBox();
+    return box.values
         .where((item) =>
             item.moduleId == moduleID &&
             item.controlId == controlID &&
             item.hidden == false)
         .toList();
   }
-
-  clearTable() async {
-    await openBox();
-    formsBox?.clear();
-  }
 }
 
 class ActionControlRepository {
-  var actionsBox;
-
-  openBox() async {
-    actionsBox = await HiveBox(ActionItem).getBox("actions");
+  Future<Box<ActionItem>> openBox() async {
+    if (Hive.isBoxOpen("actions")) {
+      return Hive.box<ActionItem>("actions");
+    } else {
+      return await Hive.openBox<ActionItem>("actions");
+    }
   }
 
-  insertActionControl(ActionItem actionItem) async {
-    await openBox();
-    actionsBox.add(actionItem);
+  insertActionControls(List<ActionItem> actionItems) async {
+    var box = await openBox();
+    await box.clear();
+    for (var actionItem in actionItems) {
+      box.add(actionItem);
+    }
   }
 
   Future<ActionItem>? getActionControlByModuleIdAndControlId(
       String moduleID, controlID) async {
-    await openBox();
-    return actionsBox.values.firstWhere(
+    var box = await openBox();
+    return box.values.firstWhere(
         (item) => item.moduleID == moduleID && item.controlID == controlID);
-  }
-
-  clearTable() async {
-    await openBox();
-    actionsBox.clear();
   }
 }
 
 class UserCodeRepository {
-  var userCodeBox;
-
-  openBox() async {
-    userCodeBox = await HiveBox(UserCode).getBox("usercodes");
+  Future<Box<UserCode>> openBox() async {
+    if (Hive.isBoxOpen("usercodes")) {
+      return Hive.box<UserCode>("usercodes");
+    } else {
+      return await Hive.openBox<UserCode>("usercodes");
+    }
   }
 
-  insertUserCode(UserCode userCode) async {
-    await openBox();
-    userCodeBox.put(userCode.no ?? "", userCode);
+  insertUserCodes(List<UserCode> userCodes) async {
+    var box = await openBox();
+    await box.clear();
+    for (var usercode in userCodes) {
+      box.add(usercode);
+    }
   }
 
   Future<List<UserCode>> getUserCodesById(String? id) async {
-    await openBox();
-    return userCodeBox.values.where((item) => item.id == id).toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    userCodeBox.clear();
+    var box = await openBox();
+    return box.values.where((item) => item.id == id).toList();
   }
 }
 
@@ -234,33 +238,29 @@ class ImageDataRepository {
 }
 
 class BankAccountRepository {
-  Box<BankAccount>? bankAccountBox;
-
-  openBox() async {
-    bankAccountBox = await Hive.openBox<BankAccount>("bankaccount");
+  Future<Box<BankAccount>> openBox() async {
+    if (Hive.isBoxOpen("bankaccount")) {
+      return Hive.box<BankAccount>("bankaccount");
+    } else {
+      return await Hive.openBox<BankAccount>("bankaccount");
+    }
   }
 
-  insertBankAccount(BankAccount bankAccount) async {
-    await openBox();
+  insertBankAccounts(List<BankAccount> bankAccounts) async {
     try {
-      AppLogger.appLogI(
-          tag: "add bank accont", message: bankAccount.bankAccountId);
-      bankAccountBox?.add(bankAccount);
+      var box = await openBox();
+      await box.clear();
+      box.addAll(bankAccounts);
     } catch (e) {
       AppLogger.appLogE(tag: "add bank account", message: e.toString());
     }
   }
 
   Future<List<BankAccount>?> getAllBankAccounts() async {
-    await openBox();
-    var accounts = bankAccountBox?.values.toList();
+    var box = await openBox();
+    var accounts = box.values.toList();
     AppLogger.appLogI(tag: "all accounts", message: accounts);
     return accounts;
-  }
-
-  clearTable() async {
-    await openBox();
-    bankAccountBox?.clear();
   }
 }
 
@@ -289,38 +289,36 @@ class FrequentAccessedModuleRepository {
 }
 
 class BeneficiaryRepository {
-  var beneficiaryBox;
-
-  openBox() async {
-    beneficiaryBox = await HiveBox(Beneficiary).getBox("beneficiaries");
+  Future<Box<Beneficiary>> openBox() async {
+    if (Hive.isBoxOpen("beneficiaries")) {
+      return Hive.box<Beneficiary>("beneficiaries");
+    } else {
+      return await Hive.openBox<Beneficiary>("beneficiaries");
+    }
   }
 
-  insertBeneficiary(Beneficiary beneficiary) async {
-    await openBox();
-    beneficiaryBox.put(beneficiary.rowId, beneficiary);
+  insertBeneficiaries(List<Beneficiary> beneficiaries) async {
+    var box = await openBox();
+    await box.clear();
+    for (var beneficiary in beneficiaries) {
+      box.put(beneficiary.rowId, beneficiary);
+    }
   }
 
   Future<List<Beneficiary>>? getAllBeneficiaries() async {
-    await openBox();
-    return beneficiaryBox.values.toList();
+    var box = await openBox();
+    return box.values.toList();
   }
 
   Future<List<Beneficiary>>? getBeneficiariesByMerchantID(
       String merchantID) async {
-    await openBox();
-    return beneficiaryBox.values
-        .where((item) => item.merchantID == merchantID)
-        .toList();
+    var box = await openBox();
+    return box.values.where((item) => item.merchantID == merchantID).toList();
   }
 
   deleteBeneficiary(int rowId) async {
-    await openBox();
-    beneficiaryBox.delete(rowId);
-  }
-
-  clearTable() async {
-    await openBox();
-    beneficiaryBox.clear();
+    var box = await openBox();
+    box.delete(rowId);
   }
 }
 
