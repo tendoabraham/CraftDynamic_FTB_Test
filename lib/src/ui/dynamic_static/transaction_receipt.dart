@@ -2,7 +2,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';

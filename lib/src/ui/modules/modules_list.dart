@@ -7,8 +7,8 @@ import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:provider/provider.dart';
 
 class ModulesListWidget extends StatefulWidget {
-  final Orientation orientation;
-  final ModuleItem? moduleItem;
+  Orientation orientation;
+  ModuleItem? moduleItem;
   FrequentAccessedModule? favouriteModule;
 
   ModulesListWidget({
@@ -32,50 +32,65 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          Provider.of<PluginState>(context, listen: false)
-              .setRequestState(false);
-          return true;
-        },
-        child: Scaffold(
-            appBar: AppBar(
-                elevation: 2,
-                title: Text(widget.favouriteModule == null
-                    ? widget.moduleItem!.moduleName
-                    : widget.favouriteModule!.moduleName)),
-            body: FutureBuilder<List<ModuleItem>?>(
-                future: getModules(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<ModuleItem>?> snapshot) {
-                  Widget child = const Center(child: Text("Please wait..."));
-                  if (snapshot.hasData) {
-                    var modules = snapshot.data?.toList();
-                    debugPrint("Modules....$modules");
-                    modules?.removeWhere((module) => module.isHidden == true);
+    return Consumer<DynamicState>(builder: (context, state, child) {
+      MenuScreenProperties? menuScreenProperties = state.menuScreenProperties;
+      var crossAxisSpacing = menuScreenProperties?.crossAxisSpacing ?? 8;
+      double horizontalPadding = 12;
 
-                    if (modules != null) {
-                      child = SizedBox(
-                          height: double.infinity,
-                          child: GridView.builder(
-                              // physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(
-                                  left: 12, right: 12, top: 8, bottom: 8),
-                              shrinkWrap: true,
-                              itemCount: modules.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 8,
-                                      mainAxisSpacing: 12),
-                              itemBuilder: (BuildContext context, int index) {
-                                var module = modules[index];
-                                return ModuleItemWidget(moduleItem: module);
-                              }));
+      return WillPopScope(
+          onWillPop: () async {
+            Provider.of<PluginState>(context, listen: false)
+                .setRequestState(false);
+            return true;
+          },
+          child: Scaffold(
+              appBar: AppBar(
+                  elevation: 2,
+                  title: Text(widget.favouriteModule == null
+                      ? widget.moduleItem!.moduleName
+                      : widget.favouriteModule!.moduleName)),
+              body: FutureBuilder<List<ModuleItem>?>(
+                  future: getModules(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<ModuleItem>?> snapshot) {
+                    Widget child = const Center(child: Text("Please wait..."));
+                    if (snapshot.hasData) {
+                      var modules = snapshot.data?.toList();
+                      modules?.removeWhere((module) => module.isHidden == true);
+
+                      if (modules != null) {
+                        child = SizedBox(
+                            height: double.infinity,
+                            child: GridView.builder(
+                                // physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.only(
+                                    left: horizontalPadding,
+                                    right: horizontalPadding,
+                                    top: 8,
+                                    bottom: 8),
+                                shrinkWrap: true,
+                                itemCount: modules.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: menuScreenProperties
+                                                ?.gridcount ??
+                                            3,
+                                        crossAxisSpacing: crossAxisSpacing,
+                                        mainAxisSpacing: menuScreenProperties
+                                                ?.mainAxisSpacing ??
+                                            12,
+                                        childAspectRatio: menuScreenProperties
+                                                ?.childAspectRatio ??
+                                            1),
+                                itemBuilder: (BuildContext context, int index) {
+                                  var module = modules[index];
+                                  return ModuleItemWidget(moduleItem: module);
+                                }));
+                      }
                     }
-                  }
-                  return child;
-                })));
+                    return child;
+                  })));
+    });
   }
 
   @override
