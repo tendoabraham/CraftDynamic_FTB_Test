@@ -1,11 +1,16 @@
 // ignore_for_file: must_be_immutable, unnecessary_const
 
+import 'package:blur/blur.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../../dynamic_widget.dart';
+import '../../state/plugin_state.dart';
+
+final _dynamicRequest = DynamicFormRequest();
 
 class ViewStandingOrder extends StatefulWidget {
   final ModuleItem moduleItem;
@@ -18,13 +23,10 @@ class ViewStandingOrder extends StatefulWidget {
 
 class _ViewStandingOrderState extends State<ViewStandingOrder> {
   List<StandingOrder> standingOrderList = [];
-  final _dynamicRequest = DynamicFormRequest();
 
   @override
   void initState() {
     super.initState();
-    DynamicInput.formInputValues.clear();
-    DynamicInput.formInputValues.add({"HEADER": "VIEWSTANDINGORDER"});
   }
 
   getStandingOrder() => _dynamicRequest.dynamicRequest(widget.moduleItem,
@@ -36,89 +38,135 @@ class _ViewStandingOrderState extends State<ViewStandingOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: (() {
-            Navigator.of(context).pop();
-          }),
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: (() {
+              Navigator.of(context).pop();
+            }),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
+          title: Text(widget.moduleItem.moduleName),
         ),
-        title: Text(widget.moduleItem.moduleName),
-      ),
-      body: FutureBuilder<DynamicResponse?>(
-          future: getStandingOrder(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
-            Widget widget = Center(
-              child: LoadUtil(),
-            );
-            if (snapshot.hasData) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                handleAnyError(snapshot.data?.status ?? "",
-                    snapshot.data?.message ?? "Error");
-              });
-              var list = snapshot.data?.dynamicList;
-              if (list != null && list.isNotEmpty) {
-                addStandingOrders(list: list);
-                widget = ListView.builder(
-                  itemCount: standingOrderList.length,
-                  itemBuilder: (context, index) {
-                    return StandingOrderItem(
-                        standingOrder: standingOrderList[index]);
-                  },
-                );
-              } else {
-                widget = Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      const Icon(
-                        Icons.warning_amber_rounded,
-                        size: 44,
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text("Nothing here!")
-                    ],
-                  ),
-                );
-              }
-            }
-            return widget;
-          }),
-    );
+        body: Stack(
+          children: [
+            FutureBuilder<List<StandingOrder>?>(
+                future: _viewStandingOrder(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<StandingOrder>?> snapshot) {
+                  Widget child = Center(
+                    child: LoadUtil(),
+                  );
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      var list = snapshot.data;
+                      if (list != null && list.isNotEmpty) {
+                        child = ListView.builder(
+                          itemCount: list.length,
+                          itemBuilder: (context, index) {
+                            return StandingOrderItem(
+                              standingOrder: list[index],
+                              moduleItem: widget.moduleItem,
+                              refreshParent: refresh,
+                            );
+                          },
+                        );
+                      } else {
+                        child = Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.warning_amber_rounded,
+                                size: 122,
+                                color:
+                                    APIService.appPrimaryColor.withOpacity(.4),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              const Text("Nothing here!")
+                            ],
+                          ),
+                        );
+                      }
+                    }
+                  }
+                  return child;
+                }),
+            Obx(() => isDeletingStandingOrder.value
+                ? LoadUtil().frosted(
+                    blur: 2,
+                  )
+                : const SizedBox())
+          ],
+        ));
   }
 
-  addStandingOrders({required list}) {
-    list.forEach((item) {
-      standingOrderList.add(StandingOrder.fromJson(item));
-    });
-  }
+  Future<List<StandingOrder>?> _viewStandingOrder() async {
+    List<StandingOrder>? orders = [];
 
-  handleAnyError(String status, String message) {
-    if (status != StatusCode.success.statusCode) {
-      AlertUtil.showAlertDialog(context, message, isConfirm: false);
+    DynamicInput.formInputValues.clear();
+    DynamicInput.formInputValues
+        .add({"MerchantID": widget.moduleItem.merchantID});
+    DynamicInput.formInputValues.add({"HEADER": "VIEWSTANDINGORDER"});
+    // DynamicInput.formInputValues.add({"INFOFIELD1": "TRANSFER"});
+    var results = await _dynamicRequest.dynamicRequest(widget.moduleItem,
+        dataObj: DynamicInput.formInputValues,
+        context: context,
+        listType: ListType.ViewOrderList);
+
+    if (results?.status == StatusCode.success.statusCode) {
+      var list = results?.dynamicList;
+      AppLogger.appLogI(tag: "Standing orders", message: list);
+      if (list != []) {
+        list?.forEach((order) {
+          try {
+            Map<String, dynamic> orderJson = order;
+            orders.add(StandingOrder.fromJson(orderJson));
+          } catch (e) {
+            AppLogger.appLogE(
+                tag: "Add standing order error", message: e.toString());
+          }
+        });
+      }
     }
+
+    return orders;
+  }
+
+  void refresh() {
+    setState(() {});
   }
 }
 
-class StandingOrderItem extends StatelessWidget {
+class StandingOrderItem extends StatefulWidget {
   StandingOrder standingOrder;
+  ModuleItem moduleItem;
+  Function() refreshParent;
 
-  StandingOrderItem({Key? key, required this.standingOrder}) : super(key: key);
+  StandingOrderItem(
+      {Key? key,
+      required this.standingOrder,
+      required this.moduleItem,
+      required this.refreshParent})
+      : super(key: key);
 
+  @override
+  State<StandingOrderItem> createState() => _StandingOrderItemState();
+}
+
+class _StandingOrderItemState extends State<StandingOrderItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         margin: const EdgeInsets.only(bottom: 8.0, top: 4),
         child: Material(
-            elevation: 2,
+            elevation: 1,
             borderRadius: BorderRadius.circular(8.0),
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
@@ -130,34 +178,139 @@ class StandingOrderItem extends StatelessWidget {
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              standingOrder.requestData ?? "****",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: APIService.appPrimaryColor),
-                            ),
-                          ],
+                        RowItem(
+                          title: "Effective date",
+                          value: widget.standingOrder.effectiveDate,
                         ),
-                        Text(standingOrder.effectiveDate ?? "****"),
                         const SizedBox(
-                          height: 18,
+                          height: 12,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Amount"),
-                            Text(standingOrder.amount.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold))
-                          ],
+                        RowItem(
+                          title: "Debit Account",
+                          value: widget.standingOrder.debitAccount,
                         ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        RowItem(
+                          title: "Amount",
+                          value: widget.standingOrder.amount.toString(),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        RowItem(
+                          title: "Narration",
+                          value: widget.standingOrder.narration,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        RowItem(
+                          title: "Frequency",
+                          value: widget.standingOrder.frequencyID,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        RowItem(
+                          title: "Executions",
+                          value: widget.standingOrder.noOfExecutions.toString(),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              _confirmDeleteAction(
+                                      context, widget.standingOrder)
+                                  .then((value) {
+                                if (value) {
+                                  isDeletingStandingOrder.value = true;
+                                  _deleteStandingOrder(widget.standingOrder,
+                                      widget.moduleItem, context);
+                                }
+                              });
+                            },
+                            style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size.fromHeight(40))),
+                            icon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.delete_outline_rounded,
+                                    color: APIService.appPrimaryColor,
+                                    size: 34,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  const Text(
+                                    "Delete",
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 18),
+                                  )
+                                ]))
                       ],
                     ))
                   ],
                 )))));
   }
+
+  _deleteStandingOrder(
+      StandingOrder standingOrder, ModuleItem moduleItem, context) async {
+    DynamicInput.formInputValues.clear();
+    DynamicInput.formInputValues
+        .add({"INFOFIELD3": standingOrder.standingOrderID});
+    DynamicInput.formInputValues
+        .add({RequestParam.MerchantID.name: moduleItem.merchantID});
+    DynamicInput.formInputValues
+        .add({RequestParam.HEADER.name: "DELETESTANDINGORDER"});
+
+    await _dynamicRequest
+        .dynamicRequest(moduleItem,
+            dataObj: DynamicInput.formInputValues,
+            context: context,
+            listType: ListType.ViewOrderList)
+        .then((value) {
+      isDeletingStandingOrder.value = false;
+      if (value?.status == StatusCode.success.statusCode) {
+        CommonUtils.showToast("Standing order deleted successfully");
+        widget.refreshParent();
+      } else {
+        AlertUtil.showAlertDialog(
+          context,
+          value?.message ?? "Unable to delete standing Order",
+        );
+      }
+    });
+  }
+
+  _confirmDeleteAction(BuildContext context, StandingOrder standingOrder) {
+    return AlertUtil.showAlertDialog(context,
+        "Confirm deletion of Standing order for debit account ${standingOrder.debitAccount} with amount ${standingOrder.amount}",
+        isConfirm: true, title: "Confirm", confirmButtonText: "Delete");
+  }
+}
+
+class RowItem extends StatelessWidget {
+  final String title;
+  String? value;
+
+  RowItem({required this.title, this.value, super.key});
+
+  @override
+  Widget build(BuildContext context) => Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title),
+            Text(value ?? "***",
+                style: const TextStyle(fontWeight: FontWeight.bold))
+          ],
+        ),
+      ]);
 }
