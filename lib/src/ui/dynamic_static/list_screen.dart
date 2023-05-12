@@ -25,7 +25,6 @@ class ListWidget extends StatelessWidget {
     // return Text(jsonTxt!.toString());
     if (dynamicList != null) {
       for (var item in dynamicList!) {
-        debugPrint("Adding...$item");
         mapItems.add(item);
       }
     }
@@ -41,7 +40,6 @@ class ListWidget extends StatelessWidget {
                   var mapItem = mapItems[index];
                   mapItem.removeWhere(
                       (key, value) => key == null || value == null);
-                  debugPrint("New map...$mapItem");
                   return Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 0.0),
@@ -53,19 +51,6 @@ class ListWidget extends StatelessWidget {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(12.0)),
                               child: InkWell(
-                                  onTap: () {
-                                    // if (controlID == "BIBLELIST") {
-                                    //   Navigator.pop(context);
-                                    //   CommonLibs.navigateToRoute(
-                                    //       context: context,
-                                    //       widget: StaticDynamic(
-                                    //         moduleItem: moduleItem!,
-                                    //         formSequence: 2,
-                                    //         jsonDisplay: mapItem,
-                                    //         serviceParamID: serviceParamID,
-                                    //       ));
-                                    // }
-                                  },
                                   borderRadius: BorderRadius.circular(12.0),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -94,6 +79,10 @@ class ListWidget extends StatelessWidget {
                                                       Flexible(
                                                           child: Text(
                                                         value.toString(),
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                         textAlign:
                                                             TextAlign.right,
                                                       ))
@@ -125,11 +114,11 @@ class ListWidget extends StatelessWidget {
               const SizedBox(
                 height: 14,
               ),
-              const Text(
+              Text(
                 "No transactions yet!",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontWeight: FontWeight.bold,
+                    color: APIService.appPrimaryColor),
               )
             ],
           ));
