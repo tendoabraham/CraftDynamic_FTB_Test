@@ -41,11 +41,9 @@ class DynamicPostCall {
     var builder = DynamicFactory.getPostDynamicObject(
         dynamicData); //Get a builder based on action type
     var postDynamic = PostDynamic(builder, context, controlID ?? "");
-    debugPrint("PostDynamic formfields::::${postDynamic.formFields}");
-    debugPrint("Current module name::::${moduleItem.moduleName}");
 
     switch (postDynamic.status) {
-      case "000":
+      case success:
         {
           if (postDynamic.opensDynamicRoute) {
             postDynamic.formID != null &&
@@ -59,8 +57,7 @@ class DynamicPostCall {
                       isWizard: true,
                       jsonDisplay: postDynamic.jsonDisplay,
                       formFields: postDynamic.formFields,
-                      moduleItem: postDynamic.moduleItem,
-                      formID: postDynamic.formID,
+                      moduleItem: moduleItem,
                     ));
             break;
           }
@@ -80,11 +77,11 @@ class DynamicPostCall {
               );
               break;
             }
-          } else if (postDynamic.tappedButton) {
+          } else if (postDynamic.tappedButton || postDynamic.isList) {
             CommonUtils.navigateToRoute(
                 context: postDynamic.context,
                 widget: ListDataScreen(
-                    title: postDynamic.moduleItem!.moduleName,
+                    title: moduleItem!.moduleName,
                     widget: ListWidget(
                       dynamicList: postDynamic.list,
                       scrollable: true,
@@ -94,12 +91,14 @@ class DynamicPostCall {
           }
         }
         break;
-      case "091":
+      case failure:
         {
-          AlertUtil.showAlertDialog(context, postDynamic.message ?? "Error");
+          AlertUtil.showAlertDialog(
+              context, postDynamic.message ?? "Unable to complete your request",
+              title: "Error");
         }
         break;
-      case "099":
+      case token:
         {
           navigateToStatusRoute(
             postDynamic,
@@ -107,21 +106,19 @@ class DynamicPostCall {
           );
         }
         break;
-      case "093":
+      case otp:
         {
           showOTPForm(postDynamic, moduleItem, context);
         }
         break;
-      case "094":
+      case changeLanguage:
         {
           navigateToStatusRoute(postDynamic, moduleItem: moduleItem);
         }
         break;
       default:
         {
-          CommonUtils.buildErrorSnackBar(
-              context: postDynamic.context,
-              message: "Error processing request!");
+          CommonUtils.showToast("Please try again later");
         }
     }
   }
