@@ -11,10 +11,10 @@ class PluginState extends ChangeNotifier {
   String _currentTab = "";
   Widget? _logoutScreen;
   MenuType? _menuType;
-  Widget? _menuItem;
   Color? _menuColor;
   final List<Map<String?, dynamic>> _formInputValues = [];
   final List<Map<String?, dynamic>> _encryptedFields = [];
+  final Map<String?, dynamic> _screenDropDowns = {};
 
   bool get loadingNetworkData => _loadingNetworkData;
 
@@ -26,8 +26,6 @@ class PluginState extends ChangeNotifier {
 
   Widget? get logoutScreen => _logoutScreen;
 
-  Widget? get menuItem => _menuItem;
-
   MenuType? get menuType => _menuType;
 
   Color? get menuColor => _menuColor;
@@ -35,6 +33,8 @@ class PluginState extends ChangeNotifier {
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
   List<Map<String?, dynamic>> get encryptedFields => _encryptedFields;
+
+  Map<String?, dynamic> get screenDropDowns => _screenDropDowns;
 
   void setRequestState(bool state, {String? currentTab}) {
     _loadingNetworkData = state;
@@ -60,10 +60,6 @@ class PluginState extends ChangeNotifier {
     _logoutScreen = widget;
   }
 
-  setMenuItem(Widget widget) {
-    _menuItem = widget;
-  }
-
   setMenuType(MenuType menuType) {
     _menuType = menuType;
   }
@@ -82,9 +78,15 @@ class PluginState extends ChangeNotifier {
     notifyListeners();
   }
 
+  addScreenDropDown(Map<String?, dynamic> screenDropDown) {
+    _screenDropDowns.addAll(screenDropDown);
+    notifyListeners();
+  }
+
   clearDynamicInput() {
     _formInputValues.clear();
     _encryptedFields.clear();
+    _screenDropDowns.clear();
     notifyListeners();
   }
 }
@@ -128,3 +130,9 @@ var currentKey = "".obs;
 var currentBankID = "".obs;
 
 var connectionState = ConnectivityResult.none.obs;
+
+RxList<Map<String, dynamic>> currentLinkedValue = <Map<String, dynamic>>[].obs;
+
+var isDeletingStandingOrder = false.obs;
+
+var isGettingToken = false.obs;

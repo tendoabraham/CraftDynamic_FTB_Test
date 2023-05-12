@@ -3,13 +3,13 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:craft_dynamic/database.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
 
@@ -51,7 +51,6 @@ class BaseFormComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("DI::::::${formItem.controlType}");
     return Column(
       children: [
         BaseFormInheritedComponent(
@@ -143,6 +142,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   IconButton? suffixIcon;
   FormItem? formItem;
   String? initialValue;
+  String linkedToControlText = "";
 
   @override
   void initState() {
@@ -159,7 +159,6 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   }
 
   updateControllerText(String value) {
-    debugPrint("Setting value..$value");
     controller.text = value;
   }
 
@@ -186,8 +185,17 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
         controller.text = formFieldValue[FormFieldProp.ControlValue.name];
       }
 
+      String linkedDropDownValue =
+          state.screenDropDowns[formItem?.linkedToControl?.toLowerCase()] ?? "";
+
+      if (linkedDropDownValue.isNotEmpty) {
+        controller.text = linkedDropDownValue;
+      }
+
       var properties = TextFormFieldProperties(
-          isEnabled: formFieldValue.isNotEmpty ? false : widget.isEnabled,
+          isEnabled: formFieldValue.isNotEmpty || linkedDropDownValue.isNotEmpty
+              ? false
+              : widget.isEnabled,
           isObscured: isObscured ? state.obscureText : false,
           controller: controller,
           textInputType: inputType,
@@ -207,7 +215,6 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
     if (formItem!.isMandatory! && value!.isEmpty) {
       return 'Input required*';
     }
-    debugPrint("Max value:::${formItem?.controlId}");
 
     if (inputType == TextInputType.number &&
         formItem?.controlFormat == ControlFormat.Amount.name) {
@@ -236,7 +243,6 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   }
 
   void refreshParent(bool status, {newText}) {
-    debugPrint("New data selected!...$newText");
     setState(() {
       status;
       controller.text = DateFormat('yyyy-MM-dd').format(newText);
@@ -264,15 +270,11 @@ class HiddenWidget implements IFormWidget {
                 Provider.of<PluginState>(context, listen: false).addFormInput(
                     {"${formItem?.serviceParamId}": controlValue});
               });
-              debugPrint(
-                  "Setting control value:$controlValue on hidden form item:${formItem?.serviceParamId}");
             }
           }
         });
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          debugPrint(
-              "Adding hidden form input::::with param id:${formItem?.serviceParamId} and control value:${formItem?.controlValue}");
           Provider.of<PluginState>(context, listen: false)
               .addFormInput({formItem?.serviceParamId: formItem?.controlValue});
         });
@@ -377,7 +379,7 @@ class _DynamicButtonState extends State<DynamicButton> {
                 moduleItem: moduleItem));
       }
     } else {
-      Vibration.vibrate();
+      CommonUtils.vibrate();
     }
   }
 
@@ -385,6 +387,10 @@ class _DynamicButtonState extends State<DynamicButton> {
 }
 
 class DynamicDropDown implements IFormWidget {
+  final _userCodeRepository = UserCodeRepository();
+  List<UserCode> userCodes = [];
+  Map<String, dynamic> extraFieldMap = {};
+
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
@@ -412,19 +418,21 @@ class DynamicDropDown implements IFormWidget {
             );
             if (snapshot.hasData) {
               var dropdownItems = snapshot.data;
-              var dropdownPicks = dropdownItems?.entries
-                  .map((item) => DropdownMenuItem(
-                        value: item.key,
-                        child: Text(
-                          item.value,
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ))
-                  .toList();
+
+              var dropdownPicks = dropdownItems?.entries.map((item) {
+                return DropdownMenuItem(
+                  value: item.key,
+                  child: Text(
+                    item.value,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                );
+              }).toList();
               dropdownPicks?.toSet().toList();
               if (dropdownPicks != null) {
                 if (dropdownPicks.isNotEmpty) {
                   _currentValue = dropdownPicks[0].value;
+                  addInitialValueToLinkedField(context);
                 }
               }
 
@@ -433,7 +441,14 @@ class DynamicDropDown implements IFormWidget {
                 decoration: InputDecoration(labelText: formItem?.controlText),
                 isExpanded: true,
                 style: const TextStyle(fontWeight: FontWeight.normal),
-                onChanged: ((value) => {_currentValue = value.toString()}),
+                onChanged: ((value) => {
+                      _currentValue = value.toString(),
+                      Provider.of<PluginState>(context, listen: false)
+                          .addScreenDropDown({
+                        formItem?.controlId?.toLowerCase():
+                            extraFieldMap[_currentValue]
+                      })
+                    }),
                 validator: (value) {
                   Provider.of<PluginState>(context, listen: false)
                       .addFormInput({"${formItem?.serviceParamId}": value});
@@ -446,8 +461,35 @@ class DynamicDropDown implements IFormWidget {
     });
   }
 
+  void addInitialValueToLinkedField(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        if (Provider.of<PluginState>(context, listen: false)
+            .screenDropDowns
+            .isEmpty) {
+          Provider.of<PluginState>(context, listen: false).addScreenDropDown({
+            formItem?.controlId?.toLowerCase(): extraFieldMap[_currentValue]
+          });
+        }
+      } catch (e) {
+        AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
+      }
+    });
+  }
+
   Future<Map<String, dynamic>?>? getDropDownValues(
       FormItem formItem, ModuleItem moduleItem) async {
+    if (formItem.controlFormat != ControlFormat.SELECTBANKACCOUNT.name ||
+        formItem.controlFormat != ControlFormat.SELECTBENEFICIARY.name) {
+      try {
+        userCodes =
+            await _userCodeRepository.getUserCodesById(formItem.dataSourceId);
+        extraFieldMap = userCodes.fold<Map<String, dynamic>>(
+            {}, (acc, curr) => acc..[curr.subCodeId] = curr.extraField!);
+      } catch (e) {
+        AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
+      }
+    }
     return await IDropDownAdapter(formItem, moduleItem).getDropDownItems();
   }
 }
@@ -457,7 +499,7 @@ class DynamicLabelWidget implements IFormWidget {
   final _dynamicRequest = DynamicFormRequest();
 
   getDynamicLabel(
-          BuildContext context, FormItem formItem, ModuleItem moduleItem) =>
+          BuildContext context, FormItem? formItem, ModuleItem moduleItem) =>
       _dynamicRequest.dynamicRequest(
         moduleItem,
         formItem: formItem,
@@ -475,18 +517,18 @@ class DynamicLabelWidget implements IFormWidget {
       var formItem = BaseFormInheritedComponent.of(context)?.formItem;
       var moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
 
-      return formItem!.controlFormat == ControlFormat.LISTDATA.name
+      return formItem?.controlFormat == ControlFormat.LISTDATA.name
           ? FutureBuilder<DynamicResponse?>(
               future: getDynamicLabel(context, formItem, moduleItem!),
               builder: (BuildContext context,
                   AsyncSnapshot<DynamicResponse?> snapshot) {
-                Widget child = Text(formItem.controlText!);
+                Widget child = Text(formItem?.controlText ?? "");
                 if (snapshot.hasData) {
                   var dynamicResponse = snapshot.data;
                   DynamicPostCall.processDynamicResponse(
                       dynamicResponse!.dynamicData!,
                       context,
-                      formItem.controlId!);
+                      formItem?.controlId);
 
                   child = DynamicTextViewWidget(
                           jsonText: dynamicResponse.dynamicList)
@@ -495,7 +537,7 @@ class DynamicLabelWidget implements IFormWidget {
                 return child;
               })
           : Text(
-              formItem.controlText!,
+              formItem?.controlText ?? "",
               style: const TextStyle(fontSize: 16),
             );
     });
@@ -516,8 +558,6 @@ class DynamicTextViewWidget implements IFormWidget {
     jsonText?.forEach((item) {
       mapItems.add(item);
     });
-
-    debugPrint("Triggered DynamicTextView:::$jsonText");
 
     return mapItems.isNotEmpty
         ? Builder(builder: (BuildContext context) {
@@ -661,8 +701,7 @@ class _DynamicPhonePickerFormWidgetState
       validator: (value) {
         Provider.of<PluginState>(context, listen: false)
             .addFormInput({"${formItem?.serviceParamId}": value});
-        // Provider.of<PluginState>(context, listen: false).formInputValues
-        //     .add({"${formItem?.serviceParamId}": "$value"});
+
         return null;
       },
       style: const TextStyle(fontSize: 16),
@@ -699,8 +738,6 @@ class DynamicListWidget implements IFormWidget {
         RequestParam.HEADER.name:
             inheritedFormItem?.actionId ?? formItem?.actionId
       });
-      debugPrint(
-          "New form input:::${Provider.of<PluginState>(context, listen: false).formInputValues}");
 
       return isEmptyList()
           ? const Center(
@@ -1007,7 +1044,6 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
 class NullWidget implements IFormWidget {
   @override
   Widget render() {
-    debugPrint("A null widget was found!");
     return const Visibility(
       visible: false,
       child: SizedBox(),
