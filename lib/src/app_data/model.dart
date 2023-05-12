@@ -55,7 +55,8 @@ class DynamicResponse {
       display,
       receiptDetails,
       accountStatement,
-      beneficiaries;
+      beneficiaries,
+      standingOrderList;
 
   DynamicResponse(
       {required this.status,
@@ -71,7 +72,8 @@ class DynamicResponse {
       this.formFields,
       this.receiptDetails,
       this.accountStatement,
-      this.beneficiaries});
+      this.beneficiaries,
+      this.standingOrderList});
 
   DynamicResponse.fromJson(Map<String, dynamic> json) {
     status = json["Status"];
@@ -88,6 +90,7 @@ class DynamicResponse {
     formFields = json["FormFields"];
     receiptDetails = json["ReceiptDetails"];
     accountStatement = json["AccountStatement"];
+    standingOrderList = json[""];
     beneficiaries = json["Beneficiary"];
   }
 }
@@ -376,6 +379,15 @@ class StandingOrder {
   @JsonKey(name: 'RequestData')
   String? requestData;
 
+  @JsonKey(name: 'DebitAccountID')
+  String? debitAccount;
+
+  @JsonKey(name: 'Narration')
+  String? narration;
+
+  @JsonKey(name: 'NoOfExecutions')
+  int? noOfExecutions;
+
   StandingOrder(
       {this.amount,
       this.standingOrderID,
@@ -383,7 +395,10 @@ class StandingOrder {
       this.frequencyID,
       this.lastExecutionDate,
       this.createdBy,
-      this.requestData});
+      this.requestData,
+      this.debitAccount,
+      this.narration,
+      this.noOfExecutions});
 
   factory StandingOrder.fromJson(Map<String, dynamic> json) =>
       _$StandingOrderFromJson(json);

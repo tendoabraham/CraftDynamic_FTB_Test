@@ -41,7 +41,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   }
 
   initializeApp() async {
-    await initializeHive();
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
     await getAppLaunchCount();
@@ -50,25 +49,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
     getCurrentLatLong();
     await getAppData();
-  }
-
-  initializeHive() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(ModuleItemAdapter());
-    Hive.registerAdapter(FormItemAdapter());
-    Hive.registerAdapter(ActionItemAdapter());
-    Hive.registerAdapter(UserCodeAdapter());
-    Hive.registerAdapter(BankBranchAdapter());
-    Hive.registerAdapter(AtmLocationAdapter());
-    Hive.registerAdapter(ImageDataAdapter());
-    Hive.registerAdapter(BranchLocationAdapter());
-    Hive.registerAdapter(FrequentAccessedModuleAdapter());
-    Hive.registerAdapter(BankAccountAdapter());
-    Hive.registerAdapter(BeneficiaryAdapter());
-    Hive.registerAdapter(ModuleToHideAdapter());
-    Hive.registerAdapter(ModuleToDisableAdapter());
-    Hive.registerAdapter(PendingTrxDisplayAdapter());
-    Hive.registerAdapter(OnlineAccountProductAdapter());
   }
 
   getAppLaunchCount() async {
