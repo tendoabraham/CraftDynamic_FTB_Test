@@ -629,8 +629,8 @@ class DynamicQRScanner implements IFormWidget {
           ),
           InkWell(
             onTap: () {
-              CommonUtils.navigateToRoute(
-                  context: context, widget: const QRScanner());
+              // CommonUtils.navigateToRoute(
+              //     context: context, widget: const QRScanner());
             },
             child: Image.asset(
               "packages/craft_dynamic/assets/images/qr-code.png",
