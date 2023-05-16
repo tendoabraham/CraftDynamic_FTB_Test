@@ -126,7 +126,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                                 width: 12,
                               ),
                               Text(
-                                "close",
+                                "Close",
                                 style: Theme.of(context).textTheme.labelSmall,
                               ).tr()
                             ],
@@ -183,7 +183,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                                     ModuleId.LANGUAGEPREFERENCE.name
                             ? logout
                             : closePage,
-                        "done".tr())),
+                        "Done".tr())),
                 const SizedBox(
                   height: 15,
                 )
