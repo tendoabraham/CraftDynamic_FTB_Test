@@ -219,11 +219,13 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
         formItem?.controlFormat == ControlFormat.Amount.name) {
       if (formItem?.maxValue != null) {
         if (formItem!.maxValue!.isNotEmpty) {
-          if (int.parse(formattedValue) > int.parse(formItem!.maxValue!)) {
+          if (double.parse(formattedValue) >
+              double.parse(formItem!.maxValue!)) {
             return "Input exceeds max value(${formItem!.maxValue})";
           }
           if (formItem?.minValue != null) {
-            if (int.parse(formattedValue) < int.parse(formItem!.minValue!)) {
+            if (double.parse(formattedValue) <
+                double.parse(formItem!.minValue!)) {
               return "Input less min value(${formItem?.minValue})";
             }
           }
