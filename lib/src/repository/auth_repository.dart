@@ -6,7 +6,8 @@ final _initRepository = InitRepository();
 class AuthRepository {
   final _services = APIService();
 
-  Future<bool> biometricLogin(TextEditingController controller) async {
+  Future<bool> biometricLogin(TextEditingController controller,
+      {isButtonAction = false}) async {
     String bioEnabled = await _sharedPref.getBio();
     if (bioEnabled == "true") {
       if (await BioMetricUtil.biometricAuthenticate()) {
@@ -16,12 +17,14 @@ class AuthRepository {
         if (res.status == StatusCode.success.statusCode) {
           return true;
         } else {
-          CommonUtils.showToast(res.message ?? "failed");
+          CommonUtils.showToast(res.message ?? "Authentication failed");
           return false;
         }
       }
     } else {
-      CommonUtils.showToast("Fingerprint not enabled");
+      if (isButtonAction) {
+        CommonUtils.showToast("Biometrics not enabled");
+      }
     }
     return false;
   }
@@ -34,10 +37,8 @@ class AuthRepository {
     ActivationResponse activationResponse =
         await _services.login(CryptLib.encryptField(pin));
     if (activationResponse.status == StatusCode.success.statusCode) {
-      await ClearDB.clearAllUserData().then((data) async {
-        AppLogger.appLogI(tag: "login", message: "adding accounts data");
-        await _userAccountRepository.addUserAccountData(activationResponse);
-      });
+      await ClearDB.clearAllUserData();
+      await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
 
       if (currentLanguage != null &&
@@ -49,10 +50,12 @@ class AuthRepository {
       }
       await _initRepository.getAppUIData(refreshData: refreshUIData);
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
-      CommonUtils.getxNavigate(
-          widget: DynamicWidget(
-        moduleItem: await _moduleRepository.getModuleById(ModuleId.PIN.name),
-      ));
+      _moduleRepository.getModuleById(ModuleId.PIN.name).then((module) {
+        CommonUtils.getxNavigate(
+            widget: DynamicWidget(
+          moduleItem: module,
+        ));
+      });
     }
     return activationResponse;
   }
@@ -84,5 +87,19 @@ class AuthRepository {
       await _initRepository.getAppUIData();
     }
     return activationResponse;
+  }
+
+  Future<ActivationResponse> standardOTPVerification(
+      {mobileNumber,
+      key,
+      merchantID,
+      serviceName,
+      RouteUrl route = RouteUrl.auth}) async {
+    return await _services.standardOTPVerify(
+        mobileNumber: mobileNumber,
+        key: key,
+        merchantID: merchantID,
+        serviceName: serviceName,
+        url: route);
   }
 }

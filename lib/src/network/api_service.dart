@@ -453,4 +453,41 @@ class APIService {
     }
     return dynamicResponse ?? DynamicResponse(status: "XXX");
   }
+
+  Future<ActivationResponse> standardOTPVerify(
+      {mobileNumber,
+      key,
+      merchantID,
+      serviceName,
+      RouteUrl url = RouteUrl.auth}) async {
+    var decrypted;
+    // final encryptedKey = CryptLib.encryptField(key);
+    ActivationResponse? activationResponse;
+
+    Map<String, dynamic> requestObj = {};
+    requestObj[RequestParam.MerchantID.name] = merchantID;
+    requestObj["SERVICENAME"] = serviceName;
+    requestObj["DynamicForm"] = {
+      "MOBILENUMBER": mobileNumber,
+      RequestParam.MerchantID.name: merchantID,
+      RequestParam.HEADER.name: "OTPVERIFY",
+      "SERVICENAME": serviceName,
+      "OTPKEY": "$key"
+    };
+
+    final route = await _sharedPref.getRoute(url.name.toLowerCase());
+    var res = await performDioRequest(
+        await dioRequestBodySetUp(FormId.DBCALL.name,
+            objectMap: requestObj, isAuthenticate: true),
+        route: route);
+
+    try {
+      decrypted = jsonDecode(res ?? "{}") ?? "{}";
+      logger.d("\n\nOTP VERIFICATION RESPONSE: $decrypted");
+      activationResponse = ActivationResponse.fromJson(decrypted);
+    } catch (e) {
+      AppLogger.appLogE(tag: "DECODE:ERROR", message: e.toString());
+    }
+    return activationResponse ?? ActivationResponse(status: "XXXX");
+  }
 }
