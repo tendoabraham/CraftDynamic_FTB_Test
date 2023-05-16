@@ -15,7 +15,6 @@ import 'package:collection/collection.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
-import 'package:craft_dynamic/src/ui/dynamic_static/qr_scanner.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/providers/group_button_provider.dart';
