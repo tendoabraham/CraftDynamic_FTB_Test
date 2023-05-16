@@ -33,7 +33,6 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
   void initState() {
     Vibration.vibrate(duration: 500);
     super.initState();
-    debugPrint("Current Module ID:::${widget.moduleItem?.moduleId}");
     statusCode = StatusCode.values.firstWhere(
         (statusCode) => statusCode.statusCode == widget.postDynamic.status);
     _isChangePinCheck();
@@ -65,7 +64,6 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   _isChangePinCheck() async {
     if (widget.moduleItem?.moduleId == ModuleId.PIN.name) {
-      debugPrint("Disabling biometrics>>>>>>>>>>>>>>");
       await _sharedPref.setBio(false);
     }
   }

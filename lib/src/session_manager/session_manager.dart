@@ -47,7 +47,6 @@ class _SessionTimeoutManagerState extends State<SessionTimeoutManager>
 
         recordPointerEvent();
       } else if (sessionState == SessionState.stopListening) {
-        debugPrint("Do not start timer");
         _closeAllTimers();
       }
     });
@@ -88,7 +87,6 @@ class _SessionTimeoutManagerState extends State<SessionTimeoutManager>
 
   void recordPointerEvent() {
     if (_userTapActivityRecordEnabled) {
-      debugPrint("User tap activity enabled");
       _userInactivityTimer?.cancel();
       _userInactivityTimer = _setTimeout(
         () => widget._sessionConfig.pushUserInactivityTimeout(),

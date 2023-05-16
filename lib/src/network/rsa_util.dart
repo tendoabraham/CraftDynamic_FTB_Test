@@ -44,14 +44,14 @@ class RSAUtil {
       final rsaSequence = rsaParser.nextObject() as ASN1Sequence;
       final modulus = rsaSequence.elements?[0] as ASN1Integer;
       final exponent = rsaSequence.elements?[1] as ASN1Integer;
-      debugPrint("Modulus::::${modulus.integer}");
-      debugPrint("Exponent::::${exponent.integer}");
+      AppLogger.appLogI(tag: "modulus", message: modulus.integer);
+      AppLogger.appLogI(tag: "exponent", message: exponent.integer);
 
       rsaPublicKey = RSAPublicKey(
         modulus.integer ?? BigInt.zero,
         exponent.integer ?? BigInt.zero,
       );
-      debugPrint("My rsa:::::${rsaPublicKey.modulus}");
+      AppLogger.appLogI(tag: "rsa", message: rsaPublicKey.modulus);
     } catch (e) {
       AppLogger.appLogE(tag: "RSA PARSE ERROR", message: e.toString());
     }

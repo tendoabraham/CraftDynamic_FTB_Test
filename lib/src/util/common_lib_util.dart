@@ -24,7 +24,7 @@ class CommonUtils {
     try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.appLogE(tag: "url launch error", message: e.toString());
       buildErrorSnackBar(context: context, message: "Could not launch url");
       Navigator.pop(context);
     }
@@ -53,7 +53,7 @@ class CommonUtils {
             backgroundColor: errorColor),
       );
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.appLogE(tag: "snackbar error", message: e.toString());
     }
   }
 

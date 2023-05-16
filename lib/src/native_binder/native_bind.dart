@@ -12,14 +12,11 @@ class NativeBinder {
 
   // This native method invoke no longer in use
   static Future<String?> rsaEncrypt(String plainText, String publicKey) async {
-    debugPrint("Starting rsa encrypt....");
     try {
       String encryptedString = await platform.invokeMethod('encrypt',
           <String, dynamic>{'plainText': plainText, 'publicKey': publicKey});
-      debugPrint("Encrypted string:::$encryptedString");
       return encryptedString;
     } catch (e) {
-      debugPrint("Invoke method error:::$e");
       return null;
     }
   }
@@ -34,10 +31,8 @@ class NativeBinder {
         'iv': iv,
         'key': key
       });
-      debugPrint("Encrypted string:::$encryptedString");
       return decryptedString;
     } catch (e) {
-      debugPrint("Invoke method error:::$e");
       return null;
     }
   }

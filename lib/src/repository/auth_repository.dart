@@ -29,7 +29,6 @@ class AuthRepository {
   // Call this method to login
   Future<ActivationResponse> login(String pin) async {
     String? currentLanguage = await _sharedPref.getLanguageID();
-    debugPrint("Current Language ID::::$currentLanguage");
     bool refreshUIData = false;
 
     ActivationResponse activationResponse =
@@ -41,12 +40,10 @@ class AuthRepository {
       });
       String? currentLanguageIDSetting = activationResponse.languageID;
 
-      debugPrint("Current language setting::::$currentLanguageIDSetting");
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&
           currentLanguageIDSetting != "" &&
           currentLanguage != currentLanguageIDSetting) {
-        debugPrint("Refreshing UI controls after language change>>>>");
         await _sharedPref.setLanguageID(currentLanguageIDSetting);
         refreshUIData = true;
       }

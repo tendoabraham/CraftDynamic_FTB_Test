@@ -30,7 +30,6 @@ class CommonSharedPref {
   }
 
   addActivationData(String mobileNumber, String customerID) async {
-    debugPrint("Setting activation data... $mobileNumber###$customerID");
     await storage.write(key: "customerMobile", value: mobileNumber);
     await storage.write(key: "customerID", value: customerID);
     await storage.write(key: "appactivated", value: "true");
@@ -52,7 +51,7 @@ class CommonSharedPref {
   }
 
   getAppIdleTimeout() async {
-    return int.parse(await storage.read(key: "appIdleTimeout")??"100000");
+    return int.parse(await storage.read(key: "appIdleTimeout") ?? "100000");
   }
 
   getRoute(String routeName) async {

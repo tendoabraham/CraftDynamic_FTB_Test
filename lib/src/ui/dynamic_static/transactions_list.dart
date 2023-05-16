@@ -34,7 +34,6 @@ class _TransactionListState extends State<TransactionList> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Transactions...$transactionList");
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -55,7 +54,6 @@ class _TransactionListState extends State<TransactionList> {
               Widget widget = Center(child: LoadUtil());
 
               if (snapshot.hasData) {
-                debugPrint("Transactions SNAPSHOT:::${snapshot.data}");
                 var list = snapshot.data?.dynamicList;
                 if (list != null && list.isNotEmpty) {
                   addTransactions(list: list);

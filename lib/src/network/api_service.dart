@@ -120,13 +120,11 @@ class APIService {
     }
 
     if (tokenRefreshed == false) {
-      debugPrint("Token before refresh::::${currentToken.value}");
       await _initRepository.getAppToken();
     }
     String uniqueID = await _sharedPref.getUniqueID();
     // var localToken = await _sharedPref.getLocalToken();
     var localToken = currentToken.value;
-    debugPrint("Token at performDioRequest::::$localToken");
     var url = route ?? currentBaseUrl + requestUrl;
 
     AppLogger.appLogI(tag: "REQ:ROUTE", message: url);
@@ -146,7 +144,6 @@ class APIService {
           data: requestBody);
       AppLogger.appLogI(tag: "HEADERS", message: res.requestOptions.headers);
       data = res.data["Response"];
-      debugPrint("Raw res:::$data");
       if (useGZIPDecryption) {
         response = CryptLib.gzipDecompressStaticData(data);
       } else {
@@ -165,7 +162,6 @@ class APIService {
     final request = await client.getUrl(uri);
     final response = await request.close();
     final pem = response.certificate?.pem;
-    debugPrint("Public key:::$pem}");
     final blocks = decodePemBlocks(PemLabel.certificate, pem.toString());
     var encodedPublicKey = base64.encode(blocks[0]);
     AppLogger.appLogI(tag: "Public key", message: encodedPublicKey);
@@ -178,7 +174,7 @@ class APIService {
     String routes, token = "";
     Map<String, dynamic> requestObject = {};
     Map<String, dynamic> keyIV = CryptLib.generateKeyIV();
-    debugPrint("Generated KEY & IV: $keyIV");
+    AppLogger.appLogI(tag: "generated key and iv", message: keyIV.toString());
     currentIv.value = keyIV["iv"];
     currentKey.value = keyIV["key"];
 
@@ -206,7 +202,6 @@ class APIService {
     AppLogger.appLogI(tag: "Token url:", message: url);
     var dioResponse;
     var rsaEncrypted = await RSAUtil.rsaEncrypt(requestBody);
-    debugPrint("Rsa encrypted:::$rsaEncrypted");
     if (!APIUtil.verifyConnection()) {
       return 1;
     }

@@ -64,7 +64,6 @@ class _SearchModuleScreenState extends State<SearchModuleScreen> {
 
           if (snapshot.hasData) {
             List<ModuleItem>? modules = snapshot.data;
-            debugPrint("Modules....$modules");
             if (modules != null && modules.isNotEmpty) {
               child = GridView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 14),

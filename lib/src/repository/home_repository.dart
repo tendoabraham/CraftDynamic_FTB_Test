@@ -16,7 +16,7 @@ class HomeRepository {
         modules.removeWhere(
             (element) => element.moduleId == hiddenModule.moduleId);
       } catch (e) {
-        debugPrint(e.toString());
+        AppLogger.appLogE(tag: "modules get error", message: e.toString());
       }
     });
     return modules;
@@ -32,7 +32,7 @@ class HomeRepository {
         modules?.removeWhere(
             (element) => element.moduleId == hiddenModule.moduleId);
       } catch (e) {
-        debugPrint(e.toString());
+        AppLogger.appLogE(tag: "tab modules error", message: e.toString());
       }
     });
     return modules;

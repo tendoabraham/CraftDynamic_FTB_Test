@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ class WidgetUtil {
     try {
       controlFormat = ControlFormat.values.byName(widgetControlFormat);
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.appLogE(tag: "control format error", message: e.toString());
     }
     switch (controlFormat) {
       case ControlFormat.DATE:

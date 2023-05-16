@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
-import 'package:flutter/material.dart';
 
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
@@ -14,7 +14,8 @@ class ConnectivityService {
     connectionStatusController.add(result);
 
     _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      debugPrint("Connection state has changed>>>>>>>>>>>");
+      AppLogger.appLogI(
+          tag: "connection changed", message: "connection state has changed");
       connectionState.value = result;
       connectionStatusController.add(result);
     });

@@ -39,9 +39,8 @@ class _RadioWidgetState extends State<RadioWidget> {
       recentList = radioFormControls.firstWhere(
         (item) => item.controlType == ViewType.LIST.name,
       );
-      debugPrint("Recent list::::$recentList");
     } catch (e) {
-      debugPrint("Error:::$e");
+      AppLogger.appLogE(tag: "recent list error", message: e.toString());
     }
     radioFormControls
         .removeWhere((formItem) => formItem.controlType == ViewType.LIST.name);

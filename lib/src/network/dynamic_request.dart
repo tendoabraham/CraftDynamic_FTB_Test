@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/forms/confirmation_form.dart';
@@ -26,13 +28,11 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
-    debugPrint("****Making dynamic request****");
     ActionItem? actionControl;
     dynamicResponse = DynamicResponse(status: StatusCode.unknown.name);
     final merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
 
     if (dataObj == null) {
-      debugPrint("Data object is null!!!");
       Fluttertoast.showToast(
           msg: "Unable to process data", backgroundColor: Colors.red);
       return dynamicResponse;
@@ -63,7 +63,6 @@ class DynamicFormRequest {
       actionType = ActionType.values.byName(actionControl.actionType);
     }
 
-    debugPrint("Action Type::::::$actionType");
     if (actionType == ActionType.VALIDATE) {
       setDeleteForm(context, false);
     } else {
@@ -80,7 +79,6 @@ class DynamicFormRequest {
           form,
           moduleItem!,
           Provider.of<PluginState>(context, listen: false).formInputValues);
-      debugPrint("Bottom sheet result:::$result");
       if (result != null) {
         if (result == 1) {
           Provider.of<PluginState>(context, listen: false)
@@ -92,7 +90,7 @@ class DynamicFormRequest {
           Provider.of<PluginState>(context, listen: false)
               .setRequestState(false);
         } catch (e) {
-          debugPrint(e.toString());
+          AppLogger.appLogE(tag: "error", message: e.toString());
         }
         return dynamicResponse;
       }
@@ -143,9 +141,7 @@ class DynamicFormRequest {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         Provider.of<PluginState>(context, listen: false).setDeleteForm(status);
-      } catch (e) {
-        debugPrint("Error!, $e");
-      }
+      } catch (e) {}
     });
   }
 }

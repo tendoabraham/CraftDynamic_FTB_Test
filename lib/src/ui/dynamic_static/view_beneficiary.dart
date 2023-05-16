@@ -43,7 +43,6 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
 
                 if (snapshot.hasData) {
                   final itemCount = snapshot.data?.length ?? 0;
-                  debugPrint("Beneficiary list item count::::$itemCount");
 
                   if (itemCount == 0) {
                     widget = const EmptyUtil();

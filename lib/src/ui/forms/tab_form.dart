@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:js_interop';
+
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,14 +67,7 @@ class _TabWidgetState extends State<TabWidget> {
   }
 
   logForms() {
-    debugPrint("##NEW get widget###");
-    debugPrint("Getting all containers...");
     List<FormItem> containers = getContainers(widget.formItems);
-    debugPrint("Containers....");
-    for (var element in containers) {
-      debugPrint("${element.controlType} ${element.controlId}");
-    }
-    debugPrint("Getting container forms...");
     for (int i = 0; i < containers.length; i++) {
       List<FormItem> temp = getContainerForms(widget.formItems, containers[i]);
       for (var element in temp) {
@@ -116,9 +111,8 @@ class _TabWidgetState extends State<TabWidget> {
       recentList = items.firstWhere(
         (item) => item.controlType == ViewType.LIST.name,
       );
-      debugPrint("Recent list::::$recentList");
     } catch (e) {
-      debugPrint("Error:::$e");
+      AppLogger.appLogE(tag: "tab forms error", message: e.toString());
     }
     items.removeWhere((element) => element.controlType == ViewType.LIST.name);
     return items;
