@@ -180,7 +180,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           "";
 
       if (formFieldValue.isNotEmpty) {
-        controller.text = formFieldValue[FormFieldProp.ControlValue.name];
+        controller.text = formFieldValue[FormFieldProp.ControlValue.name] ?? "";
       }
 
       String linkedDropDownValue =
