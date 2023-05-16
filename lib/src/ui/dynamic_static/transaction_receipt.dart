@@ -87,7 +87,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                           color: Colors.grey[300],
                                         )),
                                         const Text(
-                                          "home.success",
+                                          "Success",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ).tr(),
