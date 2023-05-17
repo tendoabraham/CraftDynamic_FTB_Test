@@ -47,7 +47,7 @@ class ListWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Material(
-                              elevation: 2,
+                              elevation: 0,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(12.0)),
                               child: InkWell(
