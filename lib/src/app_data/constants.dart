@@ -1,9 +1,4 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:unique_identifier/unique_identifier.dart';
-import 'package:uuid/uuid.dart';
+part of craft_dynamic;
 
 class Constants {
   static var uuid = const Uuid();
@@ -17,9 +12,7 @@ class Constants {
   static String staticIV = "84jfkfndl3ybdfkf";
 
   Constants() {
-    if (!kIsWeb) {
-      getPackageName();
-    }
+    getPackageName();
   }
 
   void getPackageName() async {
@@ -39,7 +32,7 @@ class Constants {
         return "ANDROID";
       }
     }
-    return "WEB";
+    return "ANDROID";
   }
 
   static getUniqueID() {
