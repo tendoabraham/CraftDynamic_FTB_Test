@@ -1,5 +1,4 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/app_data/constants.dart';
 
 class RequestBuilder {
   final uniqueID = Constants.getUniqueID();

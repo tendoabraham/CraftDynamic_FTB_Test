@@ -3,7 +3,6 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pointycastle/asn1.dart';
 
-import 'package:craft_dynamic/src/app_data/constants.dart';
 import 'package:pointycastle/export.dart';
 
 import '../../craft_dynamic.dart';
