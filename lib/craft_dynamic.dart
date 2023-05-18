@@ -50,6 +50,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 import 'package:yaml/yaml.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:collection/collection.dart';
 
 import 'dynamic_widget.dart';
 import 'src/network/api_util.dart';

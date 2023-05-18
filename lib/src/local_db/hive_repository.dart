@@ -146,10 +146,10 @@ class ActionControlRepository {
     }
   }
 
-  Future<ActionItem>? getActionControlByModuleIdAndControlId(
+  Future<ActionItem?> getActionControlByModuleIdAndControlId(
       String moduleID, controlID) async {
     var box = await openBox();
-    return box.values.firstWhere(
+    return box.values.firstWhereOrNull(
         (item) => item.moduleID == moduleID && item.controlID == controlID);
   }
 }
