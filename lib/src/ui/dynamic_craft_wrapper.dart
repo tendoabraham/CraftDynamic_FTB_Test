@@ -169,7 +169,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(AppLifecycleObserver());
+    WidgetsBinding.instance.removeObserver(AppLifecycleObserver(context));
     super.dispose();
   }
 }
