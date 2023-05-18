@@ -14,8 +14,7 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
 
     final pluginState = Provider.of<PluginState>(context, listen: false);
     if (state == AppLifecycleState.paused) {
-      CommonUtils.navigateToRouteAndPopAll(
-          context: context, widget: pluginState.logoutScreen);
+      CommonUtils.getXRouteAndPopAll(widget: pluginState.logoutScreen);
     }
   }
 }

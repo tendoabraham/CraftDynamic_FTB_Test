@@ -153,8 +153,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
       BuildContext context,
       MenuProperties? menuProperties,
       MenuScreenProperties? menuScreenProperties) {
-    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
-
     if (menuProperties != null) {
       Provider.of<DynamicState>(context, listen: false)
           .setMenuProperties(menuProperties);
@@ -166,6 +164,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);
+    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
   }
 
   @override
