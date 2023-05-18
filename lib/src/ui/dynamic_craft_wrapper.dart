@@ -164,8 +164,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);
-    WidgetsBinding.instance
-        .addObserver(AppLifecycleObserver(context, widget.appInactivityScreen));
+
   }
 
   @override

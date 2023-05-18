@@ -61,6 +61,8 @@ class SessionRepository {
   Widget getSessionManager(Widget child, int appTimeout,
       Widget inactivityTimeoutRoute, Widget focusTimeoutRoute,
       {required context}) {
+    WidgetsBinding.instance
+        .addObserver(AppLifecycleObserver(context, inactivityTimeoutRoute));
     final myConfig = config(appTimeout: appTimeout);
     addSessionStateStream(myConfig,
         context: context,
