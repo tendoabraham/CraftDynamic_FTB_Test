@@ -48,8 +48,15 @@ class ListWidget extends StatelessWidget {
                         children: [
                           Material(
                               elevation: 0,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12.0)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(12.0),
+                                  ),
+                                  side: BorderSide(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(.2),
+                                      width: 1.5)),
                               child: InkWell(
                                   borderRadius: BorderRadius.circular(12.0),
                                   child: Container(
