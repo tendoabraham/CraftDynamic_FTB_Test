@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 
 class AppLifecycleObserver extends WidgetsBindingObserver {
   final BuildContext context;
+  Widget? widget;
 
-  AppLifecycleObserver(this.context);
+  AppLifecycleObserver(this.context, this.widget);
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -14,7 +15,8 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
 
     final pluginState = Provider.of<PluginState>(context, listen: false);
     if (state == AppLifecycleState.paused) {
-      CommonUtils.getXRouteAndPopAll(widget: pluginState.logoutScreen);
+      CommonUtils.getXRouteAndPopAll(
+          widget: widget ?? pluginState.logoutScreen);
     }
   }
 }

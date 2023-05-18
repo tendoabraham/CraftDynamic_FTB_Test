@@ -164,12 +164,14 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);
-    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
+    WidgetsBinding.instance
+        .addObserver(AppLifecycleObserver(context, widget.appInactivityScreen));
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(AppLifecycleObserver(context));
+    WidgetsBinding.instance.removeObserver(
+        AppLifecycleObserver(context, widget.appInactivityScreen));
     super.dispose();
   }
 }
