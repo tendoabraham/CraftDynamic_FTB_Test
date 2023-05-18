@@ -19,8 +19,7 @@ class SessionRepository {
 
   MySessionConfig config({required appTimeout}) {
     return MySessionConfig(
-        invalidateSessionForAppLostFocus:
-            Duration(milliseconds: appTimeout == null ? 5000 : appTimeout!),
+        invalidateSessionForAppLostFocus: const Duration(milliseconds: 500),
         invalidateSessionForUserInactiviity:
             Duration(milliseconds: appTimeout == null ? 5000 : appTimeout!));
   }
@@ -61,8 +60,6 @@ class SessionRepository {
   Widget getSessionManager(Widget child, int appTimeout,
       Widget inactivityTimeoutRoute, Widget focusTimeoutRoute,
       {required context}) {
-    WidgetsBinding.instance
-        .addObserver(AppLifecycleObserver(context, inactivityTimeoutRoute));
     final myConfig = config(appTimeout: appTimeout);
     addSessionStateStream(myConfig,
         context: context,
