@@ -110,6 +110,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
     return _sessionRepository.getSessionManager(
         MultiProvider(
           providers: [
@@ -164,5 +165,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(AppLifecycleObserver());
+    super.dispose();
   }
 }

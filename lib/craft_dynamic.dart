@@ -59,6 +59,7 @@ import 'src/network/network_repository.dart';
 import 'src/network/rsa_util.dart';
 import 'src/session_manager/session_manager.dart';
 import 'src/state/plugin_state.dart';
+import 'src/state/widget_observer.dart';
 import 'src/ui/dynamic_components.dart';
 
 part 'src/util/logger_util.dart';
