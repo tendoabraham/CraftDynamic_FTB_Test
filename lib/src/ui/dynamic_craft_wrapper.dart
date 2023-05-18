@@ -110,7 +110,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
     return _sessionRepository.getSessionManager(
         MultiProvider(
           providers: [
@@ -154,6 +153,8 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
       BuildContext context,
       MenuProperties? menuProperties,
       MenuScreenProperties? menuScreenProperties) {
+    WidgetsBinding.instance.addObserver(AppLifecycleObserver(context));
+
     if (menuProperties != null) {
       Provider.of<DynamicState>(context, listen: false)
           .setMenuProperties(menuProperties);
