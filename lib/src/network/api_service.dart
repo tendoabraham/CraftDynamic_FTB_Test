@@ -144,6 +144,7 @@ class APIService {
           data: requestBody);
       AppLogger.appLogD(tag: "HEADERS", message: res.requestOptions.headers);
       data = res.data["Response"];
+      AppLogger.appLogD(tag: "Undecrypted", message: data.toString());
       if (useGZIPDecryption) {
         response = CryptLib.gzipDecompressStaticData(data);
       } else {
@@ -249,7 +250,6 @@ class APIService {
 
     try {
       decrypted = jsonDecode(res ?? "{}") ?? "{}";
-      AppLogger.appLogD(tag: "\n\n$formId Undecrypted RES", message: decrypted);
       // decrypted = await CryptLib.gcmDecrypt(res) ?? "",
       // decrypted = await CryptLib.oldDecrypt(res),
       AppLogger.appLogI(tag: "\n\n$formId RES", message: decrypted);
