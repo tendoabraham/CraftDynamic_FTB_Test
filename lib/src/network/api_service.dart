@@ -102,7 +102,7 @@ class APIService {
     if (objectMap != null) {
       requestObject.addAll(objectMap);
     }
-    AppLogger.appLogE(tag: "\n\nREQUEST", message: jsonEncode(requestObject));
+    AppLogger.appLogD(tag: "\n\nREQUEST", message: jsonEncode(requestObject));
     return jsonEncode(requestObject);
   }
 
