@@ -27,12 +27,12 @@ class InitRepository {
   Future<bool> getAppStaticData() async {
     bool refreshUIData = false;
     var staticDataVersion = await _sharedPref.getStaticDataVersion();
-    AppLogger.appLogI(tag: "Local data version", message: staticDataVersion);
+    AppLogger.appLogD(tag: "Local data version", message: staticDataVersion);
     await _services.getStaticData().then((value) async {
       await _staticRepository.addStaticData(value);
       final currentStaticDataVersion = value?.staticDataVersion;
       await _sharedPref.addStaticDataVersion(currentStaticDataVersion ?? 0);
-      AppLogger.appLogI(
+      AppLogger.appLogD(
           tag: "New data version", message: currentStaticDataVersion);
       if (currentStaticDataVersion != null &&
           currentStaticDataVersion > staticDataVersion) {

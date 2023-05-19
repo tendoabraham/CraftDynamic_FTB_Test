@@ -14,7 +14,7 @@ class ConnectivityService {
     connectionStatusController.add(result);
 
     _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      AppLogger.appLogI(
+      AppLogger.appLogD(
           tag: "connection changed", message: "connection state has changed");
       connectionState.value = result;
       connectionStatusController.add(result);

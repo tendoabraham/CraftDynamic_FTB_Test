@@ -127,11 +127,11 @@ class APIService {
     var localToken = currentToken.value;
     var url = route ?? currentBaseUrl + requestUrl;
 
-    AppLogger.appLogI(tag: "REQ:ROUTE", message: url);
+    AppLogger.appLogD(tag: "REQ:ROUTE", message: url);
     var encryptedBody =
         CryptLib.encrypt(requestObject, currentKey.value, currentIv.value);
     var requestBody = {"Data": encryptedBody, "UniqueId": uniqueID};
-    AppLogger.appLogI(tag: "BODY", message: jsonEncode(requestBody));
+    AppLogger.appLogD(tag: "BODY", message: jsonEncode(requestBody));
 
     try {
       var res = await dio.post(url,
@@ -142,7 +142,7 @@ class APIService {
             },
           ),
           data: requestBody);
-      AppLogger.appLogI(tag: "HEADERS", message: res.requestOptions.headers);
+      AppLogger.appLogD(tag: "HEADERS", message: res.requestOptions.headers);
       data = res.data["Response"];
       if (useGZIPDecryption) {
         response = CryptLib.gzipDecompressStaticData(data);
@@ -164,7 +164,7 @@ class APIService {
     final pem = response.certificate?.pem;
     final blocks = decodePemBlocks(PemLabel.certificate, pem.toString());
     var encodedPublicKey = base64.encode(blocks[0]);
-    AppLogger.appLogI(tag: "Public key", message: encodedPublicKey);
+    AppLogger.appLogD(tag: "Public key", message: encodedPublicKey);
     AppLogger.writeResponseToFile(
         fileName: "Public key", response: encodedPublicKey);
     return encodedPublicKey;
@@ -174,12 +174,12 @@ class APIService {
     String routes, token = "";
     Map<String, dynamic> requestObject = {};
     Map<String, dynamic> keyIV = CryptLib.generateKeyIV();
-    AppLogger.appLogI(tag: "generated key and iv", message: keyIV.toString());
+    AppLogger.appLogD(tag: "generated key and iv", message: keyIV.toString());
     currentIv.value = keyIV["iv"];
     currentKey.value = keyIV["key"];
 
     String uniqueID = Constants.getUniqueID();
-    AppLogger.appLogI(tag: "UNIQUEID:", message: uniqueID);
+    AppLogger.appLogD(tag: "UNIQUEID:", message: uniqueID);
     var latLong = await _sharedPref.getLatLong();
     await _sharedPref.setUniqueID(uniqueID);
     requestObject["appName"] = appName;
@@ -194,12 +194,12 @@ class APIService {
         Config.generateBankCustomerID(countryCode, bankID, isTestUrl);
 
     String requestBody = jsonEncode(requestObject);
-    AppLogger.appLogE(tag: "REQ:", message: requestBody);
+    AppLogger.appLogD(tag: "REQ:", message: requestBody);
 
     var url = currentBaseUrl + tokenUrl;
     // var publicKey = await getPublicKey(currentBaseUrl);
 
-    AppLogger.appLogI(tag: "Token url:", message: url);
+    AppLogger.appLogD(tag: "Token url:", message: url);
     var dioResponse;
     var rsaEncrypted = await RSAUtil.rsaEncrypt(requestBody);
     if (!APIUtil.verifyConnection()) {
@@ -214,7 +214,7 @@ class APIService {
             'Access-Control-Allow-Origin': '*',
           }));
       var response = jsonDecode(dioResponse.toString())["Data"];
-      AppLogger.appLogI(tag: "\n\nUndecrypted RES", message: response);
+      AppLogger.appLogD(tag: "\n\nUndecrypted RES", message: response);
 
       var decryptedMessage = jsonDecode(
           CryptLib.gcmDecrypt(response, currentIv.value, currentKey.value) ??
@@ -249,10 +249,10 @@ class APIService {
 
     try {
       decrypted = jsonDecode(res ?? "{}") ?? "{}";
-      AppLogger.appLogI(tag: "\n\n$formId Undecrypted REQ", message: decrypted);
+      AppLogger.appLogD(tag: "\n\n$formId Undecrypted RES", message: decrypted);
       // decrypted = await CryptLib.gcmDecrypt(res) ?? "",
       // decrypted = await CryptLib.oldDecrypt(res),
-      AppLogger.appLogI(tag: "\n\n$formId REQ", message: decrypted);
+      AppLogger.appLogI(tag: "\n\n$formId RES", message: decrypted);
       AppLogger.writeResponseToFile(
           fileName: formId.name, response: decrypted.toString());
       uiResponse = UIResponse.fromJson(decrypted[0]);
@@ -280,7 +280,7 @@ class APIService {
       decrypted = jsonDecode(res ?? "{}") ?? "{}";
       // decrypted = await CryptLib.decryptResponse(res),
       // decrypted = CryptLib.gzipDecompressStaticData(res),
-      AppLogger.appLogI(tag: "\n\nSTATIC DATA REQ:", message: decrypted);
+      AppLogger.appLogI(tag: "\n\nSTATIC DATA RES:", message: decrypted);
       AppLogger.writeResponseToFile(
           fileName: "Static", response: decrypted.toString());
       staticResponse = StaticResponse.fromJson(decrypted);

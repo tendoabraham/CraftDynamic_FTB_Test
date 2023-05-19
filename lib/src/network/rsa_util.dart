@@ -36,21 +36,21 @@ class RSAUtil {
       ASN1Sequence sequence = parser.nextObject() as ASN1Sequence;
 
       var ans1BitString = sequence.elements?[1] as ASN1BitString;
-      AppLogger.appLogI(
+      AppLogger.appLogD(
           tag: "ans1BitString", message: ans1BitString.valueBytes);
       final rsaBytes = ans1BitString.stringValues;
       final rsaParser = ASN1Parser(Uint8List.fromList(rsaBytes!));
       final rsaSequence = rsaParser.nextObject() as ASN1Sequence;
       final modulus = rsaSequence.elements?[0] as ASN1Integer;
       final exponent = rsaSequence.elements?[1] as ASN1Integer;
-      AppLogger.appLogI(tag: "modulus", message: modulus.integer);
-      AppLogger.appLogI(tag: "exponent", message: exponent.integer);
+      AppLogger.appLogD(tag: "modulus", message: modulus.integer);
+      AppLogger.appLogD(tag: "exponent", message: exponent.integer);
 
       rsaPublicKey = RSAPublicKey(
         modulus.integer ?? BigInt.zero,
         exponent.integer ?? BigInt.zero,
       );
-      AppLogger.appLogI(tag: "rsa", message: rsaPublicKey.modulus);
+      AppLogger.appLogD(tag: "rsa", message: rsaPublicKey.modulus);
     } catch (e) {
       AppLogger.appLogE(tag: "RSA PARSE ERROR", message: e.toString());
     }

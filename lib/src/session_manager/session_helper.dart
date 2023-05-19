@@ -32,7 +32,7 @@ class SessionRepository {
       sessionStateStream.add(SessionState.stopListening);
 
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
-        AppLogger.appLogI(tag: "Session", message: "App inactivity...");
+        AppLogger.appLogD(tag: "Session", message: "App inactivity...");
         try {
           _sharedPref.getAppIsActivated().then((value) {
             if (value == "true") {
@@ -40,10 +40,10 @@ class SessionRepository {
             }
           });
         } catch (e) {
-          AppLogger.appLogI(tag: "Session:error", message: e.toString());
+          AppLogger.appLogD(tag: "Session:error", message: e.toString());
         }
       } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        AppLogger.appLogI(tag: "Session", message: "App lost focus...");
+        AppLogger.appLogD(tag: "Session", message: "App lost focus...");
         try {
           _sharedPref.getAppIsActivated().then((value) {
             if (value == "true") {

@@ -3,6 +3,12 @@ part of craft_dynamic;
 class AppLogger {
   static Logger logger = Logger();
 
+  static appLogD({required tag, required message}) {
+    if (kDebugMode) {
+      logger.d("$tag: $message");
+    }
+  }
+
   static appLogI({required tag, required message}) {
     if (kDebugMode) {
       logger.i("$tag: $message");

@@ -121,7 +121,7 @@ class _ViewStandingOrderState extends State<ViewStandingOrder> {
 
     if (results?.status == StatusCode.success.statusCode) {
       var list = results?.dynamicList;
-      AppLogger.appLogI(tag: "Standing orders", message: list);
+      AppLogger.appLogD(tag: "Standing orders", message: list);
       if (list != []) {
         list?.forEach((order) {
           try {
