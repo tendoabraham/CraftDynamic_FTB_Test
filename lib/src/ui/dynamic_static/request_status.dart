@@ -5,6 +5,7 @@ import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
@@ -82,111 +83,71 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
             statusBarIconBrightness: Brightness.dark),
         child: WillPopScope(
             onWillPop: () async {
-              widget.moduleItem != null &&
-                          widget.moduleItem?.moduleId == ModuleId.PIN.name ||
-                      widget.moduleItem?.moduleId ==
-                          ModuleId.LANGUAGEPREFERENCE.name
-                  ? logout()
-                  : closePage();
+              closeOrLogout();
               return true;
             },
             child: Scaffold(
-                body: SingleChildScrollView(
+              body: Center(
+                child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
                     child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              height: MediaQuery.of(context).size.height,
-              child: Column(children: [
-                const SizedBox(
-                  height: 44,
-                ),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        widget.moduleItem != null &&
-                                widget.moduleItem?.moduleId == ModuleId.PIN.name
-                            ? logout()
-                            : closePage();
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                color: Color(0xff15549A),
-                                size: 34,
-                              ),
-                              const SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "Close",
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ).tr()
-                            ],
-                          )),
-                    )),
-                const Spacer(),
-                Expanded(
-                    flex: 4,
-                    child: Center(
-                        child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(18.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(.1)),
-                            child: Column(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(18.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(.1)),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                  onPressed: () {
+                                    closeOrLogout();
+                                  },
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: APIService.appPrimaryColor,
+                                    size: 34,
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Column(
                               children: [
-                                Expanded(
-                                  flex: 9,
-                                  child: Column(
-                                    children: [
-                                      Lottie.asset(getAvatarType(statusCode),
-                                          height: 88,
-                                          width: 88,
-                                          controller: _controller,
-                                          onLoaded: (comp) {
-                                        _controller
-                                          ..duration = comp.duration
-                                          ..forward();
-                                      }),
-                                      Expanded(
-                                          child: Center(
-                                              child: Text(
-                                        message ?? "No message",
-                                        style: const TextStyle(
-                                            fontSize: 14, height: 1.5),
-                                        textAlign: TextAlign.center,
-                                      ))),
-                                    ],
-                                  ),
-                                )
+                                Lottie.asset(getAvatarType(statusCode),
+                                    height: 88,
+                                    width: 88,
+                                    controller: _controller, onLoaded: (comp) {
+                                  _controller
+                                    ..duration = comp.duration
+                                    ..forward();
+                                }),
+                                const SizedBox(
+                                  height: 44,
+                                ),
+                                Center(
+                                    child: Text(
+                                  message ?? "Please try again later!",
+                                  style: const TextStyle(
+                                      fontSize: 14, height: 1.5),
+                                  textAlign: TextAlign.center,
+                                )),
                               ],
-                            )))),
-                const Spacer(),
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: WidgetFactory.buildButton(
-                        context,
-                        widget.moduleItem != null &&
-                                    widget.moduleItem?.moduleId == "PIN" ||
-                                widget.moduleItem?.moduleId ==
-                                    ModuleId.LANGUAGEPREFERENCE.name
-                            ? logout
-                            : closePage,
-                        "Done".tr())),
-                const SizedBox(
-                  height: 15,
-                )
-              ]),
-            )))));
+                            ),
+                            const SizedBox(
+                              height: 44,
+                            ),
+                            Align(
+                                alignment: Alignment.bottomCenter,
+                                child: WidgetFactory.buildButton(
+                                    context, closeOrLogout, "Done".tr())),
+                          ],
+                        ))),
+              ),
+            )));
   }
 
   String getAvatarType(StatusCode statusCode) {
@@ -210,7 +171,15 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
     return "packages/craft_dynamic/assets/lottie/information.json";
   }
 
+  closeOrLogout() {
+    widget.moduleItem != null && widget.moduleItem?.moduleId == "PIN" ||
+            widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name
+        ? logout()
+        : closePage();
+  }
+
   void logout() {
+    Hive.close();
     Widget? logoutScreen =
         Provider.of<PluginState>(context, listen: false).logoutScreen;
     if (logoutScreen != null) {
