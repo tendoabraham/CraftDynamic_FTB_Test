@@ -31,7 +31,7 @@ class ProfileRepository {
   }
 
   Future<DynamicResponse?> checkMiniStatement(String bankAccountID,
-      {merchantID = "merchantID"}) {
+      {merchantID = "MINISTATEMENT"}) {
     return _services.checkMiniStatement(
         bankAccountID: bankAccountID,
         merchantID: merchantID,
