@@ -31,10 +31,10 @@ class ProfileRepository {
   }
 
   Future<DynamicResponse?> checkMiniStatement(String bankAccountID,
-      {merchantID = "STATEMENT"}) {
+      {merchantID = "merchantID"}) {
     return _services.checkMiniStatement(
         bankAccountID: bankAccountID,
-        merchantID: merchantID ?? "MINISTATEMENT",
-        moduleID: merchantID ?? "MINISTATEMENT");
+        merchantID: merchantID,
+        moduleID: merchantID);
   }
 }
