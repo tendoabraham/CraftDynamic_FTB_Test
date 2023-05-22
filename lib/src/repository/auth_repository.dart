@@ -40,6 +40,11 @@ class AuthRepository {
       await ClearDB.clearAllUserData();
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
+      var bankType = activationResponse.bankType;
+
+      if (bankType != null && bankType.isNotEmpty) {
+        await _sharedPref.setBankID(bankType);
+      }
 
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&

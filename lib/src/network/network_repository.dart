@@ -52,6 +52,9 @@ class UserAccountRepository {
   addUserAccountData(ActivationResponse activationResponse) {
     List<BankAccount> userAccounts = [];
     List<Beneficiary> beneficiaries = [];
+    List<ModuleToHide> modulesToHide = [];
+    List<ModuleToDisable> modulesToDisable = [];
+    List<PendingTrxDisplay> pendingTransactions = [];
 
     _sharedPref.addUserAccountInfo(
         key: UserAccountData.FirstName.name,
@@ -69,6 +72,7 @@ class UserAccountRepository {
         value: activationResponse.lastLoginDate);
     _sharedPref.addUserAccountInfo(
         key: UserAccountData.Phone.name, value: activationResponse.phone);
+
     activationResponse.accounts?.forEach((item) {
       userAccounts.add(BankAccount.fromJson(item));
     });
@@ -85,16 +89,20 @@ class UserAccountRepository {
     _beneficiaryRepository.insertBeneficiaries(beneficiaries);
 
     activationResponse.modulesToHide?.forEach((item) {
-      _moduleToHideRepository.insertModuleToHide(ModuleToHide.fromJson(item));
+      modulesToHide.add(ModuleToHide.fromJson(item));
     });
-    activationResponse.modulesToHide?.forEach((item) {
-      _moduleToDisableRepository
-          .insertModuleToDisable(ModuleToDisable.fromJson(item));
+    _moduleToHideRepository.insertModulesToHide(modulesToHide);
+
+    activationResponse.modulesToDisable?.forEach((item) {
+      modulesToDisable.add(ModuleToDisable.fromJson(item));
     });
+    _moduleToDisableRepository.insertModulesToDisable(modulesToDisable);
+
     activationResponse.pendingTransactions?.forEach((item) {
-      _pendingTransactionsRepository
-          .insertPendingTransaction(PendingTrxDisplay.fromJson(item));
+      pendingTransactions.add(PendingTrxDisplay.fromJson(item));
     });
+    _pendingTransactionsRepository
+        .insertPendingTransactions(pendingTransactions);
   }
 }
 
@@ -103,6 +111,10 @@ class StaticDataRepository {
     await _sharedPref.addAppIdleTimeout(staticResponse?.appIdleTimeout);
     await ClearDB.clearAllStaticData();
     List<UserCode> userCodes = [];
+    List<BranchLocation> branchLocations = [];
+    List<BankBranch> bankBranches = [];
+    List<AtmLocation> atms = [];
+    List<OnlineAccountProduct> products = [];
 
     staticResponse?.usercode?.forEach((item) {
       userCodes.add(UserCode.fromJson(item));
@@ -110,39 +122,36 @@ class StaticDataRepository {
     _userCodeRepository.insertUserCodes(userCodes);
 
     staticResponse?.onlineAccountProduct?.forEach((item) {
-      _onlineAccountProductRepository
-          .insertOnlineAccountProduct(OnlineAccountProduct.fromJson(item));
+      products.add(OnlineAccountProduct.fromJson(item));
     });
+    _onlineAccountProductRepository.insertOnlineAccountProducts(products);
+
     staticResponse?.bankBranch?.forEach((item) {
-      _bankBranchRepository
-          .insertBankBranch(BankBranch.fromJson(item)); //TODO UNCOMMENT THIS
+      bankBranches.add(BankBranch.fromJson(item));
     });
+    _bankBranchRepository.insertBankBranches(bankBranches);
+
     staticResponse?.image?.forEach((item) {
       _imageDataRepository.insertImageData(ImageData.fromJson(item));
     });
     staticResponse?.atmLocation?.forEach((item) {
-      _atmLocationRepository.insertAtmLocation(AtmLocation.fromJson(item));
+      atms.add(AtmLocation.fromJson(item));
     });
+    _atmLocationRepository.insertAtmLocations(atms);
+
     staticResponse?.branchLocation?.forEach((item) {
-      _branchLocationRepository
-          .insertBranchLocation(BranchLocation.fromJson(item));
+      branchLocations.add(BranchLocation.fromJson(item));
     });
+    _branchLocationRepository.insertBranchLocations(branchLocations);
   }
 }
 
 class ClearDB {
   static clearAllUserData() async {
     await _frequentAccessedModulesRepository.clearTable();
-    await _moduleToDisableRepository.clearTable();
-    await _moduleToHideRepository.clearTable();
-    await _pendingTransactionsRepository.clearTable();
   }
 
   static clearAllStaticData() async {
-    await _onlineAccountProductRepository.clearTable();
-    await _bankBranchRepository.clearTable();
     await _imageDataRepository.clearTable();
-    await _branchLocationRepository.clearTable();
-    await _atmLocationRepository.clearTable();
   }
 }

@@ -108,6 +108,7 @@ class ActivationResponse {
       customerID,
       phone,
       bankID,
+      bankType,
       languageID;
   List<dynamic>? accounts,
       frequentAccessedModules,
@@ -128,6 +129,7 @@ class ActivationResponse {
       this.customerID,
       this.phone,
       this.bankID,
+      this.bankType,
       this.languageID,
       this.staticDataVersion,
       this.beneficiary,
@@ -148,6 +150,7 @@ class ActivationResponse {
         customerID = json["CustomerID"],
         phone = json["Phone"],
         bankID = json["BankID"],
+        bankType = json["BankType"],
         languageID = json["LanguageID"],
         lastLoginDate = json["LastLoginDateTime"],
         staticDataVersion = json["StaticDataVersion"],

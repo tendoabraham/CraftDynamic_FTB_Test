@@ -77,7 +77,7 @@ class APIService {
   Future<Map<String, dynamic>> buildRequestMap(
       {bool isAuthenticate = false}) async {
     var requestBuilder = RequestBuilder(
-        bankID: bankID,
+        bankID: await _sharedPref.getBankID() ?? bankID,
         country: countryName,
         versionNumber: await DeviceInfo.getAppVersion(),
         trxSource: requestConfig?["trxSource"],

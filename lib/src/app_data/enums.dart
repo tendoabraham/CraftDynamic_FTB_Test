@@ -157,6 +157,7 @@ enum StatusCode {
   token("099"),
   otp("093"),
   changeLanguage("094"),
+  changeBankType("095"),
   changePin("101"),
   unknown("XXXX");
 
@@ -196,5 +197,6 @@ const failure = "091";
 const token = "099";
 const otp = "093";
 const changeLanguage = "094";
+const changeBankType = "095";
 const changePin = "101";
 const unknown = "xxx";

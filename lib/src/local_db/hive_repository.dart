@@ -178,44 +178,49 @@ class UserCodeRepository {
 }
 
 class OnlineAccountProductRepository {
-  var onlineAccountBox;
-
-  openBox() async {
-    onlineAccountBox =
-        await HiveBox(OnlineAccountProduct).getBox("onlineaccounts");
+  Future<Box<OnlineAccountProduct>> openBox() async {
+    if (Hive.isBoxOpen("onlineAccountProducts")) {
+      return Hive.box<OnlineAccountProduct>("onlineAccountProducts");
+    } else {
+      return await Hive.openBox<OnlineAccountProduct>("onlineAccountProducts");
+    }
   }
 
-  insertOnlineAccountProduct(OnlineAccountProduct onlineAccountProduct) async {
-    await openBox();
-    onlineAccountBox.put(onlineAccountProduct.no, onlineAccountProduct);
+  insertOnlineAccountProducts(
+      List<OnlineAccountProduct> onlineAccountProducts) async {
+    var box = await openBox();
+    await box.clear();
+    for (var product in onlineAccountProducts) {
+      box.add(product);
+    }
   }
 
   Future<List<OnlineAccountProduct>> getAllOnlineAccountProducts() async {
-    await openBox();
-    return onlineAccountBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    onlineAccountBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
 class BankBranchRepository {
-  insertBankBranch(BankBranch bankBranch) async {
-    var bankBranchBox = await HiveBox(BankBranch).getBox("bankbranches");
-    bankBranchBox?.put(bankBranch.no ?? "", bankBranch);
+  Future<Box<BankBranch>> openBox() async {
+    if (Hive.isBoxOpen("bankbranches")) {
+      return Hive.box<BankBranch>("bankbranches");
+    } else {
+      return await Hive.openBox<BankBranch>("bankbranches");
+    }
+  }
+
+  insertBankBranches(List<BankBranch> bankBranches) async {
+    var box = await openBox();
+    await box.clear();
+    for (var branch in bankBranches) {
+      box.add(branch);
+    }
   }
 
   Future<List<BankBranch>> getAllBankBranches() async {
-    Box<BankBranch> bankBranchBox =
-        await HiveBox(BankBranch).getBox("bankbranches") as Box<BankBranch>;
+    var bankBranchBox = await openBox();
     return bankBranchBox.values.toList();
-  }
-
-  clearTable() async {
-    var bankBranchBox = await HiveBox(BankBranch).getBox("bankbranches");
-    bankBranchBox?.clear();
   }
 }
 
@@ -328,119 +333,116 @@ class BeneficiaryRepository {
 }
 
 class ModuleToHideRepository {
-  Box<ModuleToHide>? modulesToHideBox;
-
-  openBox() async {
-    modulesToHideBox = await Hive.openBox<ModuleToHide>("modulestohide");
+  Future<Box<ModuleToHide>> openBox() async {
+    if (Hive.isBoxOpen("modulesToHide")) {
+      return Hive.box<ModuleToHide>("modulesToHide");
+    } else {
+      return await Hive.openBox<ModuleToHide>("modulesToHide");
+    }
   }
 
-  insertModuleToHide(ModuleToHide moduleToHide) async {
-    await openBox();
-    modulesToHideBox?.put(moduleToHide.moduleId, moduleToHide);
+  insertModulesToHide(List<ModuleToHide> modules) async {
+    var box = await openBox();
+    await box.clear();
+    for (var moduleToHide in modules) {
+      box.put(moduleToHide.moduleId, moduleToHide);
+    }
   }
 
   Future<List<ModuleToHide>?>? getAllModulesToHide() async {
-    await openBox();
-    return modulesToHideBox?.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    modulesToHideBox?.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
 class ModuleToDisableRepository {
-  var modulesToDisableBox;
-
-  openBox() async {
-    modulesToDisableBox =
-        await HiveBox(ModuleToDisable).getBox("modulestodisable");
+  Future<Box<ModuleToDisable>> openBox() async {
+    if (Hive.isBoxOpen("modulesToDisable")) {
+      return Hive.box<ModuleToDisable>("modulesToDisable");
+    } else {
+      return await Hive.openBox<ModuleToDisable>("modulesToDisable");
+    }
   }
 
-  insertModuleToDisable(ModuleToDisable moduleToDisable) async {
-    await openBox();
-    modulesToDisableBox.put(moduleToDisable.moduleID, moduleToDisable);
+  insertModulesToDisable(List<ModuleToDisable> modules) async {
+    var box = await openBox();
+    await box.clear();
+    for (var module in modules) {
+      box.put(module.moduleID, module);
+    }
   }
 
   Future<List<ModuleToDisable>>? getAllModulesToDisable() async {
-    await openBox();
-    return modulesToDisableBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    modulesToDisableBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
 class AtmLocationRepository {
-  var atmsBox;
-
-  openBox() async {
-    atmsBox = await HiveBox(AtmLocation).getBox("atmlocations");
+  Future<Box<AtmLocation>> openBox() async {
+    if (Hive.isBoxOpen("atmLocations")) {
+      return Hive.box<AtmLocation>("atmLocations");
+    } else {
+      return await Hive.openBox<AtmLocation>("atmLocations");
+    }
   }
 
-  insertAtmLocation(AtmLocation atmLocation) async {
-    await openBox();
-    atmsBox.put(atmLocation.no, atmLocation);
+  insertAtmLocations(List<AtmLocation> atmLocations) async {
+    var box = await openBox();
+    await box.clear();
+    for (var locations in atmLocations) {
+      box.put(locations.no, locations);
+    }
   }
 
   Future<List<AtmLocation>> getAllAtmLocations() async {
-    await openBox();
-    return atmsBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    atmsBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
 class BranchLocationRepository {
-  var branchLocationRepo;
-
-  openBox() async {
-    branchLocationRepo =
-        await HiveBox(BranchLocation).getBox("branchlocations");
+  Future<Box<BranchLocation>> openBox() async {
+    if (Hive.isBoxOpen("branchLocations")) {
+      return Hive.box<BranchLocation>("branchLocations");
+    } else {
+      return await Hive.openBox<BranchLocation>("branchLocations");
+    }
   }
 
-  insertBranchLocation(BranchLocation branchLocation) async {
-    await openBox();
-    branchLocationRepo.put(branchLocation.no, branchLocation);
+  insertBranchLocations(List<BranchLocation> branchLocations) async {
+    var box = await openBox();
+    await box.clear();
+    for (var locations in branchLocations) {
+      box.put(locations.no, locations);
+    }
   }
 
   Future<List<BranchLocation>> getAllBranchLocations() async {
-    await openBox();
-    return branchLocationRepo.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    branchLocationRepo.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
 class PendingTrxDisplayRepository {
-  var pendingTransactionsBox;
-
-  openBox() async {
-    pendingTransactionsBox =
-        await HiveBox(PendingTrxDisplay).getBox("pendingtransactions");
+  Future<Box<PendingTrxDisplay>> openBox() async {
+    if (Hive.isBoxOpen("pendingTransactions")) {
+      return Hive.box<PendingTrxDisplay>("pendingTransactions");
+    } else {
+      return await Hive.openBox<PendingTrxDisplay>("pendingTransactions");
+    }
   }
 
-  insertPendingTransaction(PendingTrxDisplay pendingTrxDisplay) async {
-    await openBox();
-    pendingTransactionsBox.put(pendingTrxDisplay.no, pendingTrxDisplay);
+  insertPendingTransactions(List<PendingTrxDisplay> transactions) async {
+    var box = await openBox();
+    await box.clear();
+    for (var item in transactions) {
+      box.put(item.no, item);
+    }
   }
 
   Future<List<PendingTrxDisplay>> getAllPendingTransactions() async {
-    await openBox();
-    return pendingTransactionsBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    pendingTransactionsBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }

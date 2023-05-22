@@ -93,7 +93,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                         horizontal: 16, vertical: 14),
                     child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 12, bottom: 12),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             color:
@@ -173,7 +174,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   closeOrLogout() {
     widget.moduleItem != null && widget.moduleItem?.moduleId == "PIN" ||
-            widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name
+            widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name ||
+            widget.postDynamic.status == StatusCode.changeBankType.statusCode
         ? logout()
         : closePage();
   }

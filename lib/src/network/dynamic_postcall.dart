@@ -106,6 +106,11 @@ class DynamicPostCall {
           );
         }
         break;
+      case changeBankType:
+        {
+          navigateToStatusRoute(postDynamic, moduleItem: moduleItem);
+        }
+        break;
       case otp:
         {
           showOTPForm(postDynamic, moduleItem, context);
