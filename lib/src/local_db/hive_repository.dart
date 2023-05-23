@@ -2,26 +2,6 @@
 
 part of craft_dynamic;
 
-class LocalRepository {
-  static Future<void> openBoxes() async {
-    await Hive.openBox<ModuleItem>('modules');
-    await Hive.openBox<FormItem>('forms');
-    await Hive.openBox<ActionItem>('actions');
-    await Hive.openBox<UserCode>('usercodes');
-    await Hive.openBox<OnlineAccountProduct>('onlineaccounts');
-    await Hive.openBox<BankBranch>('bankbranches');
-    await Hive.openBox<ImageData>('imagedata');
-    await Hive.openBox<BankAccount>('bankaccount');
-    await Hive.openBox<FrequentAccessedModule>('frequentmodules');
-    await Hive.openBox<Beneficiary>('beneficiaries');
-    await Hive.openBox<ModuleToHide>('modulestohide');
-    await Hive.openBox<ModuleToDisable>('modulestodisable');
-    await Hive.openBox<AtmLocation>('atms');
-    await Hive.openBox<BranchLocation>('branchlocations');
-    await Hive.openBox<PendingTrxDisplay>('pendingtransactions');
-  }
-}
-
 class ModuleRepository {
   Future<Box<ModuleItem>> openBox() async {
     if (Hive.isBoxOpen("modules")) {
@@ -50,10 +30,16 @@ class ModuleRepository {
 
   Future<List<ModuleItem>?> getModulesById(String moduleID) async {
     var box = await openBox();
+    var loginHiddenModulesRepo = ModuleToHideRepository();
+    List<ModuleToHide>? modulesToHide =
+        await loginHiddenModulesRepo.getAllModulesToHide();
     var modules = box.values
         .where(
             (item) => item.parentModule == moduleID && item.isHidden == false)
         .toList();
+    modulesToHide?.forEach((module) {
+      modules.removeWhere((item) => item.moduleId == module.moduleId);
+    });
     modules
         .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
     return modules;
