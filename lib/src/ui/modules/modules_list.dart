@@ -34,7 +34,9 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
             ? widget.moduleItem!.moduleId
             : widget.favouriteModule!.moduleID);
     disabledModules?.forEach((module) {
-      modules?.removeWhere((item) => item.moduleId == module.moduleID);
+      var moduleFromList =
+          modules?.firstWhere((item) => item.moduleId == module.moduleID);
+      moduleFromList?.isDisabled = true;
     });
     return modules;
   }
