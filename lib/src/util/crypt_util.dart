@@ -124,8 +124,8 @@ class CryptLib {
       AppLogger.appLogI(
           tag: "gcm function", message: "now getting aed parameters...");
       final cbcParams = ParametersWithIV(
-          KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
-          Uint8List.fromList(utf8.encode(encryptIv)));
+          KeyParameter(Uint8List.fromList(base64Decode(encryptKey))),
+          Uint8List.fromList(base64Decode(encryptIv)));
 
       // final params = AEADParameters(
       //   KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
