@@ -128,8 +128,12 @@ class CryptLib {
       );
       cipher.init(false, params);
 
+      AppLogger.appLogI(
+          tag: "gcm function", message: "now decoding encrypted data...");
       final decodedValue = base64.decode(encryptedData);
 
+      AppLogger.appLogI(
+          tag: "gcm function", message: "now processing decoded data...");
       final decryptedVal = cipher.process(decodedValue);
 
       decrypted = utf8.decode(decryptedVal);
