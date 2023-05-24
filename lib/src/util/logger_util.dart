@@ -12,17 +12,13 @@ class AppLogger {
 
   static appLogI({required tag, required message}) {
     if (kDebugMode) {
-      kIsWeb
-          ? webLog.log(weblogger.Level.INFO, "$tag: $message")
-          : logger.i("$tag: $message");
+      kIsWeb ? debugPrint("$tag: $message") : logger.i("$tag: $message");
     }
   }
 
   static appLogE({required tag, required message}) {
     if (kDebugMode) {
-      kIsWeb
-          ? webLog.log(weblogger.Level.SEVERE, "$tag: $message")
-          : logger.e("$tag: $message");
+      kIsWeb ? debugPrint("$tag: $message") : logger.e("$tag: $message");
     }
   }
 

@@ -32,7 +32,7 @@ class Constants {
         return "ANDROID";
       }
     }
-    return "ANDROID";
+    return "WEB";
   }
 
   static getUniqueID() {
