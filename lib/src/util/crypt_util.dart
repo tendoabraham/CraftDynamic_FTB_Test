@@ -120,12 +120,18 @@ class CryptLib {
     String? decrypted;
     try {
       final cipher = GCMBlockCipher(AESFastEngine());
+
+      AppLogger.appLogI(
+          tag: "gcm function", message: "now getting aed parameters...");
       final params = AEADParameters(
         KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
         128,
         Uint8List.fromList(utf8.encode(encryptIv)),
         Uint8List(0),
       );
+
+      AppLogger.appLogI(
+          tag: "gcm function", message: "now initializing cipher...");
       cipher.init(false, params);
 
       AppLogger.appLogI(
