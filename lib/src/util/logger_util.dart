@@ -1,23 +1,30 @@
 part of craft_dynamic;
 
 class AppLogger {
-  static Logger logger = Logger();
+  static var logger = Logger();
+  static var webLog = weblogger.Logger("AppLogger");
 
   static appLogD({required tag, required message}) {
     if (kDebugMode) {
-      logger.d("$tag: $message");
+      kIsWeb
+          ? webLog.log(weblogger.Level.FINE, "$tag: $message")
+          : logger.d("$tag: $message");
     }
   }
 
   static appLogI({required tag, required message}) {
     if (kDebugMode) {
-      logger.i("$tag: $message");
+      kIsWeb
+          ? webLog.log(weblogger.Level.INFO, "$tag: $message")
+          : logger.i("$tag: $message");
     }
   }
 
   static appLogE({required tag, required message}) {
     if (kDebugMode) {
-      logger.e("$tag: $message");
+      kIsWeb
+          ? webLog.log(weblogger.Level.SEVERE, "$tag: $message")
+          : logger.e("$tag: $message");
     }
   }
 
@@ -26,6 +33,10 @@ class AppLogger {
       FileOperations().writeFile(fileName, response);
     }
   }
+}
+
+class WebLogger {
+  final log = weblogger.Logger;
 }
 
 class FileOperations {

@@ -30,6 +30,7 @@ import 'package:local_session_timeout/local_session_timeout.dart'
 
 // import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:logger/logger.dart';
+import 'package:logging/logging.dart' as weblogger;
 import 'package:archive/archive.dart';
 import 'package:encrypt/encrypt.dart' as encryptcrpto hide SecureRandom;
 import 'package:crypto/crypto.dart';

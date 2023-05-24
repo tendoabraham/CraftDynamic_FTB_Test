@@ -65,6 +65,7 @@ dependencies:
   platform_device_id: ^1.0.1
   flutter_multi_formatter: ^2.11.0
   blur: ^3.1.0
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:
