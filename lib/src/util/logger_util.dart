@@ -6,9 +6,7 @@ class AppLogger {
 
   static appLogD({required tag, required message}) {
     if (kDebugMode) {
-      kIsWeb
-          ? webLog.log(weblogger.Level.FINE, "$tag: $message")
-          : logger.d("$tag: $message");
+      kIsWeb ? debugPrint("$tag: $message") : logger.d("$tag: $message");
     }
   }
 
