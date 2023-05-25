@@ -72,7 +72,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   _isChangeBankType() async {
     if (widget.postDynamic.status == changeBankType) {
-      await _sharedPref.setBankID(widget.postDynamic.formID);
+      var bankID = widget.postDynamic.formID ?? "";
+      await _sharedPref.setBankID(bankID.isEmpty ? null : bankID);
     }
   }
 
