@@ -39,6 +39,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
     _isChangePinCheck();
     _checkAddBenefiary();
     _setUpAnimationController();
+    _isChangeBankType();
   }
 
   _setUpAnimationController() {
@@ -66,6 +67,12 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
   _isChangePinCheck() async {
     if (widget.moduleItem?.moduleId == ModuleId.PIN.name) {
       await _sharedPref.setBio(false);
+    }
+  }
+
+  _isChangeBankType() async {
+    if (widget.postDynamic.status == changeBankType) {
+      await _sharedPref.setBankID(widget.postDynamic.formID);
     }
   }
 

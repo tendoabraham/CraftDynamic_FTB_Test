@@ -123,20 +123,20 @@ class CryptLib {
 
       AppLogger.appLogI(
           tag: "gcm function", message: "now getting aed parameters...");
-      final cbcParams = ParametersWithIV(
-          KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
-          Uint8List.fromList(utf8.encode(encryptIv)));
+      // final cbcParams = ParametersWithIV(
+      //     KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
+      //     Uint8List.fromList(utf8.encode(encryptIv)));
 
-      // final params = AEADParameters(
-      //   KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
-      //   128,
-      //   Uint8List.fromList(utf8.encode(encryptIv)),
-      //   Uint8List(0),
-      // );
+      final params = AEADParameters(
+        KeyParameter(Uint8List.fromList(utf8.encode(encryptKey))),
+        128,
+        Uint8List.fromList(utf8.encode(encryptIv)),
+        Uint8List(0),
+      );
 
       AppLogger.appLogI(
           tag: "gcm function", message: "now initializing cipher...");
-      cipher.init(false, cbcParams);
+      cipher.init(false, params);
 
       AppLogger.appLogI(
           tag: "gcm function", message: "now decoding encrypted data...");

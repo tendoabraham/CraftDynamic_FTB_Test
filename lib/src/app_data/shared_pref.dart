@@ -125,7 +125,7 @@ class CommonSharedPref {
     return json.decode(await storage.read(key: "latlong") ?? "{}");
   }
 
-  setBankID(String bankID) async {
+  setBankID(String? bankID) async {
     await storage.write(key: "bankID", value: bankID);
   }
 
