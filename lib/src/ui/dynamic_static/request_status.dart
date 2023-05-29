@@ -156,9 +156,21 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                             ),
                             Align(
                                 alignment: Alignment.bottomCenter,
-                                child: MaterialButton(
-                                  onPressed: closeOrLogout,
-                                  child: Text("Done".tr()),
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(12),
+                                  onTap: closeOrLogout,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: APIService.appPrimaryColor),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24, vertical: 14),
+                                      child: Text(
+                                        "Done".tr(),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      )),
                                 ))
                           ],
                         ))),
