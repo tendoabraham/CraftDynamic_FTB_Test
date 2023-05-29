@@ -37,7 +37,6 @@ class AuthRepository {
     ActivationResponse activationResponse =
         await _services.login(CryptLib.encryptField(pin));
     if (activationResponse.status == StatusCode.success.statusCode) {
-      await ClearDB.clearAllUserData();
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
 
