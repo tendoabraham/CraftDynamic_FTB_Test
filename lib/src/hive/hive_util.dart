@@ -32,6 +32,7 @@ class HiveUtil {
         await path_provider.getApplicationDocumentsDirectory();
     final boxCacheDir = '${appDocumentDir.path}/.hive/$boxName';
 
+    await Hive.box(boxName).close();
     await Hive.box(boxName).deleteFromDisk();
     await Hive.box(boxName).compact();
 

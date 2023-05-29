@@ -84,4 +84,4 @@ part 'src/ui/modules/module_assets.dart';
 part 'src/repository/profile_repository.dart';
 part 'src/util/extensions_util.dart';
 part 'src/app_data/constants.dart';
-part 'src/local_db/hive_repository.dart';
+part 'src/hive/hive_repository.dart';
