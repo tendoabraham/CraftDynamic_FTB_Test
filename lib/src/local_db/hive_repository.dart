@@ -211,25 +211,23 @@ class BankBranchRepository {
 }
 
 class ImageDataRepository {
-  var imageDataBox;
-
-  openBox() async {
-    imageDataBox = await HiveBox(ImageData).getBox("imagedata");
+  Future<Box<ImageData>> openBox() async {
+    if (Hive.isBoxOpen("imagedata")) {
+      return Hive.box<ImageData>("imagedata");
+    } else {
+      return await Hive.openBox<ImageData>("imagedata");
+    }
   }
 
-  insertImageData(ImageData imageData) async {
-    await openBox();
-    imageDataBox.put(imageData.no ?? "", imageData);
+  insertImages(List<ImageData> images) async {
+    var box = await openBox();
+    await box.clear();
+    box.addAll(images);
   }
 
   Future<List<ImageData>> getAllImages(String imageType) async {
-    await openBox();
-    return imageDataBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    imageDataBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 
@@ -261,26 +259,24 @@ class BankAccountRepository {
 }
 
 class FrequentAccessedModuleRepository {
-  var frequentModulesBox;
-
-  openBox() async {
-    frequentModulesBox =
-        await HiveBox(FrequentAccessedModule).getBox("frequentmodules");
+  Future<Box<FrequentAccessedModule>> openBox() async {
+    if (Hive.isBoxOpen("frequentmodules")) {
+      return Hive.box<FrequentAccessedModule>("frequentmodules");
+    } else {
+      return await Hive.openBox<FrequentAccessedModule>("frequentmodules");
+    }
   }
 
-  insertFrequentModule(FrequentAccessedModule frequentAccessedModule) async {
-    await openBox();
-    frequentModulesBox.put(frequentAccessedModule.no, frequentAccessedModule);
+  insertFrequentModules(
+      List<FrequentAccessedModule> frequentAccessedModules) async {
+    var box = await openBox();
+    await box.clear();
+    box.addAll(frequentAccessedModules);
   }
 
   Future<List<FrequentAccessedModule>> getAllFrequentModules() async {
-    await openBox();
-    return frequentModulesBox.values.toList();
-  }
-
-  clearTable() async {
-    await openBox();
-    frequentModulesBox.clear();
+    var box = await openBox();
+    return box.values.toList();
   }
 }
 

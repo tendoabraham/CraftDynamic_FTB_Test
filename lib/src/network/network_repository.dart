@@ -55,6 +55,7 @@ class UserAccountRepository {
     List<ModuleToHide> modulesToHide = [];
     List<ModuleToDisable> modulesToDisable = [];
     List<PendingTrxDisplay> pendingTransactions = [];
+    List<FrequentAccessedModule> frequentModules = [];
 
     _sharedPref.addUserAccountInfo(
         key: UserAccountData.FirstName.name,
@@ -79,9 +80,9 @@ class UserAccountRepository {
     _bankAccountRepository.insertBankAccounts(userAccounts);
 
     activationResponse.frequentAccessedModules?.forEach((item) {
-      _frequentAccessedModulesRepository
-          .insertFrequentModule(FrequentAccessedModule.fromJson(item));
+      frequentModules.add(FrequentAccessedModule.fromJson(item));
     });
+    _frequentAccessedModulesRepository.insertFrequentModules(frequentModules);
 
     activationResponse.beneficiary?.forEach((item) {
       beneficiaries.add(Beneficiary.fromJson(item));
@@ -109,12 +110,12 @@ class UserAccountRepository {
 class StaticDataRepository {
   addStaticData(StaticResponse? staticResponse) async {
     await _sharedPref.addAppIdleTimeout(staticResponse?.appIdleTimeout);
-    await ClearDB.clearAllStaticData();
     List<UserCode> userCodes = [];
     List<BranchLocation> branchLocations = [];
     List<BankBranch> bankBranches = [];
     List<AtmLocation> atms = [];
     List<OnlineAccountProduct> products = [];
+    List<ImageData> images = [];
 
     staticResponse?.usercode?.forEach((item) {
       userCodes.add(UserCode.fromJson(item));
@@ -132,8 +133,10 @@ class StaticDataRepository {
     _bankBranchRepository.insertBankBranches(bankBranches);
 
     staticResponse?.image?.forEach((item) {
-      _imageDataRepository.insertImageData(ImageData.fromJson(item));
+      images.add(ImageData.fromJson(item));
     });
+    _imageDataRepository.insertImages(images);
+
     staticResponse?.atmLocation?.forEach((item) {
       atms.add(AtmLocation.fromJson(item));
     });
@@ -143,15 +146,5 @@ class StaticDataRepository {
       branchLocations.add(BranchLocation.fromJson(item));
     });
     _branchLocationRepository.insertBranchLocations(branchLocations);
-  }
-}
-
-class ClearDB {
-  static clearAllUserData() async {
-    await _frequentAccessedModulesRepository.clearTable();
-  }
-
-  static clearAllStaticData() async {
-    await _imageDataRepository.clearTable();
   }
 }
