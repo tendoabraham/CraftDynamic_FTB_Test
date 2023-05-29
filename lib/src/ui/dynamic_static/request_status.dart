@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:craft_dynamic/dynamic_widget.dart';
-import 'package:craft_dynamic/src/hive/hive_util.dart';
 import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -104,8 +102,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
             child: Scaffold(
               body: Center(
                 child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
+                    padding: const EdgeInsets.only(
+                        left: 16, right: 16, top: 12, bottom: 18),
                     child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.only(
@@ -158,8 +156,10 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                             ),
                             Align(
                                 alignment: Alignment.bottomCenter,
-                                child: WidgetFactory.buildButton(
-                                    context, closeOrLogout, "Done".tr())),
+                                child: MaterialButton(
+                                  onPressed: closeOrLogout,
+                                  child: Text("Done".tr()),
+                                ))
                           ],
                         ))),
               ),
