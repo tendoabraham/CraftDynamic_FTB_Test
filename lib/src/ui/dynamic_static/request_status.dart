@@ -109,7 +109,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                     child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.only(
-                            left: 12, right: 12, bottom: 12),
+                            left: 12, right: 12, bottom: 18),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             color:
