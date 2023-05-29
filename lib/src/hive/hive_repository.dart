@@ -18,6 +18,7 @@ class ModuleRepository {
       for (var module in moduleItems) {
         box.put(module.moduleId, module);
       }
+      await box.close();
     } catch (e) {
       AppLogger.appLogE(tag: "module insertion", message: e.toString());
     }
@@ -37,6 +38,7 @@ class ModuleRepository {
         .where(
             (item) => item.parentModule == moduleID && item.isHidden == false)
         .toList();
+    await box.close();
     modulesToHide?.forEach((module) {
       modules.removeWhere((item) => item.moduleId == module.moduleId);
     });
