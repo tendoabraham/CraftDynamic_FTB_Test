@@ -71,8 +71,8 @@ class AuthRepository {
       if (bankID != null && bankID.isNotEmpty) {
         await _sharedPref.setBankID(bankID);
       }
-      return activationResponse;
     }
+    return activationResponse;
   }
 
   // Call this method to verify otp
