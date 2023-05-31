@@ -66,11 +66,13 @@ class AuthRepository {
       mobileNumber: mobileNumber,
       encryptedPin: CryptLib.encryptField(pin),
     );
-    var bankID = activationResponse.message;
-    if (bankID != null && bankID.isNotEmpty) {
-      await _sharedPref.setBankID(bankID);
+    if (activationResponse.status == StatusCode.success.statusCode) {
+      var bankID = activationResponse.message;
+      if (bankID != null && bankID.isNotEmpty) {
+        await _sharedPref.setBankID(bankID);
+      }
+      return activationResponse;
     }
-    return activationResponse;
   }
 
   // Call this method to verify otp
