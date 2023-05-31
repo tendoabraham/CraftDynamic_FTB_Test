@@ -42,7 +42,6 @@ class MenuItemTitle extends StatelessWidget {
         title,
         // overflow: TextOverflow.fade,
         textAlign: TextAlign.center,
-        overflow: TextOverflow.fade,
         softWrap: true,
       );
 }
