@@ -3,7 +3,6 @@ import 'package:craft_dynamic/src/builder/factory_builder.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/request_status.dart';
-import 'package:craft_dynamic/src/ui/dynamic_static/transaction_receipt.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/forms/otp_form.dart';
 import 'package:flutter/material.dart';

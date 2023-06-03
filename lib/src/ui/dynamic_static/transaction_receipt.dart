@@ -1,13 +1,6 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-
-import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/dynamic_widget.dart';
-import 'package:craft_dynamic/src/util/clipper_util.dart';
-import 'package:vibration/vibration.dart';
+part of craft_dynamic;
 
 class TransactionReceipt extends StatefulWidget {
   final PostDynamic postDynamic;
