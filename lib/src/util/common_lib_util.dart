@@ -81,14 +81,15 @@ class CommonUtils {
     Get.to(widget);
   }
 
-  static showToast(message) {
+  static showToast(message,
+      {backgroundColor = Colors.greenAccent, textColor = Colors.white}) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.SNACKBAR,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
+        backgroundColor: backgroundColor,
+        textColor: textColor,
         fontSize: 16.0);
   }
 

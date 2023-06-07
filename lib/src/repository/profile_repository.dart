@@ -23,7 +23,7 @@ class ProfileRepository {
                 (e) => e["ControlID"] == "BALTEXT")["ControlValue"] ??
             "Not available";
       } else {
-        balance = "Error!";
+        balance = "error";
         CommonUtils.showToast(value?.message ?? "Failed to get balance");
       }
     });

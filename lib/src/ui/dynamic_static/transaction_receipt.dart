@@ -58,7 +58,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                       topLeft: Radius.circular(12.0),
                                       topRight: Radius.circular(12.0))),
                               padding: const EdgeInsets.only(
-                                  bottom: 74, left: 12, right: 12),
+                                  bottom: 12, left: 12, right: 12),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.max,
@@ -81,8 +81,6 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                         )),
                                         const Text(
                                           "Success",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
                                         ).tr(),
                                         Expanded(
                                           child: Divider(
@@ -92,62 +90,122 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 22,
+                                      height: 44,
                                     ),
+                                    // Text(
+                                    //   widget.moduleName ?? "",
+                                    //   style: const TextStyle(fontSize: 24),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 24,
+                                    // ),
+                                    // ListView.builder(
+                                    //     padding: const EdgeInsets.symmetric(
+                                    //         horizontal: 14),
+                                    //     shrinkWrap: true,
+                                    //     physics:
+                                    //         const NeverScrollableScrollPhysics(),
+                                    //     itemCount:
+                                    //         postDynamic.receiptDetails?.length,
+                                    //     itemBuilder: (context, index) {
+                                    //       String title = MapItem.fromJson(
+                                    //               postDynamic
+                                    //                   .receiptDetails?[index])
+                                    //           .title;
+                                    //       String? value = MapItem.fromJson(
+                                    //                   postDynamic
+                                    //                           .receiptDetails?[
+                                    //                       index])
+                                    //               .value ??
+                                    //           "****";
+                                    //       return Padding(
+                                    //           padding:
+                                    //               const EdgeInsets.symmetric(
+                                    //                   vertical: 8),
+                                    //           child: Row(
+                                    //             mainAxisAlignment:
+                                    //                 MainAxisAlignment
+                                    //                     .spaceBetween,
+                                    //             children: [
+                                    //               Text(title),
+                                    //               Text(
+                                    //                 value.isEmpty
+                                    //                     ? "****"
+                                    //                     : value,
+                                    //                 style: const TextStyle(
+                                    //                     fontWeight:
+                                    //                         FontWeight.bold),
+                                    //               )
+                                    //             ],
+                                    //           ));
+                                    //     }),
                                     Text(
-                                      widget.moduleName ?? "",
-                                      style: const TextStyle(fontSize: 24),
+                                      widget.postDynamic.notifyText ?? "",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(
-                                      height: 24,
-                                    ),
-                                    ListView.builder(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 14),
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount:
-                                            postDynamic.receiptDetails?.length,
-                                        itemBuilder: (context, index) {
-                                          String title = MapItem.fromJson(
-                                                  postDynamic
-                                                      .receiptDetails?[index])
-                                              .title;
-                                          String? value = MapItem.fromJson(
-                                                      postDynamic
-                                                              .receiptDetails?[
-                                                          index])
-                                                  .value ??
-                                              "****";
-                                          return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(title),
-                                                  Text(
-                                                    value.isEmpty
-                                                        ? "****"
-                                                        : value,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                ],
-                                              ));
-                                        }),
+
                                     const SizedBox(
                                       height: 44,
                                     ),
-                                    WidgetFactory.buildButton(context, () {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                    }, "Done"),
+                                    Container(
+                                        child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            iconSize: 28,
+                                            onPressed: () {
+                                              PDFUtil.downloadReceipt(
+                                                postDynamic,
+                                              );
+                                            },
+                                            icon: Column(children: [
+                                              Icon(
+                                                color: Colors.grey,
+                                                Icons.download,
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text("Download",
+                                                  style:
+                                                      TextStyle(fontSize: 12))
+                                            ])),
+                                        const VerticalDivider(
+                                            color: Colors.black),
+                                        IconButton(
+                                            iconSize: 28,
+                                            onPressed: () {},
+                                            icon: Column(children: [
+                                              Icon(
+                                                color: Colors.grey,
+                                                Icons.share,
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text("Share",
+                                                  style:
+                                                      TextStyle(fontSize: 12))
+                                            ])),
+                                      ],
+                                    )),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    SizedBox(
+                                        width: 150,
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Done"))),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
                                   ])))))),
           backgroundColor: APIService.appPrimaryColor,
         ));
@@ -158,15 +216,4 @@ class _TransactionReceiptState extends State<TransactionReceipt>
     super.dispose();
     _controller.dispose();
   }
-}
-
-class MapItem {
-  String title;
-  String? value;
-
-  MapItem({required this.title, required this.value});
-
-  MapItem.fromJson(Map<String, dynamic> json)
-      : title = json["Title"],
-        value = json["Value"];
 }

@@ -6,6 +6,7 @@ class PermissionUtil {
     await _checkContactsPermission();
     await _checkCameraPermission();
     await _checkLocationPermission();
+    await _checkStoragePermissions();
   }
 
   static _checkReadPhoneStatePermission() async {
@@ -29,6 +30,12 @@ class PermissionUtil {
   static _checkLocationPermission() async {
     if (await Permission.location.status.isDenied) {
       await Permission.location.request();
+    }
+  }
+
+  static _checkStoragePermissions() async {
+    if (await Permission.storage.status.isDenied) {
+      await Permission.storage.request();
     }
   }
 }

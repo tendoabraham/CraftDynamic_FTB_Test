@@ -58,7 +58,7 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
               appBar: AppBar(
                   elevation: 2,
                   title: Text(widget.favouriteModule == null
-                      ? widget.moduleItem!.moduleName
+                      ? widget.moduleItem?.moduleName ?? ""
                       : widget.favouriteModule!.moduleName)),
               body: FutureBuilder<List<ModuleItem>?>(
                   future: getModules(),

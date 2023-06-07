@@ -70,6 +70,7 @@ class DynamicResponse {
       this.notifications,
       this.resultsData,
       this.formFields,
+      this.notifyText,
       this.receiptDetails,
       this.accountStatement,
       this.beneficiaries,

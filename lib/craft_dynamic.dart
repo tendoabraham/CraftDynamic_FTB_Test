@@ -62,6 +62,7 @@ import 'src/session_manager/session_manager.dart';
 import 'src/state/plugin_state.dart';
 import 'src/ui/dynamic_components.dart';
 import 'src/util/clipper_util.dart';
+import 'src/util/pdf_util.dart';
 
 part 'src/util/logger_util.dart';
 part 'src/app_data/model.dart';

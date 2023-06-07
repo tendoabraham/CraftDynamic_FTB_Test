@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -154,24 +155,10 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                             const SizedBox(
                               height: 44,
                             ),
-                            Align(
-                                alignment: Alignment.bottomCenter,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: closeOrLogout,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: APIService.appPrimaryColor),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24, vertical: 14),
-                                      child: Text(
-                                        "Done".tr(),
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      )),
-                                ))
+                            SizedBox(
+                                width: 200,
+                                child: WidgetFactory.buildButton(
+                                    context, closeOrLogout, "Done".tr())),
                           ],
                         ))),
               ),
