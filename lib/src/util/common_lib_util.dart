@@ -93,6 +93,32 @@ class CommonUtils {
         fontSize: 16.0);
   }
 
+  static showActionSnackBar({context, message, action}) {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            duration: snackBarDuration,
+            content: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(message),
+                const Spacer(),
+                const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                )
+              ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            action: action,
+            backgroundColor: Colors.green),
+      );
+    } catch (e) {
+      AppLogger.appLogE(tag: "snackbar error", message: e.toString());
+    }
+  }
+
   static vibrate() {
     if (!kIsWeb) {
       Vibration.vibrate();

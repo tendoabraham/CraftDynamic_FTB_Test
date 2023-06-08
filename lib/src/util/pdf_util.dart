@@ -8,9 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PDFUtil {
-  static downloadReceipt(
-    PostDynamic postDynamic,
-  ) async {
+  static downloadReceipt(PostDynamic postDynamic,
+      {downloadReceipt = true}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
     final _profileRepo = ProfileRepository();
@@ -41,6 +40,25 @@ class PDFUtil {
 
     document.template.top = header;
 
+    double hiTextUpperBound = 60;
+    double subTitleUpperBound = hiTextUpperBound + 50;
+    PdfStringFormat format = PdfStringFormat();
+    format.alignment = PdfTextAlignment.center;
+
+    page.graphics.drawString(
+        'Hi ${await _profileRepo.getUserInfo(UserAccountData.FirstName)},',
+        PdfStandardFont(PdfFontFamily.helvetica, 40, style: PdfFontStyle.bold),
+        brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
+        bounds: Rect.fromLTWH(0, hiTextUpperBound, page.size.width - 100, 0),
+        format: format);
+
+    page.graphics.drawString('Thank you for using ${APIService.appLabel}',
+        PdfStandardFont(PdfFontFamily.helvetica, 18),
+        brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
+        bounds: Rect.fromLTWH(
+            0, subTitleUpperBound, document.pageSettings.size.width - 100, 0),
+        format: format);
+
     PdfGrid grid = PdfGrid();
     var gridStyle = PdfGridStyle(
       cellPadding: PdfPaddings(left: 20, right: 20, top: 8, bottom: 8),
@@ -67,7 +85,9 @@ class PDFUtil {
     // Set margins for the page
     double leftMargin = 8; // Adjust the left margin value as desired
     double rightMargin = 4; // Adjust the right margin value as desired
-    double topMargin = 24; // Adjust the top margin value as desired
+    double topMargin = 20 +
+        hiTextUpperBound +
+        subTitleUpperBound; // Adjust the top margin value as desired
     double bottomMargin = 0; // A
 
     PdfLayoutResult? layoutResult = grid.draw(
@@ -80,23 +100,6 @@ class PDFUtil {
       ),
     );
 
-    double textWidth = 300; // Width of the text bounds
-    double textHeight = 50; // Height of the text bounds
-    double centerX =
-        layoutResult!.bounds.left + (layoutResult.bounds.width - textWidth) / 2;
-    double centerY = layoutResult.bounds.bottom +
-        10 +
-        (layoutResult.bounds.height - textHeight) / 2;
-    Rect textBounds = Rect.fromLTWH(centerX, centerY, textWidth, textHeight);
-
-// Draw the centered text below the grid
-    page.graphics.drawString(
-      'Thank you ${await _profileRepo.getUserInfo(UserAccountData.FirstName)}',
-      PdfStandardFont(PdfFontFamily.helvetica, 20),
-      brush: PdfBrushes.black,
-      bounds: textBounds,
-    );
-
     String receiptname = "Receipt$receiptNo";
     String filePath = "${directory?.path}/$receiptname.pdf";
 
@@ -107,6 +110,7 @@ class PDFUtil {
       path: filePath,
       pdfName: receiptname,
       document: document,
+      downloadReceipt: downloadReceipt,
     ));
   }
 

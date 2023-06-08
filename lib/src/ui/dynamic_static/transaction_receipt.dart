@@ -177,7 +177,11 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             color: Colors.black),
                                         IconButton(
                                             iconSize: 28,
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              PDFUtil.downloadReceipt(
+                                                  postDynamic,
+                                                  downloadReceipt: false);
+                                            },
                                             icon: Column(children: [
                                               Icon(
                                                 color: Colors.grey,
