@@ -35,7 +35,6 @@ class UIDataRepository {
       _actionControlRepository.insertActionControls(actions);
     }
     if (uiResponse?.module != null) {
-      _moduleRepository.closeBox();
       List<ModuleItem> modules = [];
       uiResponse?.module?.forEach((item) {
         try {

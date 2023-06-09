@@ -5,6 +5,7 @@ import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
@@ -79,7 +80,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   _isChangeLanguage() async {
     if (widget.postDynamic.status == changeLanguage) {
-      // HiveUtil.clearBoxCache("modules");
+      await Hive.close();
     }
   }
 
