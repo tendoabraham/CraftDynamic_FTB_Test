@@ -17,7 +17,7 @@ class AuthRepository {
         if (res.status == StatusCode.success.statusCode) {
           return true;
         } else {
-          CommonUtils.showToast(res.message ?? "Authentication failed");
+          CommonUtils.showToast(res.message ?? "Login failed");
           return false;
         }
       }
