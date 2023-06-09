@@ -36,6 +36,7 @@ class UIDataRepository {
     }
     if (uiResponse?.module != null) {
       List<ModuleItem> modules = [];
+      await _moduleRepository.closeBox();
       uiResponse?.module?.forEach((item) {
         try {
           modules.add(ModuleItem.fromJson(item));

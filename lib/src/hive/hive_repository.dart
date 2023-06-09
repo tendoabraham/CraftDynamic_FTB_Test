@@ -13,7 +13,6 @@ class ModuleRepository {
 
   insertModuleItems(List<ModuleItem> moduleItems) async {
     var box = await openBox();
-    await box.clear();
     try {
       for (var module in moduleItems) {
         box.put(module.moduleId, module);
@@ -63,7 +62,7 @@ class ModuleRepository {
 
   closeBox() async {
     var box = await openBox();
-    await box.close();
+    await box.deleteFromDisk();
   }
 }
 
