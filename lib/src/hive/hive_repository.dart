@@ -62,7 +62,7 @@ class ModuleRepository {
   }
 
   closeBox() async {
-    await Hive.box("modules").close();
+    await Hive.box("modules").clear();
   }
 }
 
