@@ -60,6 +60,10 @@ class ModuleRepository {
         .toList();
     return modules;
   }
+
+  closeBox() async {
+    await Hive.box("modules").close();
+  }
 }
 
 class FormsRepository {
