@@ -62,7 +62,8 @@ class ModuleRepository {
   }
 
   closeBox() async {
-    await Hive.box("modules").clear();
+    var box = await openBox();
+    await box.clear();
   }
 }
 
