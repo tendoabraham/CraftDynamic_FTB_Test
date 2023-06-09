@@ -63,7 +63,7 @@ class ModuleRepository {
 
   closeBox() async {
     var box = await openBox();
-    await box.deleteFromDisk();
+    await box.clear();
   }
 }
 
