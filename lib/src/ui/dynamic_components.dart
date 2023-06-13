@@ -22,6 +22,8 @@ import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 
+import 'dynamic_static/qr_scanner.dart';
+
 class DynamicInput {
   static List<Map<String?, dynamic>> formInputValues = [];
   static Map<String?, dynamic> encryptedField = {};
@@ -623,6 +625,8 @@ class DynamicQRScanner implements IFormWidget {
   @override
   Widget render() {
     return Builder(builder: (BuildContext context) {
+      var formItem = BaseFormInheritedComponent.of(context)?.formItem;
+      var moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
       return Column(
         children: [
           const SizedBox(
@@ -630,8 +634,12 @@ class DynamicQRScanner implements IFormWidget {
           ),
           InkWell(
             onTap: () {
-              // CommonUtils.navigateToRoute(
-              //     context: context, widget: const QRScanner());
+              CommonUtils.navigateToRoute(
+                  context: context,
+                  widget: QRScanner(
+                    moduleItem: moduleItem!,
+                    formItem: formItem!,
+                  ));
             },
             child: Image.asset(
               "packages/craft_dynamic/assets/images/qr-code.png",
