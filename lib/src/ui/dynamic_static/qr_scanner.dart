@@ -25,9 +25,27 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner> {
   final cameraController = MobileScannerController();
   final _dynamicRequest = DynamicFormRequest();
+  MobileScannerArguments? arguments;
+  Barcode? barcode;
+  BarcodeCapture? capture;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (Provider.of<PluginState>(context, listen: false).deleteFormInput) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
+    }
+
+    final scanWindow = Rect.fromCenter(
+      center: MediaQuery.of(context).size.center(Offset.zero),
+      width: 200,
+      height: 200,
+    );
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -68,34 +86,53 @@ class _QRScannerState extends State<QRScanner> {
             ),
           ],
         ),
-        body: MobileScanner(
-            controller: cameraController,
-            onDetect: (capture) {
-              final Barcode barcode = capture.barcodes.first;
-              final Uint8List? image = capture.image;
-              if (barcode.rawValue != null && barcode.rawValue != "") {
-                AppLogger.appLogD(
-                    tag: "qr code",
-                    message: "scanning qr ----> ${barcode.rawValue}");
-                CommonUtils.showToast("Successfully scanned QR");
-                cameraController.stop();
-                Navigator.of(context).pop();
-                _dynamicRequest
-                    .dynamicRequest(widget.moduleItem,
-                        formItem: widget.formItem,
-                        dataObj:
-                            Provider.of<PluginState>(context, listen: false)
-                                .formInputValues,
-                        context: context,
-                        tappedButton: true)
-                    .then((value) => DynamicPostCall.processDynamicResponse(
-                        value!.dynamicData!,
-                        context,
-                        widget.formItem.controlId!,
-                        moduleItem: widget.moduleItem));
-                Vibration.vibrate();
-              }
-            }));
+        body: Stack(
+          children: [
+            MobileScanner(
+                controller: cameraController,
+                scanWindow: scanWindow,
+                onDetect: (capture) {
+                  final Barcode barcode = capture.barcodes.first;
+                  final Uint8List? image = capture.image;
+                  if (barcode.rawValue != null && barcode.rawValue != "") {
+                    AppLogger.appLogD(
+                        tag: "qr code",
+                        message: "scanning qr ----> ${barcode.rawValue}");
+                    CommonUtils.showToast("Successfully scanned QR");
+                    cameraController.stop();
+                    Navigator.of(context).pop();
+                    _dynamicRequest
+                        .dynamicRequest(widget.moduleItem,
+                            formItem: widget.formItem,
+                            dataObj: [
+                              {"ACCOUNTID": barcode.rawValue}
+                            ],
+                            context: context,
+                            tappedButton: true)
+                        .then((value) => DynamicPostCall.processDynamicResponse(
+                            value!.dynamicData!,
+                            context,
+                            widget.formItem.controlId!,
+                            moduleItem: widget.moduleItem));
+                    Vibration.vibrate();
+                  }
+                }),
+            if (barcode != null &&
+                barcode?.corners != null &&
+                arguments != null)
+              CustomPaint(
+                painter: BarcodeOverlay(
+                  barcode: barcode!,
+                  arguments: arguments!,
+                  boxFit: BoxFit.contain,
+                  capture: capture!,
+                ),
+              ),
+            CustomPaint(
+              painter: ScannerOverlay(scanWindow),
+            ),
+          ],
+        ));
   }
 }
 
