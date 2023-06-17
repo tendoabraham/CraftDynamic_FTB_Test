@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.5
-  flutter_secure_storage: ^6.0.0
+  flutter_secure_storage: any
   fluttercontactpicker: ^4.7.0
   group_button: ^5.2.2
   hex: ^0.2.0
