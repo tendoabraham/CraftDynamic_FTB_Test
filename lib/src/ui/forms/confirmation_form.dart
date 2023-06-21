@@ -26,8 +26,8 @@ class ConfirmationForm {
                       onPressed: () {
                         Get.back(result: 1);
                       },
-                      child: Row(
-                          children: const [Icon(Icons.close), Text("Cancel")]),
+                      child: const Row(
+                          children: [Icon(Icons.close), Text("Cancel")]),
                     ),
                   ],
                 ),

@@ -389,6 +389,109 @@ class _DynamicButtonState extends State<DynamicButton> {
 }
 
 class DynamicDropDown implements IFormWidget {
+  final _apiService = APIService();
+  FormItem? formItem;
+  ModuleItem? moduleItem;
+  String? _currentValue;
+  Map<String, dynamic> extraFieldMap = {};
+
+  Future<DynamicResponse?> dbCall(
+          String actionID, ModuleItem moduleItem) async =>
+      _apiService.getDynamicDropDownValues(actionID, moduleItem);
+
+  @override
+  Widget render() {
+    return Builder(builder: (BuildContext context) {
+      formItem = BaseFormInheritedComponent.of(context)?.formItem;
+      moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
+      return FutureBuilder<DynamicResponse?>(
+          future: dbCall(formItem?.actionId ?? "", moduleItem!),
+          builder:
+              (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+            Widget child = DropdownButtonFormField2(
+              value: _currentValue,
+              hint: Text(
+                formItem!.controlText!,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              isExpanded: true,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
+              items: const [],
+            );
+            if (snapshot.hasData) {
+              var dropdownItems = snapshot.data?.dynamicList ?? [];
+
+              Map<String, String> mapList = {};
+
+              for (dynamic item in dropdownItems) {
+                if (item is Map<String, dynamic>) {
+                  // Assuming each item in the list is a map with a single key-value pair
+                  String key = item.values.last;
+                  String value = item.values.first;
+                  mapList[key] = value;
+                }
+              }
+
+              var dropdownPicks = mapList.entries.map((item) {
+                return DropdownMenuItem(
+                  value: item.key,
+                  child: Text(
+                    item.value,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                );
+              }).toList();
+              dropdownPicks.toSet().toList();
+              if (dropdownPicks.isNotEmpty) {
+                _currentValue = dropdownPicks[0].value;
+                addInitialValueToLinkedField(context);
+              }
+              child = DropdownButtonFormField(
+                value: _currentValue,
+                decoration: InputDecoration(labelText: formItem?.controlText),
+                isExpanded: true,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+                onChanged: ((value) => {
+                      _currentValue = value.toString(),
+                      Provider.of<PluginState>(context, listen: false)
+                          .addScreenDropDown({
+                        formItem?.controlId?.toLowerCase():
+                            extraFieldMap[_currentValue]
+                      })
+                    }),
+                validator: (value) {
+                  Provider.of<PluginState>(context, listen: false)
+                      .addFormInput({"${formItem?.serviceParamId}": value});
+                },
+                items: dropdownPicks,
+              );
+            }
+
+            return child;
+          });
+    });
+  }
+
+  void addInitialValueToLinkedField(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        if (Provider.of<PluginState>(context, listen: false)
+            .screenDropDowns
+            .isEmpty) {
+          Provider.of<PluginState>(context, listen: false).addScreenDropDown({
+            formItem?.controlId?.toLowerCase(): extraFieldMap[_currentValue]
+          });
+        }
+      } catch (e) {
+        AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
+      }
+    });
+  }
+}
+
+class DropDown implements IFormWidget {
   final _userCodeRepository = UserCodeRepository();
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};

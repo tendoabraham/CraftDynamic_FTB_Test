@@ -34,3 +34,17 @@ extension FormatPhone on String {
     return replaceAll(RegExp('[^0-9]'), '');
   }
 }
+
+extension APICall on APIService {
+  Future<DynamicResponse?> getDynamicDropDownValues(
+      String actionID, ModuleItem moduleItem) async {
+    var request = await dioRequestBodySetUp("DBCALL", objectMap: {
+      "MerchantID": moduleItem.merchantID,
+      "DynamicForm": {"HEADER": actionID, "MerchantID": moduleItem.merchantID}
+    });
+    final route = await _sharedPref.getRoute("other".toLowerCase());
+    var response = await performDioRequest(request, route: route);
+    AppLogger.appLogI(tag: "dynamic dropdown", message: "data::$response");
+    return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
+  }
+}

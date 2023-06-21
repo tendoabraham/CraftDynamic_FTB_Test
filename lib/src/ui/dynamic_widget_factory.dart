@@ -17,6 +17,9 @@ abstract class IFormWidget {
         return const DynamicButton();
 
       case ViewType.DROPDOWN:
+        return DropDown();
+
+      case ViewType.DYNAMICDROPDOWN:
         return DynamicDropDown();
 
       case ViewType.LABEL:
