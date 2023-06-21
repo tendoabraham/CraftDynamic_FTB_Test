@@ -92,60 +92,53 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                     const SizedBox(
                                       height: 44,
                                     ),
-                                    // Text(
-                                    //   widget.moduleName ?? "",
-                                    //   style: const TextStyle(fontSize: 24),
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 24,
-                                    // ),
-                                    // ListView.builder(
-                                    //     padding: const EdgeInsets.symmetric(
-                                    //         horizontal: 14),
-                                    //     shrinkWrap: true,
-                                    //     physics:
-                                    //         const NeverScrollableScrollPhysics(),
-                                    //     itemCount:
-                                    //         postDynamic.receiptDetails?.length,
-                                    //     itemBuilder: (context, index) {
-                                    //       String title = MapItem.fromJson(
-                                    //               postDynamic
-                                    //                   .receiptDetails?[index])
-                                    //           .title;
-                                    //       String? value = MapItem.fromJson(
-                                    //                   postDynamic
-                                    //                           .receiptDetails?[
-                                    //                       index])
-                                    //               .value ??
-                                    //           "****";
-                                    //       return Padding(
-                                    //           padding:
-                                    //               const EdgeInsets.symmetric(
-                                    //                   vertical: 8),
-                                    //           child: Row(
-                                    //             mainAxisAlignment:
-                                    //                 MainAxisAlignment
-                                    //                     .spaceBetween,
-                                    //             children: [
-                                    //               Text(title),
-                                    //               Text(
-                                    //                 value.isEmpty
-                                    //                     ? "****"
-                                    //                     : value,
-                                    //                 style: const TextStyle(
-                                    //                     fontWeight:
-                                    //                         FontWeight.bold),
-                                    //               )
-                                    //             ],
-                                    //           ));
-                                    //     }),
                                     Text(
-                                      widget.postDynamic.notifyText ?? "",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
+                                      widget.moduleName ?? "",
+                                      style: const TextStyle(fontSize: 24),
                                     ),
-
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    ListView.builder(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14),
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            postDynamic.receiptDetails?.length,
+                                        itemBuilder: (context, index) {
+                                          String title = MapItem.fromJson(
+                                                  postDynamic
+                                                      .receiptDetails?[index])
+                                              .title;
+                                          String? value = MapItem.fromJson(
+                                                      postDynamic
+                                                              .receiptDetails?[
+                                                          index])
+                                                  .value ??
+                                              "****";
+                                          return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(title),
+                                                  Text(
+                                                    value.isEmpty
+                                                        ? "****"
+                                                        : value,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                ],
+                                              ));
+                                        }),
                                     const SizedBox(
                                       height: 44,
                                     ),
