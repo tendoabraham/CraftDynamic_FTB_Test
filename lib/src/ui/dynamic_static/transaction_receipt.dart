@@ -90,13 +90,6 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 44,
-                                    ),
-                                    Text(
-                                      widget.moduleName ?? "",
-                                      style: const TextStyle(fontSize: 24),
-                                    ),
-                                    const SizedBox(
                                       height: 24,
                                     ),
                                     ListView.builder(
