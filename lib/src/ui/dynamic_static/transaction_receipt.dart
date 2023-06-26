@@ -147,12 +147,12 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                 postDynamic,
                                               );
                                             },
-                                            icon: Column(children: [
+                                            icon: const Column(children: [
                                               Icon(
                                                 color: Colors.grey,
                                                 Icons.download,
                                               ),
-                                              const SizedBox(
+                                              SizedBox(
                                                 height: 8,
                                               ),
                                               Text("Download",
@@ -168,12 +168,12 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                   postDynamic,
                                                   downloadReceipt: false);
                                             },
-                                            icon: Column(children: [
+                                            icon: const Column(children: [
                                               Icon(
                                                 color: Colors.grey,
                                                 Icons.share,
                                               ),
-                                              const SizedBox(
+                                              SizedBox(
                                                 height: 8,
                                               ),
                                               Text("Share",
@@ -192,7 +192,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text("Done"))),
+                                            child: const Text("Done"))),
                                     const SizedBox(
                                       height: 24,
                                     ),

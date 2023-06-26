@@ -48,3 +48,17 @@ extension APICall on APIService {
     return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
   }
 }
+
+extension Navigate on BuildContext {
+  navigate(Widget widget) {
+    Navigator.push(
+      this,
+      MaterialPageRoute(builder: (context) => widget),
+    );
+  }
+
+  navigateAndPopAll(Widget widget) {
+    Navigator.pushAndRemoveUntil(this,
+        MaterialPageRoute(builder: (context) => widget), (route) => false);
+  }
+}
