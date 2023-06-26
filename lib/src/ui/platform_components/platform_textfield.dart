@@ -53,7 +53,7 @@ class AndroidTextFormField implements ITextFormField {
       keyboardType: properties.textInputType,
       obscureText: properties.isObscured,
       decoration: properties.inputDecoration,
-      style: const TextStyle(fontSize: 16),
+      style: properties.textStyle,
       validator: validator,
       onChanged: properties.onChange ?? (input) {},
       inputFormatters: properties.isAmount ? [CurrencyInputFormatter()] : null,
