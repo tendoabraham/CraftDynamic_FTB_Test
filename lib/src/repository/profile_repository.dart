@@ -10,23 +10,15 @@ class ProfileRepository {
 
   getUserInfo(UserAccountData key) => _sharedPref.getUserAccountInfo(key);
 
-  Future<String?> checkAccountBalance(String bankAccountID) async {
-    String balance = "";
-    await _services
-        .checkAccountBalance(
-            bankAccountID: bankAccountID,
-            merchantID: "BALANCE",
-            moduleID: "HOME")
-        .then((value) {
-      if (value?.status == StatusCode.success.statusCode) {
-        balance = value?.resultsData?.firstWhere(
-                (e) => e["ControlID"] == "BALTEXT")["ControlValue"] ??
-            "Not available";
-      } else {
-        balance = value?.message ?? "Balance error";
-      }
-    });
-    return balance;
+  Future<DynamicResponse?> checkAccountBalance(String bankAccountID) async {
+    return await _services.checkAccountBalance(
+        bankAccountID: bankAccountID, merchantID: "BALANCE", moduleID: "HOME");
+  }
+
+  String getActualBalanceText(DynamicResponse dynamicResponse) {
+    return dynamicResponse.resultsData
+            ?.firstWhere((e) => e["ControlID"] == "BALTEXT")["ControlValue"] ??
+        "Not available";
   }
 
   Future<DynamicResponse?> checkMiniStatement(String bankAccountID,
