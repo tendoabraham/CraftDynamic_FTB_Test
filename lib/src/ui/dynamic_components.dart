@@ -514,11 +514,8 @@ class DropDown implements IFormWidget {
               value: _currentValue,
               hint: Text(
                 formItem!.controlText!,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               isExpanded: true,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
               items: const [],
             );
             if (snapshot.hasData) {
