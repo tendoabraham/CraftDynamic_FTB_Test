@@ -6,7 +6,7 @@ final _initRepository = InitRepository();
 class AuthRepository {
   final _services = APIService();
 
-  Future<bool> biometricLogin(TextEditingController controller,
+  Future<bool> biometricLogin(TextEditingController pinController,
       {isButtonAction = false}) async {
     String bioEnabled = await _sharedPref.getBio();
     if (bioEnabled == "true") {
