@@ -12,8 +12,8 @@ class AuthRepository {
     if (bioEnabled == "true") {
       if (await BioMetricUtil.biometricAuthenticate()) {
         String bioPin = await _sharedPref.getBioPin();
-        controller.text = CryptLib.decryptField(encrypted: bioPin);
-        var res = await login(controller.text);
+        pinController.text = CryptLib.decryptField(encrypted: bioPin);
+        var res = await login(pinController.text);
         if (res.status == StatusCode.success.statusCode) {
           return true;
         } else {
