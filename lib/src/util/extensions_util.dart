@@ -47,6 +47,18 @@ extension APICall on APIService {
     AppLogger.appLogI(tag: "dynamic dropdown", message: "data::$response");
     return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
   }
+
+  Future<DynamicResponse?> getDynamicLink(
+      String actionID, ModuleItem moduleItem) async {
+    var request = await dioRequestBodySetUp("DBCALL", objectMap: {
+      "MerchantID": moduleItem.merchantID,
+      "DynamicForm": {"HEADER": actionID, "MerchantID": moduleItem.merchantID}
+    });
+    final route = await _sharedPref.getRoute("other".toLowerCase());
+    var response = await performDioRequest(request, route: route);
+    AppLogger.appLogI(tag: "dynamic link", message: "data::$response");
+    return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
+  }
 }
 
 extension Navigate on BuildContext {

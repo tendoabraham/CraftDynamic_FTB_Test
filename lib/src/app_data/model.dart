@@ -46,7 +46,7 @@ class FavouriteItem {
 class DynamicResponse {
   String status = "";
   DynamicData? dynamicData;
-  String? message, formID, notifyText, languageID;
+  String? message, formID, notifyText, languageID, otherText;
   int? nextFormSequence;
   List<dynamic>? dynamicList,
       notifications,
@@ -63,6 +63,7 @@ class DynamicResponse {
       this.dynamicData,
       this.message,
       this.languageID,
+      this.otherText,
       this.formID,
       this.display,
       this.nextFormSequence,
@@ -80,6 +81,7 @@ class DynamicResponse {
     status = json["Status"];
     message = json["Message"];
     languageID = json["LanguageID"];
+    otherText = json["OtherText"];
     formID = json['FormID'];
     display = json["Display"];
     nextFormSequence = json["NextFormSequence"];

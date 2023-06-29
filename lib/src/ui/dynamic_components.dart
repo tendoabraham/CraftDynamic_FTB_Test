@@ -1163,11 +1163,23 @@ class _TextLinkState extends State<TextLink> {
   @override
   Widget build(BuildContext context) {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
-    return TextButton(
-        onPressed: () {
-          CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
-        },
-        child: Text(formItem?.controlText ?? "Link"));
+
+    return FutureBuilder<DynamicResponse?>(builder:
+        (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+      Widget child = TextButton(
+          onPressed: () {
+            CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
+          },
+          child: Text(formItem?.controlText ?? "Link"));
+      if (snapshot.hasData) {
+        return TextButton(
+            onPressed: () {
+              CommonUtils.openUrl(Uri.parse(snapshot.data?.otherText ?? ""));
+            },
+            child: Text(formItem?.controlText ?? "Link"));
+      }
+      return child;
+    });
   }
 }
 
