@@ -27,7 +27,8 @@ enum ViewType {
   CHECKBOX,
   HORIZONTALTEXT,
   DYNAMICDROPDOWN,
-  CAROUSELVIEW
+  CAROUSELVIEW,
+  TEXTLINK
 }
 
 enum ControlFormat {

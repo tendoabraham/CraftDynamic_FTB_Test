@@ -51,6 +51,9 @@ abstract class IFormWidget {
       case ViewType.HORIZONTALTEXT:
         return const DynamicHorizontalText();
 
+      case ViewType.TEXTLINK:
+        return const TextLink();
+
       // case ViewType.CONTAINER:
       //   return const DynamicContainer();
 

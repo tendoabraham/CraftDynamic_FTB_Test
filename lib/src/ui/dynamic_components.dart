@@ -958,9 +958,9 @@ class _DynamicImageUpload extends State<DynamicImageUpload> {
                       width: double.infinity,
                       height: 177,
                       child: imageFile == null
-                          ? Column(
+                          ? const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                   Icon(
                                     Icons.add_a_photo,
                                     size: 34,
@@ -1146,6 +1146,28 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
         )
       ],
     );
+  }
+}
+
+class TextLink extends StatefulWidget implements IFormWidget {
+  const TextLink({super.key});
+
+  @override
+  State<TextLink> createState() => _TextLinkState();
+
+  @override
+  Widget render() => const TextLink();
+}
+
+class _TextLinkState extends State<TextLink> {
+  @override
+  Widget build(BuildContext context) {
+    var formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    return TextButton(
+        onPressed: () {
+          CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
+        },
+        child: Text(formItem?.controlText ?? "Link"));
   }
 }
 
