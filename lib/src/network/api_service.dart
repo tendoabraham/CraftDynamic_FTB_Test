@@ -113,13 +113,13 @@ class APIService {
     String? response;
 
     String data = "{}";
-    bool tokenRefreshed = await _sharedPref.getTokenIsRefreshed();
+    var tokenRefreshed = await _sharedPref.getTokenIsRefreshed();
 
     if (!APIUtil.verifyConnection()) {
       return data;
     }
 
-    if (tokenRefreshed == false) {
+    if (tokenRefreshed != "true") {
       await _initRepository.getAppToken();
     }
     String uniqueID = await _sharedPref.getUniqueID();
