@@ -141,9 +141,8 @@ class CommonSharedPref {
     return await storage.read(key: "languageID") ?? "ENG";
   }
 
-  setTokenIsRefreshed(bool status) async {
-    return await storage.write(
-        key: "tokenIsRefreshed", value: status.toString());
+  setTokenIsRefreshed(String status) async {
+    return await storage.write(key: "tokenIsRefreshed", value: status);
   }
 
   getTokenIsRefreshed() async {

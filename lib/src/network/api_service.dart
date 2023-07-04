@@ -119,7 +119,7 @@ class APIService {
       return data;
     }
 
-    if (tokenRefreshed != "true") {
+    if (!tokenRefreshed) {
       await _initRepository.getAppToken();
     }
     String uniqueID = await _sharedPref.getUniqueID();
@@ -223,7 +223,7 @@ class APIService {
       AppLogger.appLogI(tag: "TOKEN RESPONSE", message: decryptedMessage);
 
       if (dioResponse.statusCode == 200) {
-        await _sharedPref.setTokenIsRefreshed(true);
+        await _sharedPref.setTokenIsRefreshed("true");
         token = decryptedMessage["token"] ?? "";
         currentToken.value = token;
         await _sharedPref.addDeviceData(token);
