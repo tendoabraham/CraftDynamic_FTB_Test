@@ -96,7 +96,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   periodicActions(int timeout) {
     Timer.periodic(Duration(milliseconds: timeout), (timer) {
-      _sharedPref.setTokenIsRefreshed(false);
+      _sharedPref.setTokenIsRefreshed("false");
       _initRepository.getAppToken();
       getCurrentLatLong();
     });
