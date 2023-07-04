@@ -24,7 +24,8 @@ class ModuleRepository {
 
   Future<ModuleItem?> getModuleById(String moduleID) async {
     var box = await openBox();
-    return box.get(moduleID);
+    var module = box.values.firstWhere((module) => module.moduleId == moduleID);
+    return module;
   }
 
   Future<List<ModuleItem>?> getModulesById(String moduleID) async {
