@@ -66,8 +66,8 @@ class DynamicFormRequest {
     }
 
     if (actionControl != null &&
-        actionControl.merchantID != "" &&
-        actionControl.merchantID != null) {
+        actionControl.merchantID != null &&
+        actionControl.merchantID != "") {
       AppLogger.appLogD(
           tag: "action merchantid", message: actionControl.merchantID);
       requestObj.remove("MerchantID");
