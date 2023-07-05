@@ -1160,26 +1160,32 @@ class TextLink extends StatefulWidget implements IFormWidget {
 }
 
 class _TextLinkState extends State<TextLink> {
+  final _api = APIService();
+
   @override
   Widget build(BuildContext context) {
+    var moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
 
-    return FutureBuilder<DynamicResponse?>(builder:
-        (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
-      Widget child = TextButton(
-          onPressed: () {
-            CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
-          },
-          child: Text(formItem?.controlText ?? "Link"));
-      if (snapshot.hasData) {
-        return TextButton(
-            onPressed: () {
-              CommonUtils.openUrl(Uri.parse(snapshot.data?.otherText ?? ""));
-            },
-            child: Text(formItem?.controlText ?? "Link"));
-      }
-      return child;
-    });
+    return FutureBuilder<DynamicResponse?>(
+        future: _api.getDynamicLink(formItem?.actionId ?? "", moduleItem!),
+        builder:
+            (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+          Widget child = TextButton(
+              onPressed: () {
+                CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
+              },
+              child: Text(formItem?.controlText ?? "Link"));
+          if (snapshot.hasData) {
+            return TextButton(
+                onPressed: () {
+                  CommonUtils.openUrl(
+                      Uri.parse(snapshot.data?.otherText ?? ""));
+                },
+                child: Text(formItem?.controlText ?? "Link"));
+          }
+          return child;
+        });
   }
 }
 
