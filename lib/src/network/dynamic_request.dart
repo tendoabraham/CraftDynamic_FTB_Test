@@ -54,10 +54,13 @@ class DynamicFormRequest {
     requestObj["SessionID"] = "ffffffff-e46c-53ce-0000-00001d093e12";
 
     if (formItem != null) {
-      AppLogger.appLogD(tag: "control id", message: formItem.controlId);
+      AppLogger.appLogD(
+          tag: "control id::moduleid",
+          message: "${formItem.controlId}:${moduleItem?.moduleId}");
       actionControl =
           await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
+      AppLogger.appLogD(tag: "action control-->", message: actionControl);
     }
 
     if (actionControl?.displayFormID == ControlFormat.LISTDATA.name ||
