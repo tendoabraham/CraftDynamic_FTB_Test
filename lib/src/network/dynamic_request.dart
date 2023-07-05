@@ -67,6 +67,8 @@ class DynamicFormRequest {
     if (actionControl != null &&
         actionControl.merchantID != "" &&
         actionControl.merchantID != null) {
+      AppLogger.appLogD(
+          tag: "action merchantid", message: actionControl.merchantID);
       requestObj["MerchantID"] = actionControl.merchantID;
     }
 
