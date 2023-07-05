@@ -64,6 +64,12 @@ class DynamicFormRequest {
       isList = true;
     }
 
+    if (actionControl != null &&
+        actionControl.merchantID != "" &&
+        actionControl.merchantID != null) {
+      requestObj["MerchantID"] = actionControl.merchantID;
+    }
+
     if (actionControl != null) {
       actionType = ActionType.values.byName(actionControl.actionType);
     }

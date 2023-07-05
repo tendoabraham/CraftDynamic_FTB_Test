@@ -152,6 +152,8 @@ class ActionItem {
   String? displayFormID;
   @HiveField(6)
   String? confirmationModuleID;
+  @HiveField(7)
+  String? merchantID;
 
   ActionItem(
       {required this.moduleID,
@@ -159,7 +161,8 @@ class ActionItem {
       required this.webHeader,
       this.controlID,
       this.displayFormID,
-      this.confirmationModuleID});
+      this.confirmationModuleID,
+      this.merchantID});
 
   ActionItem.fromJson(Map<String, dynamic> json)
       : moduleID = json["ModuleID"],
@@ -167,7 +170,8 @@ class ActionItem {
         webHeader = json["WebHeader"],
         controlID = json["ControlID"],
         displayFormID = json["DisplayFormID"],
-        confirmationModuleID = json["ConfirmationModuleID"];
+        confirmationModuleID = json["ConfirmationModuleID"],
+        merchantID = json["MerchantID"];
 }
 
 @HiveType(typeId: 4)
