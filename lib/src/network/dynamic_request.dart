@@ -54,6 +54,7 @@ class DynamicFormRequest {
     requestObj["SessionID"] = "ffffffff-e46c-53ce-0000-00001d093e12";
 
     if (formItem != null) {
+      AppLogger.appLogD(tag: "control id", message: formItem.controlId);
       actionControl =
           await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
@@ -69,6 +70,7 @@ class DynamicFormRequest {
         actionControl.merchantID != null) {
       AppLogger.appLogD(
           tag: "action merchantid", message: actionControl.merchantID);
+      requestObj.remove("MerchantID");
       requestObj["MerchantID"] = actionControl.merchantID;
     }
 
