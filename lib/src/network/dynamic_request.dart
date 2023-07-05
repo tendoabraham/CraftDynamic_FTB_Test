@@ -60,7 +60,9 @@ class DynamicFormRequest {
       actionControl =
           await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
-      AppLogger.appLogD(tag: "action control-->", message: actionControl);
+      AppLogger.appLogD(
+          tag: "action control merchant id-->",
+          message: actionControl?.merchantID);
     }
 
     if (actionControl?.displayFormID == ControlFormat.LISTDATA.name ||
@@ -87,10 +89,6 @@ class DynamicFormRequest {
       setDeleteForm(context, true);
     }
 
-    AppLogger.appLogD(
-        tag: "(Before confirm)Current request values---->",
-        message: formvalues + encryptedvalues);
-
     confirmationModuleID = actionControl?.confirmationModuleID;
     if (confirmationModuleID != null && confirmationModuleID != "") {
       List<FormItem> form = await _formsRepository
@@ -114,10 +112,6 @@ class DynamicFormRequest {
         return dynamicResponse;
       }
     }
-
-    AppLogger.appLogD(
-        tag: "(After confirm)Current request values---->",
-        message: formvalues + encryptedvalues);
 
     requestObj = DynamicFactory.getDynamicRequestObject(actionType,
         merchantID: merchantID,
