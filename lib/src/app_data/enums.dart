@@ -45,6 +45,7 @@ enum ControlFormat {
   OTHER,
   OPENFORM,
   NEXT,
+  TEXT,
   RADIOGROUPS
 }
 

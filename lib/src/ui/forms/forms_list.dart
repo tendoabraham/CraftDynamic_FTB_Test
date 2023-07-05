@@ -49,7 +49,6 @@ class FormsListWidget extends StatelessWidget {
             (BuildContext context, AsyncSnapshot<List<FormItem>?> snapshot) {
           Widget child = const SizedBox();
           if (snapshot.hasData) {
-            AppLogger.appLogD(tag: "forms...", message: snapshot.data?.length);
             int? currentFormSequence = nextFormSequence;
             if (currentFormSequence != null) {
               if (currentFormSequence == 0) {

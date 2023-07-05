@@ -9,6 +9,8 @@ import '../builder/factory_builder.dart';
 
 class DynamicFormRequest {
   Map<String, dynamic> requestObj = {};
+  List<Map<String?, dynamic>> formvalues = [];
+  List<Map<String?, dynamic>> encryptedvalues = [];
   final _actionControlRepository = ActionControlRepository();
   final _formsRepository = FormsRepository();
   final _services = APIService();
@@ -26,6 +28,11 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
+    formvalues.addAll(
+        Provider.of<PluginState>(context, listen: false).formInputValues);
+    encryptedvalues.addAll(
+        Provider.of<PluginState>(context, listen: false).encryptedFields);
+
     ActionItem? actionControl;
     dynamicResponse = DynamicResponse(status: StatusCode.unknown.name);
     final merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
@@ -67,16 +74,17 @@ class DynamicFormRequest {
       setDeleteForm(context, true);
     }
 
+    AppLogger.appLogD(
+        tag: "(Before confirm)Current request values---->",
+        message: formvalues + encryptedvalues);
+
     confirmationModuleID = actionControl?.confirmationModuleID;
     if (confirmationModuleID != null && confirmationModuleID != "") {
       List<FormItem> form = await _formsRepository
               .getFormsByModuleId(confirmationModuleID ?? "") ??
           [];
-      var result = await ConfirmationForm.showModalBottomDialog(
-          context,
-          form,
-          moduleItem!,
-          Provider.of<PluginState>(context, listen: false).formInputValues);
+      var result = await ConfirmationForm.confirmTransaction(
+          context, form, moduleItem!, formvalues);
       if (result != null) {
         if (result == 1) {
           Provider.of<PluginState>(context, listen: false)
@@ -94,15 +102,19 @@ class DynamicFormRequest {
       }
     }
 
+    AppLogger.appLogD(
+        tag: "(After confirm)Current request values---->",
+        message: formvalues + encryptedvalues);
+
     requestObj = DynamicFactory.getDynamicRequestObject(actionType,
         merchantID: merchantID,
         actionID: formItem?.actionId ?? "",
         requestMap: requestObj,
-        dataObject: dataObj,
+        dataObject: formvalues,
         isList: isList,
         listType: listType,
         encryptedFields:
-            encryptedField); // Get a request map from this interface
+            encryptedvalues); // Get a request map from this interface
 
     dynamicResponse = await _services.dynamicRequest(
         requestObj: requestObj,

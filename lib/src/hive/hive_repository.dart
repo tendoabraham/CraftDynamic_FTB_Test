@@ -258,7 +258,6 @@ class BankAccountRepository {
   Future<List<BankAccount>?> getAllBankAccounts() async {
     var box = await openBox();
     var accounts = box.values.toList();
-    AppLogger.appLogD(tag: "all accounts", message: accounts);
     return accounts;
   }
 }
