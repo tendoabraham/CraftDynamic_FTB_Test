@@ -209,7 +209,7 @@ class ActionItemAdapter extends TypeAdapter<ActionItem> {
   @override
   void write(BinaryWriter writer, ActionItem obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
