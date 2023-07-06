@@ -202,6 +202,7 @@ class ActionItemAdapter extends TypeAdapter<ActionItem> {
       controlID: fields[4] as String?,
       displayFormID: fields[5] as String?,
       confirmationModuleID: fields[6] as String?,
+      merchantID: fields[7] as String?,
     )..no = fields[0] as int?;
   }
 
@@ -222,7 +223,9 @@ class ActionItemAdapter extends TypeAdapter<ActionItem> {
       ..writeByte(5)
       ..write(obj.displayFormID)
       ..writeByte(6)
-      ..write(obj.confirmationModuleID);
+      ..write(obj.confirmationModuleID)
+      ..writeByte(7)
+      ..write(obj.merchantID);
   }
 
   @override
