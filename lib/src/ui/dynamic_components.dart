@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
@@ -788,32 +789,56 @@ class _DynamicPhonePickerFormWidgetState
   Widget build(BuildContext context) {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
 
-    return TextFormField(
+    return IntlPhoneField(
       controller: controller,
+      disableLengthCheck: true,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: formItem?.controlText,
-        suffixIcon: IconButton(
-            icon: Icon(
-              Icons.contacts,
-              color: APIService.appPrimaryColor,
-            ),
-            onPressed: () async {
-              final PhoneContact contact =
-                  await FlutterContactPicker.pickPhoneContact();
-              number =
-                  contact.phoneNumber?.number?.replaceAll(RegExp('[^0-9]'), '');
-              controller.text = number!;
-            }),
+        hintText: formItem?.controlText,
       ),
+      initialCountryCode: 'ET',
+      onChanged: (phone) {
+        number = phone.completeNumber.formatPhone();
+        // _countryCode = phone.countryCode;
+      },
       validator: (value) {
+        var phone = value?.number ?? "";
+
+        if (phone.length != 9) {
+          return "Invalid mobile";
+        } else if (phone == "") {
+          return "Enter your mobile";
+        }
         Provider.of<PluginState>(context, listen: false)
             .addFormInput({"${formItem?.serviceParamId}": value});
-
-        return null;
       },
-      style: const TextStyle(fontSize: 16),
     );
+
+    // return TextFormField(
+    //   controller: controller,
+    //   decoration: InputDecoration(
+    //     border: const OutlineInputBorder(),
+    //     labelText: formItem?.controlText,
+    //     suffixIcon: IconButton(
+    //         icon: Icon(
+    //           Icons.contacts,
+    //           color: APIService.appPrimaryColor,
+    //         ),
+    //         onPressed: () async {
+    //           final PhoneContact contact =
+    //               await FlutterContactPicker.pickPhoneContact();
+    //           number =
+    //               contact.phoneNumber?.number?.replaceAll(RegExp('[^0-9]'), '');
+    //           controller.text = number!;
+    //         }),
+    //   ),
+    //   validator: (value) {
+    //     Provider.of<PluginState>(context, listen: false)
+    //         .addFormInput({"${formItem?.serviceParamId}": value});
+
+    //     return null;
+    //   },
+    //   style: const TextStyle(fontSize: 16),
+    // );
   }
 }
 
