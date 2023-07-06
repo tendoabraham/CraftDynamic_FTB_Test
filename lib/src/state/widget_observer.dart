@@ -12,7 +12,7 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused) {
-      CommonUtils.getXRouteAndPopAll(widget: widget);
+      // CommonUtils.getXRouteAndPopAll(widget: widget);
     }
   }
 }
