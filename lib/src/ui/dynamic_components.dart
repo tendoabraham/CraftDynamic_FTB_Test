@@ -800,19 +800,16 @@ class _DynamicPhonePickerFormWidgetState
         number = phone.completeNumber.formatPhone();
         // _countryCode = phone.countryCode;
       },
-      onSubmitted: (value) {
-        AppLogger.appLogD(
-            tag: "phone input", message: "saving phone to object");
-        Provider.of<PluginState>(context, listen: false)
-            .addFormInput({"${formItem?.serviceParamId}": value});
-      },
       validator: (value) {
         var phone = value?.number ?? "";
 
         if (phone.length != 9) {
           return "Invalid mobile";
-        } else if (phone == "") {
-          return "Enter your mobile";
+        } else {
+          AppLogger.appLogD(
+              tag: "phone input", message: "saving phone to object");
+          Provider.of<PluginState>(context, listen: false)
+              .addFormInput({"${formItem?.serviceParamId}": value});
         }
       },
     );
