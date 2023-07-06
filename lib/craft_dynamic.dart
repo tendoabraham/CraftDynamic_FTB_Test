@@ -47,7 +47,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 import 'package:yaml/yaml.dart';
 import 'package:easy_localization/easy_localization.dart';
