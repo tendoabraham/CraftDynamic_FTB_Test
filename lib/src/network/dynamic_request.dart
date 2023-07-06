@@ -35,7 +35,7 @@ class DynamicFormRequest {
 
     ActionItem? actionControl;
     dynamicResponse = DynamicResponse(status: StatusCode.unknown.name);
-    final merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
+    var merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
 
     if (dataObj == null) {
       Fluttertoast.showToast(
@@ -70,13 +70,13 @@ class DynamicFormRequest {
       isList = true;
     }
 
-    if (actionControl != null &&
-        actionControl.merchantID != null &&
-        actionControl.merchantID != "") {
-      AppLogger.appLogD(
-          tag: "action merchantid", message: actionControl.merchantID);
-      requestObj.remove("MerchantID");
-      requestObj["MerchantID"] = actionControl.merchantID;
+    if (actionControl != null) {
+      var actionMerchantID = actionControl.merchantID;
+      if (actionMerchantID != null && actionMerchantID != "") {
+        AppLogger.appLogD(
+            tag: "action merchantid", message: actionControl.merchantID);
+        merchantID = actionMerchantID;
+      }
     }
 
     if (actionControl != null) {
