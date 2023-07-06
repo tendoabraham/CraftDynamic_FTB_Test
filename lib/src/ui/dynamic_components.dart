@@ -800,6 +800,12 @@ class _DynamicPhonePickerFormWidgetState
         number = phone.completeNumber.formatPhone();
         // _countryCode = phone.countryCode;
       },
+      onSubmitted: (value) {
+        AppLogger.appLogD(
+            tag: "phone input", message: "saving phone to object");
+        Provider.of<PluginState>(context, listen: false)
+            .addFormInput({"${formItem?.serviceParamId}": value});
+      },
       validator: (value) {
         var phone = value?.number ?? "";
 
@@ -808,8 +814,6 @@ class _DynamicPhonePickerFormWidgetState
         } else if (phone == "") {
           return "Enter your mobile";
         }
-        Provider.of<PluginState>(context, listen: false)
-            .addFormInput({"${formItem?.serviceParamId}": value});
       },
     );
 
