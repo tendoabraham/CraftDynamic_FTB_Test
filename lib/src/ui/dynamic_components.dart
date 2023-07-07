@@ -5,10 +5,9 @@ import 'dart:io';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
@@ -781,65 +780,43 @@ class DynamicPhonePickerFormWidget extends StatefulWidget
 
 class _DynamicPhonePickerFormWidgetState
     extends State<DynamicPhonePickerFormWidget> {
-  String? number;
+  String? code;
 
   var controller = TextEditingController();
+  String initialCountry = 'ET';
+  PhoneNumber inputNumber = PhoneNumber(isoCode: 'ET');
 
   @override
   Widget build(BuildContext context) {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
 
-    return IntlPhoneField(
-      controller: controller,
-      disableLengthCheck: true,
-      decoration: InputDecoration(
-        hintText: formItem?.controlText,
-      ),
-      initialCountryCode: 'ET',
-      onChanged: (phone) {
-        number = phone.completeNumber.formatPhone();
-        // _countryCode = phone.countryCode;
+    return InternationalPhoneNumberInput(
+      onInputChanged: (PhoneNumber number) {
+        inputNumber = number;
       },
+      selectorConfig: const SelectorConfig(
+          selectorType: PhoneInputSelectorType.DIALOG,
+          setSelectorButtonAsPrefixIcon: true,
+          leadingPadding: 14),
+      ignoreBlank: false,
+      autoValidateMode: AutovalidateMode.disabled,
+      initialValue: inputNumber,
+      textFieldController: controller,
+      inputDecoration: InputDecoration(labelText: formItem?.controlText),
       validator: (value) {
-        var phone = value?.number ?? "";
-
-        if (phone.length != 9) {
+        var input = value?.replaceAll(" ", "");
+        if (input?.length != 9) {
           return "Invalid mobile";
+        } else if (input == "") {
+          return "Enter your mobile";
         } else {
-          AppLogger.appLogD(
-              tag: "phone input", message: "saving phone to object");
-          Provider.of<PluginState>(context, listen: false)
-              .addFormInput({"${formItem?.serviceParamId}": value});
+          Provider.of<PluginState>(context, listen: false).addFormInput({
+            "${formItem?.serviceParamId}":
+                inputNumber.phoneNumber?.replaceAll("+", "")
+          });
         }
       },
     );
-
-    // return TextFormField(
-    //   controller: controller,
-    //   decoration: InputDecoration(
-    //     border: const OutlineInputBorder(),
-    //     labelText: formItem?.controlText,
-    //     suffixIcon: IconButton(
-    //         icon: Icon(
-    //           Icons.contacts,
-    //           color: APIService.appPrimaryColor,
-    //         ),
-    //         onPressed: () async {
-    //           final PhoneContact contact =
-    //               await FlutterContactPicker.pickPhoneContact();
-    //           number =
-    //               contact.phoneNumber?.number?.replaceAll(RegExp('[^0-9]'), '');
-    //           controller.text = number!;
-    //         }),
-    //   ),
-    //   validator: (value) {
-    //     Provider.of<PluginState>(context, listen: false)
-    //         .addFormInput({"${formItem?.serviceParamId}": value});
-
-    //     return null;
-    //   },
-    //   style: const TextStyle(fontSize: 16),
-    // );
   }
 }
 
