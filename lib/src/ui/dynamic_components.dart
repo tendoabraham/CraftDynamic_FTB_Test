@@ -235,7 +235,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
     }
     if (isObscured) {
       Provider.of<PluginState>(context, listen: false).addEncryptedFields({
-        "${formItem?.serviceParamId}": CryptLib.encryptField(formattedValue)
+        "${formItem?.serviceParamId}":
+            CryptLib.encryptField(formattedValue.replaceAll(" ", ""))
       });
     } else {
       Provider.of<PluginState>(context, listen: false)
