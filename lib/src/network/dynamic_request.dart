@@ -16,7 +16,8 @@ class DynamicFormRequest {
   final _services = APIService();
   final _sharedPref = CommonSharedPref();
   String? confirmationModuleID;
-  DynamicResponse? dynamicResponse;
+  DynamicResponse? dynamicResponse =
+      DynamicResponse(status: StatusCode.unknown.statusCode);
 
   Future<DynamicResponse?> dynamicRequest(
     ModuleItem? moduleItem, {
@@ -28,13 +29,10 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
-    formvalues.addAll(
-        Provider.of<PluginState>(context, listen: false).formInputValues);
-    encryptedvalues.addAll(
-        Provider.of<PluginState>(context, listen: false).encryptedFields);
+    formvalues.addAll(dataObj);
+    encryptedvalues.addAll(encryptedField);
 
     ActionItem? actionControl;
-    dynamicResponse = DynamicResponse(status: StatusCode.unknown.name);
     var merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
 
     if (dataObj == null) {

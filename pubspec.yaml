@@ -1,13 +1,11 @@
 name: craft_dynamic
-description: A new Flutter package project.
 version: 0.0.1
-homepage:
-
-environment:
-  sdk: ">=2.17.0 <3.0.0"
-  flutter: ">=1.17.0"
-
-dependencies:
+publish_to: https://onepub.dev/api/fvluhnofly/
+description: A new Flutter package project.
+environment: 
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: '>=1.17.0'
+dependencies: 
   archive: ^3.3.2
   cached_network_image: ^3.2.3
   camera: ^0.10.0+4
@@ -15,8 +13,6 @@ dependencies:
   dio: ^5.1.1
   dropdown_button2: ^1.9.1
   encrypt: ^5.0.1
-  flutter:
-    sdk: flutter
   flutter_easyloading: ^3.0.5
   flutter_secure_storage: any
   fluttercontactpicker: ^4.7.0
@@ -25,6 +21,9 @@ dependencies:
   image_picker: ^0.8.6
   intl: any
   local_auth: ^2.1.2
+  local_auth_android: ^1.0.32
+  local_auth_ios: ^1.1.3
+  crypto: ^3.0.3
   logger: ^1.1.0
   lottie: ^2.0.0
   package_info_plus: ^4.0.2
@@ -35,7 +34,6 @@ dependencies:
   url_launcher: ^6.1.7
   uuid: ^3.0.6
   vibration: ^1.7.6
-  # mobile_scanner: ^2.1.0
   flutter_jailbreak_detection: ^1.8.0
   local_session_timeout: ^2.1.1
   get: ^4.6.5
@@ -50,7 +48,6 @@ dependencies:
   asn1lib: ^1.4.0
   pointycastle: ^3.6.2
   pem: ^2.0.2
-  # pattern_formatter: any
   convert: ^3.1.1
   easy_localization: ^3.0.1
   connectivity_plus: ^3.0.3
@@ -60,27 +57,22 @@ dependencies:
   flutter_multi_formatter: ^2.11.0
   blur: ^3.1.0
   logging: ^1.2.0
-  syncfusion_flutter_pdf: 21.2.8 
+  syncfusion_flutter_pdf: 21.2.8
   flutter_pdfview: ^1.3.1
   share_plus: ^7.0.2
   open_file: ^3.3.1
   mobile_scanner: ^3.2.0
   intl_phone_number_input: ^0.7.3+1
-
-dev_dependencies:
-  flutter_test:
+  collection: any
+  flutter: 
     sdk: flutter
+dev_dependencies: 
   flutter_lints: ^2.0.0
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
-flutter:
-  # To add assets to your package, add an assets section, like this:
-  assets:
+ 
+flutter: 
+  assets: 
     - packages/craft_dynamic/assets/lottie/loading.json
     - packages/craft_dynamic/assets/lottie/loading_list.json
     - packages/craft_dynamic/assets/lottie/error.json
@@ -91,29 +83,3 @@ flutter:
     - packages/craft_dynamic/assets/lottie/info_lottie.json
     - packages/craft_dynamic/assets/images/warning.png
     - packages/craft_dynamic/assets/images/empty.png
-
-  # For details regarding assets in packages, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  #
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # To add custom fonts to your package, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts in packages, see
-  # https://flutter.dev/custom-fonts/#from-packages

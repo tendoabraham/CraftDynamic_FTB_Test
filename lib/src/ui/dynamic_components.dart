@@ -377,9 +377,13 @@ class _DynamicButtonState extends State<DynamicButton> {
                     .encryptedFields,
                 context: context,
                 tappedButton: true)
-            .then((value) => DynamicPostCall.processDynamicResponse(
+            .then((value) {
+          if (value?.status != StatusCode.unknown.statusCode) {
+            DynamicPostCall.processDynamicResponse(
                 value!.dynamicData!, context, formItem!.controlId!,
-                moduleItem: moduleItem));
+                moduleItem: moduleItem);
+          }
+        });
       }
     } else {
       CommonUtils.vibrate();
@@ -1117,13 +1121,17 @@ class CheckboxFormField extends FormField<bool> {
 }
 
 class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
-  const DynamicHorizontalText({super.key});
+  const DynamicHorizontalText({super.key, required this.input});
+
+  final List<Map<String?, dynamic>> input;
 
   @override
   State<StatefulWidget> createState() => _DynamicHorizontalText();
 
   @override
-  Widget render() => const DynamicHorizontalText();
+  Widget render() => DynamicHorizontalText(
+        input: input,
+      );
 }
 
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
@@ -1131,8 +1139,7 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
 
   @override
   Widget build(BuildContext context) {
-    inputFields =
-        Provider.of<PluginState>(context, listen: false).formInputValues;
+    inputFields = widget.input;
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
     var formInput = inputFields?.firstWhere(
       (input) => input.containsKey(formItem?.controlId),
