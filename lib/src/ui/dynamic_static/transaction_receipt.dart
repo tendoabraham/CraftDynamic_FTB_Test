@@ -189,10 +189,8 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                         width: 150,
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              context.navigate(DynamicWidget(
-                                                moduleItem:
-                                                    postDynamic.moduleItem,
-                                              ));
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
                                             },
                                             child: const Text("Done"))),
                                     const SizedBox(
