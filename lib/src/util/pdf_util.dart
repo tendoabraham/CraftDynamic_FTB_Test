@@ -15,7 +15,6 @@ class PDFUtil {
     final _profileRepo = ProfileRepository();
     final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
-    debugPrint("Path=========>$directory");
 
     PdfPage page = document.pages.add();
 
@@ -69,7 +68,6 @@ class PDFUtil {
     grid.style = gridStyle;
 
     grid.columns.add(count: 2);
-    debugPrint("receipt details====>${postDynamic.receiptDetails}");
     postDynamic.receiptDetails?.asMap().forEach((index, item) {
       PdfGridRow row = grid.rows.add();
       String title = MapItem.fromJson(postDynamic.receiptDetails?[index]).title;

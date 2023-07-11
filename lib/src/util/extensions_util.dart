@@ -73,4 +73,8 @@ extension Navigate on BuildContext {
     Navigator.pushAndRemoveUntil(this,
         MaterialPageRoute(builder: (context) => widget), (route) => false);
   }
+
+  remove(){
+    Navigator.of(this).pop();
+  }
 }
