@@ -57,14 +57,4 @@ class EnumFormatter {
     }
     return moduleId;
   }
-
-  static MenuType getMenuType(String menuTypeString) {
-    MenuType menuType = MenuType.DefaultMenuItem;
-    try {
-      menuType = MenuType.values.byName(menuTypeString);
-    } catch (e) {
-      debugPrint("Error!, $e");
-    }
-    return menuType;
-  }
 }
