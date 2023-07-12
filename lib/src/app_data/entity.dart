@@ -1,8 +1,12 @@
 part of craft_dynamic;
 
+@HiveType(typeId: 16)
 class MenuBorder {
+  @HiveField(0)
   double? radius;
+  @HiveField(1)
   String? color;
+  @HiveField(2)
   double? width;
 
   MenuBorder({this.radius, this.color, this.width});
@@ -13,13 +17,21 @@ class MenuBorder {
         width = json["Width"];
 }
 
+@HiveType(typeId: 17)
 class MenuProperties {
+  @HiveField(0)
   double? iconSize;
+  @HiveField(1)
   double? padding;
+  @HiveField(2)
   double? elevation;
+  @HiveField(3)
   String? backgroundColor;
+  @HiveField(4)
   String? spaceBetween;
+  @HiveField(5)
   String? alignment;
+  @HiveField(6)
   String? axisDirection;
 
   MenuProperties(
@@ -41,8 +53,11 @@ class MenuProperties {
         axisDirection = json["AxisDirection"];
 }
 
+@HiveType(typeId: 18)
 class BlockSpacing {
+  @HiveField(0)
   double? crossAxis;
+  @HiveField(1)
   double? mainAxis;
 
   BlockSpacing({this.crossAxis, this.mainAxis});

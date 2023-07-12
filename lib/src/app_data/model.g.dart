@@ -34,6 +34,135 @@ Map<String, dynamic> _$StandingOrderToJson(StandingOrder instance) =>
 // TypeAdapterGenerator
 // **************************************************************************
 
+class MenuBorderAdapter extends TypeAdapter<MenuBorder> {
+  @override
+  final int typeId = 16;
+
+  @override
+  MenuBorder read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MenuBorder(
+      radius: fields[0] as double?,
+      color: fields[1] as String?,
+      width: fields[2] as double?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, MenuBorder obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.radius)
+      ..writeByte(1)
+      ..write(obj.color)
+      ..writeByte(2)
+      ..write(obj.width);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MenuBorderAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class MenuPropertiesAdapter extends TypeAdapter<MenuProperties> {
+  @override
+  final int typeId = 17;
+
+  @override
+  MenuProperties read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MenuProperties(
+      iconSize: fields[0] as double?,
+      padding: fields[1] as double?,
+      elevation: fields[2] as double?,
+      backgroundColor: fields[3] as String?,
+      spaceBetween: fields[4] as String?,
+      alignment: fields[5] as String?,
+      axisDirection: fields[6] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, MenuProperties obj) {
+    writer
+      ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.iconSize)
+      ..writeByte(1)
+      ..write(obj.padding)
+      ..writeByte(2)
+      ..write(obj.elevation)
+      ..writeByte(3)
+      ..write(obj.backgroundColor)
+      ..writeByte(4)
+      ..write(obj.spaceBetween)
+      ..writeByte(5)
+      ..write(obj.alignment)
+      ..writeByte(6)
+      ..write(obj.axisDirection);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MenuPropertiesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class BlockSpacingAdapter extends TypeAdapter<BlockSpacing> {
+  @override
+  final int typeId = 18;
+
+  @override
+  BlockSpacing read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BlockSpacing(
+      crossAxis: fields[0] as double?,
+      mainAxis: fields[1] as double?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, BlockSpacing obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.crossAxis)
+      ..writeByte(1)
+      ..write(obj.mainAxis);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BlockSpacingAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
   @override
   final int typeId = 1;
@@ -45,21 +174,22 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ModuleItem(
-        parentModule: fields[1] as String,
-        moduleUrl: fields[4] as String?,
-        moduleId: fields[0] as String,
-        moduleName: fields[2] as String,
-        moduleCategory: fields[3] as String?,
-        merchantID: fields[6] as String?,
-        isMainMenu: fields[7] as bool?,
-        isDisabled: fields[8] as bool?,
-        isHidden: fields[9] as bool?,
-        moduleUrl2: fields[5] as String?,
-        displayOrder: fields[10] as double?,
-        blockAspectRatio: fields[11] as double?,
-        menuBorder: fields[12] as MenuBorder?,
-        menuProperties: fields[13] as MenuProperties?,
-        blockSpacing: fields[14] as BlockSpacing?);
+      parentModule: fields[1] as String,
+      moduleUrl: fields[4] as String?,
+      moduleId: fields[0] as String,
+      moduleName: fields[2] as String,
+      moduleCategory: fields[3] as String?,
+      merchantID: fields[6] as String?,
+      isMainMenu: fields[7] as bool?,
+      isDisabled: fields[8] as bool?,
+      isHidden: fields[9] as bool?,
+      moduleUrl2: fields[5] as String?,
+      displayOrder: fields[10] as double?,
+      blockAspectRatio: fields[11] as double?,
+      menuBorder: fields[12] as MenuBorder?,
+      menuProperties: fields[13] as MenuProperties?,
+      blockSpacing: fields[14] as BlockSpacing?,
+    );
   }
 
   @override

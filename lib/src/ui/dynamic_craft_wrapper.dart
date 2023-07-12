@@ -54,6 +54,9 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   initializeHive() async {
     await Hive.initFlutter();
+    Hive.registerAdapter(MenuBorderAdapter());
+    Hive.registerAdapter(MenuPropertiesAdapter());
+    Hive.registerAdapter(BlockSpacingAdapter());
     Hive.registerAdapter(ModuleItemAdapter());
     Hive.registerAdapter(FormItemAdapter());
     Hive.registerAdapter(ActionItemAdapter());
