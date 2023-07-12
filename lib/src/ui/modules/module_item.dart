@@ -17,18 +17,20 @@ class ModuleItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuProperties? menuProperties = state.menuProperties;
+      MenuProperties? menuProperties = moduleItem.menuProperties;
+
+      MenuType getMenuType() {
+        if (menuProperties?.axisDirection == "HORIZONTAL") {
+          return MenuType.Horizontal;
+        }
+        return MenuType.Vertical;
+      }
 
       return GestureDetector(
           onTap: () {
             ModuleUtil.onItemClick(moduleItem, context);
           },
-          child: IMenuUtil(
-                  Provider.of<PluginState>(context, listen: false).menuType ??
-                      menuProperties?.menuType ??
-                      MenuType.DefaultMenuItem,
-                  moduleItem)
-              .getMenuItem());
+          child: IMenuUtil(getMenuType(), moduleItem).getMenuItem());
     });
   }
 }
@@ -41,25 +43,33 @@ class VerticalModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuProperties? menuProperties = state.menuProperties;
+      MenuProperties? menuProperties = moduleItem.menuProperties;
+      MenuBorder? menuBorder = moduleItem.menuBorder;
+      MainAxisAlignment getAlignment() {
+        if (menuProperties?.alignment == "END") {
+          return MainAxisAlignment.end;
+        } else if (menuProperties?.alignment == "START") {
+          return MainAxisAlignment.start;
+        }
+        return MainAxisAlignment.center;
+      }
+
       return Card(
-          surfaceTintColor: menuProperties?.backgroundColor ?? Colors.white,
-          elevation: menuProperties?.itemElevation ?? 0,
+          surfaceTintColor: CommonUtils.parseColor(
+              menuProperties?.backgroundColor ?? "ffffff"),
+          elevation: menuProperties?.elevation ?? 0,
           shape: RoundedRectangleBorder(
-              side: menuProperties?.hasBorder ?? false
-                  ? BorderSide(
-                      width: menuProperties?.borderWidth ?? 1.5,
-                      color: menuProperties?.borderColor ?? Colors.transparent)
-                  : BorderSide.none,
+              side: BorderSide(
+                  width: menuBorder?.width ?? 1.5,
+                  color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
               borderRadius: BorderRadius.all(
-                Radius.circular(menuProperties?.itemRadius ?? 12),
+                Radius.circular(menuBorder?.radius ?? 12),
               )),
           child: Padding(
-              padding: menuProperties?.itemPadding ?? const EdgeInsets.all(8),
+              padding: EdgeInsets.all(menuProperties?.padding ?? 8),
               child: Center(
                 child: Column(
-                  mainAxisAlignment: menuProperties?.mainAxisAlignment ??
-                      MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: getAlignment(),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     MenuItemImage(
@@ -67,7 +77,8 @@ class VerticalModule extends StatelessWidget {
                       iconSize: menuProperties?.iconSize ?? 54,
                     ),
                     SizedBox(
-                      height: menuProperties?.spaceBetween ?? 12,
+                      height:
+                          double.parse(menuProperties?.spaceBetween ?? "12"),
                     ),
                     Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
                   ],
@@ -91,33 +102,40 @@ class HorizontalModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuProperties? menuProperties = state.menuProperties;
+      MenuProperties? menuProperties = moduleItem.menuProperties;
+      MenuBorder? menuBorder = moduleItem.menuBorder;
+      MainAxisAlignment getAlignment() {
+        if (menuProperties?.alignment == "END") {
+          return MainAxisAlignment.end;
+        } else if (menuProperties?.alignment == "START") {
+          return MainAxisAlignment.start;
+        }
+        return MainAxisAlignment.center;
+      }
 
       return Card(
-          surfaceTintColor: menuProperties?.backgroundColor ?? Colors.white,
-          elevation: menuProperties?.itemElevation ?? 0,
+          surfaceTintColor: CommonUtils.parseColor(
+              menuProperties?.backgroundColor ?? "ffffff"),
+          elevation: menuProperties?.elevation ?? 0,
           shape: RoundedRectangleBorder(
-              side: menuProperties?.hasBorder ?? false
-                  ? BorderSide(
-                      width: menuProperties?.borderWidth ?? 1.5,
-                      color: menuProperties?.borderColor ?? Colors.transparent)
-                  : BorderSide.none,
+              side: BorderSide(
+                  width: menuBorder?.width ?? 1.5,
+                  color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
               borderRadius: BorderRadius.all(
-                Radius.circular(menuProperties?.itemRadius ?? 12),
+                Radius.circular(menuBorder?.radius ?? 12),
               )),
           child: Padding(
-              padding: menuProperties?.itemPadding ?? const EdgeInsets.all(8),
+              padding: EdgeInsets.all(menuProperties?.padding ?? 8),
               child: Center(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: menuProperties?.mainAxisAlignment ??
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: getAlignment(),
                   children: [
                     MenuItemImage(
                       imageUrl: moduleItem.moduleUrl ?? "",
                     ),
                     SizedBox(
-                      width: menuProperties?.spaceBetween ?? 8,
+                      width: double.parse(menuProperties?.spaceBetween ?? "12"),
                     ),
                     MenuItemTitle(title: moduleItem.moduleName)
                   ],

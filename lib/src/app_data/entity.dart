@@ -1,5 +1,57 @@
 part of craft_dynamic;
 
+class MenuBorder {
+  double? radius;
+  String? color;
+  double? width;
+
+  MenuBorder({this.radius, this.color, this.width});
+
+  MenuBorder.fromJson(Map<String, dynamic> json)
+      : radius = json["Radius"],
+        color = json["Color"],
+        width = json["Width"];
+}
+
+class MenuProperties {
+  double? iconSize;
+  double? padding;
+  double? elevation;
+  String? backgroundColor;
+  String? spaceBetween;
+  String? alignment;
+  String? axisDirection;
+
+  MenuProperties(
+      {this.iconSize,
+      this.padding,
+      this.elevation,
+      this.backgroundColor,
+      this.spaceBetween,
+      this.alignment,
+      this.axisDirection});
+
+  MenuProperties.fromJson(Map<String, dynamic> json)
+      : iconSize = json["IconSize"],
+        padding = json["Padding"],
+        elevation = json["Elevation"],
+        backgroundColor = json["BackgroundColor"],
+        spaceBetween = json["SpaceBetween"],
+        alignment = json["Alignment"],
+        axisDirection = json["AxisDirection"];
+}
+
+class BlockSpacing {
+  double? crossAxis;
+  double? mainAxis;
+
+  BlockSpacing({this.crossAxis, this.mainAxis});
+
+  BlockSpacing.fromJson(Map<String, dynamic> json)
+      : crossAxis = json["CrossAxis"],
+        mainAxis = json["MainAxis"];
+}
+
 @HiveType(typeId: 1)
 class ModuleItem {
   @HiveField(0)
@@ -24,6 +76,14 @@ class ModuleItem {
   bool? isHidden;
   @HiveField(10)
   double? displayOrder;
+  @HiveField(11)
+  double? blockAspectRatio;
+  @HiveField(12)
+  MenuBorder? menuBorder;
+  @HiveField(13)
+  MenuProperties? menuProperties;
+  @HiveField(14)
+  BlockSpacing? blockSpacing;
 
   ModuleItem(
       {required this.parentModule,
@@ -36,7 +96,11 @@ class ModuleItem {
       this.isDisabled,
       this.isHidden,
       this.moduleUrl2,
-      this.displayOrder});
+      this.displayOrder,
+      this.blockAspectRatio,
+      this.menuBorder,
+      this.menuProperties,
+      this.blockSpacing});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -49,7 +113,11 @@ class ModuleItem {
         isMainMenu = json["IsMainMenu"],
         isDisabled = json["IsDisabled"],
         isHidden = json["IsHidden"],
-        displayOrder = json['DisplayOrder'];
+        displayOrder = json['DisplayOrder'],
+        blockAspectRatio = json["BlockAspectRatio"],
+        menuBorder = MenuBorder.fromJson(json["MenuBorder"]),
+        menuProperties = MenuProperties.fromJson(json["MenuProperties"]),
+        blockSpacing = BlockSpacing.fromJson(json["BlockSpacing"]);
 }
 
 @HiveType(typeId: 2)

@@ -45,24 +45,27 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ModuleItem(
-      parentModule: fields[1] as String,
-      moduleUrl: fields[4] as String?,
-      moduleId: fields[0] as String,
-      moduleName: fields[2] as String,
-      moduleCategory: fields[3] as String?,
-      merchantID: fields[6] as String?,
-      isMainMenu: fields[7] as bool?,
-      isDisabled: fields[8] as bool?,
-      isHidden: fields[9] as bool?,
-      moduleUrl2: fields[5] as String?,
-      displayOrder: fields[10] as double?,
-    );
+        parentModule: fields[1] as String,
+        moduleUrl: fields[4] as String?,
+        moduleId: fields[0] as String,
+        moduleName: fields[2] as String,
+        moduleCategory: fields[3] as String?,
+        merchantID: fields[6] as String?,
+        isMainMenu: fields[7] as bool?,
+        isDisabled: fields[8] as bool?,
+        isHidden: fields[9] as bool?,
+        moduleUrl2: fields[5] as String?,
+        displayOrder: fields[10] as double?,
+        blockAspectRatio: fields[11] as double?,
+        menuBorder: fields[12] as MenuBorder?,
+        menuProperties: fields[13] as MenuProperties?,
+        blockSpacing: fields[14] as BlockSpacing?);
   }
 
   @override
   void write(BinaryWriter writer, ModuleItem obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.moduleId)
       ..writeByte(1)
@@ -84,7 +87,15 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       ..writeByte(9)
       ..write(obj.isHidden)
       ..writeByte(10)
-      ..write(obj.displayOrder);
+      ..write(obj.displayOrder)
+      ..writeByte(11)
+      ..write(obj.blockAspectRatio)
+      ..writeByte(12)
+      ..write(obj.menuBorder)
+      ..writeByte(13)
+      ..write(obj.menuProperties)
+      ..writeByte(14)
+      ..write(obj.blockSpacing);
   }
 
   @override

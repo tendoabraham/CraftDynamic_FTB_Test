@@ -336,33 +336,6 @@ class MenuScreenProperties {
       this.childAspectRatio});
 }
 
-class MenuProperties {
-  bool? hasBorder;
-  double? borderWidth;
-  double? spaceBetween;
-  double? iconSize;
-  double? itemRadius;
-  double? itemElevation;
-  Color? borderColor;
-  Color? backgroundColor;
-  MenuType? menuType;
-  EdgeInsetsGeometry? itemPadding;
-  MainAxisAlignment? mainAxisAlignment;
-
-  MenuProperties(
-      {this.hasBorder = false,
-      this.borderWidth = 0,
-      this.spaceBetween,
-      this.iconSize = 48,
-      this.itemRadius = 12,
-      this.itemPadding,
-      this.itemElevation,
-      this.borderColor = Colors.transparent,
-      this.backgroundColor = Colors.transparent,
-      this.menuType = MenuType.VerticalPlain,
-      this.mainAxisAlignment = MainAxisAlignment.spaceBetween});
-}
-
 @JsonSerializable()
 class StandingOrder {
   @JsonKey(name: 'Amount')

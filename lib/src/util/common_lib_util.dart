@@ -119,6 +119,11 @@ class CommonUtils {
     }
   }
 
+  static Color parseColor(String colorhex) {
+    String color = colorhex.replaceAll('#', '0xff');
+    return Color(int.parse(color));
+  }
+
   static vibrate() {
     if (!kIsWeb) {
       Vibration.vibrate();

@@ -170,11 +170,8 @@ enum StatusCode {
 enum MenuCategory { BLOCK, FORM }
 
 enum MenuType {
-  VerticalPlain,
-  VerticalOutlined,
-  HorizontalPlain,
-  HorizontalOutlined,
-  DefaultMenuItem
+  Vertical,
+  Horizontal,
 }
 
 enum ParentModule { MAIN, TRANSACTIONHISTORY, MYACCOUNTS }
