@@ -59,12 +59,15 @@ class BlockSpacing {
   double? crossAxis;
   @HiveField(1)
   double? mainAxis;
+  @HiveField(2)
+  int? axisCount;
 
-  BlockSpacing({this.crossAxis, this.mainAxis});
+  BlockSpacing({this.crossAxis, this.mainAxis, this.axisCount});
 
   BlockSpacing.fromJson(Map<String, dynamic> json)
       : crossAxis = json["CrossAxis"],
-        mainAxis = json["MainAxis"];
+        mainAxis = json["MainAxis"],
+        axisCount = json["AxisCount"];
 }
 
 @HiveType(typeId: 1)

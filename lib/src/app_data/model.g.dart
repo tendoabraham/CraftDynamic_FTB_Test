@@ -139,17 +139,20 @@ class BlockSpacingAdapter extends TypeAdapter<BlockSpacing> {
     return BlockSpacing(
       crossAxis: fields[0] as double?,
       mainAxis: fields[1] as double?,
+      axisCount: fields[2] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, BlockSpacing obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.crossAxis)
       ..writeByte(1)
-      ..write(obj.mainAxis);
+      ..write(obj.mainAxis)
+      ..writeByte(2)
+      ..write(obj.axisCount);
   }
 
   @override

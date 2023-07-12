@@ -44,9 +44,7 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuScreenProperties? menuScreenProperties = state.menuScreenProperties;
-      var crossAxisSpacing = menuScreenProperties?.crossAxisSpacing ?? 8;
-      double horizontalPadding = 12;
+      BlockSpacing? blockSpacing = widget.moduleItem?.blockSpacing;
 
       return WillPopScope(
           onWillPop: () async {
@@ -74,25 +72,22 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                             height: double.infinity,
                             child: GridView.builder(
                                 // physics: const NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                    left: horizontalPadding,
-                                    right: horizontalPadding,
-                                    top: 8,
-                                    bottom: 8),
+                                padding: const EdgeInsets.only(
+                                    left: 14, right: 14, top: 8, bottom: 8),
                                 shrinkWrap: true,
                                 itemCount: modules.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: menuScreenProperties
-                                                ?.gridcount ??
+                                        crossAxisCount: blockSpacing
+                                                ?.axisCount ??
                                             3,
-                                        crossAxisSpacing: crossAxisSpacing,
-                                        mainAxisSpacing: menuScreenProperties
-                                                ?.mainAxisSpacing ??
-                                            12,
-                                        childAspectRatio: menuScreenProperties
-                                                ?.childAspectRatio ??
-                                            1),
+                                        crossAxisSpacing:
+                                            blockSpacing?.crossAxis ?? 4,
+                                        mainAxisSpacing:
+                                            blockSpacing?.mainAxis ?? 12,
+                                        childAspectRatio: widget
+                                                .moduleItem?.blockAspectRatio ??
+                                            .9),
                                 itemBuilder: (BuildContext context, int index) {
                                   var module = modules[index];
                                   return ModuleItemWidget(moduleItem: module);
