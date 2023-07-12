@@ -115,9 +115,9 @@ class ModuleItem {
         isHidden = json["IsHidden"],
         displayOrder = json['DisplayOrder'],
         blockAspectRatio = json["BlockAspectRatio"],
-        menuBorder = MenuBorder.fromJson(json["MenuBorder"] ?? []),
-        menuProperties = MenuProperties.fromJson(json["MenuProperties"] ?? []),
-        blockSpacing = BlockSpacing.fromJson(json["BlockSpacing"] ?? []);
+        menuBorder = MenuBorder.fromJson(json["MenuBorder"] ?? {}),
+        menuProperties = MenuProperties.fromJson(json["MenuProperties"] ?? {}),
+        blockSpacing = BlockSpacing.fromJson(json["BlockSpacing"] ?? {});
 }
 
 @HiveType(typeId: 2)
