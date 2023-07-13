@@ -56,7 +56,7 @@ class VerticalModule extends StatelessWidget {
 
       return Card(
           surfaceTintColor: CommonUtils.parseColor(
-              menuProperties?.backgroundColor ?? "ffffff"),
+              menuProperties?.backgroundColor ?? "#fffff"),
           elevation: menuProperties?.elevation ?? 0,
           shape: RoundedRectangleBorder(
               side: BorderSide(
