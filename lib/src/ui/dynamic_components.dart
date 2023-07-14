@@ -186,7 +186,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       }
 
       String linkedDropDownValue =
-          state.screenDropDowns[formItem?.linkedToControl?.toLowerCase()] ?? "";
+          state.screenDropDowns[formItem?.linkedToActionID?.toLowerCase()] ??
+              "";
 
       if (linkedDropDownValue.isNotEmpty) {
         controller.text = linkedDropDownValue;
@@ -462,7 +463,7 @@ class DynamicDropDown implements IFormWidget {
                       _currentValue = value.toString(),
                       Provider.of<PluginState>(context, listen: false)
                           .addScreenDropDown({
-                        formItem?.controlId?.toLowerCase():
+                        formItem?.actionId?.toLowerCase():
                             extraFieldMap[_currentValue]
                       })
                     }),

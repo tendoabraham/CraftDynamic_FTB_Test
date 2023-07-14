@@ -132,10 +132,13 @@ class ModuleItem {
         isDisabled = json["IsDisabled"],
         isHidden = json["IsHidden"],
         displayOrder = json['DisplayOrder'],
-        blockAspectRatio = json["BlockAspectRatio"],
-        menuBorder = MenuBorder.fromJson(json["MenuBorder"] ?? {}),
-        menuProperties = MenuProperties.fromJson(json["MenuProperties"] ?? {}),
-        blockSpacing = BlockSpacing.fromJson(json["BlockSpacing"] ?? {});
+        blockAspectRatio = double.parse(json["BlockAspectRatio"] ?? "1"),
+        menuBorder =
+            MenuBorder.fromJson(jsonDecode(json["MenuBorder"] ?? "{}") ?? {}),
+        menuProperties = MenuProperties.fromJson(
+            jsonDecode(json["MenuProperties"] ?? "{}") ?? {}),
+        blockSpacing =
+            BlockSpacing.fromJson(jsonDecode(json["BlockSpacing"] ?? "{}"));
 }
 
 @HiveType(typeId: 2)
@@ -178,6 +181,8 @@ class FormItem {
   String? maxValue;
   @HiveField(18)
   bool? hidden;
+  @HiveField(19)
+  String? linkedToActionID;
 
   @HiveField(19)
   FormItem(
@@ -198,7 +203,8 @@ class FormItem {
       this.isEncrypted,
       this.minValue,
       this.maxValue,
-      this.hidden});
+      this.hidden,
+      this.linkedToActionID});
 
   FormItem.fromJson(Map<String, dynamic> json) {
     controlType = json['ControlType'];
@@ -219,6 +225,7 @@ class FormItem {
     minValue = json['MinValue'];
     maxValue = json["MaxValue"];
     hidden = json["Hidden"];
+    linkedToActionID = json["LinkedToActionID"];
   }
 }
 

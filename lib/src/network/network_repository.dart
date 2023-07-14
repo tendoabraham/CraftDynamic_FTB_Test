@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../craft_dynamic.dart';
 
 final _sharedPref = CommonSharedPref();
@@ -41,7 +43,8 @@ class UIDataRepository {
         try {
           modules.add(ModuleItem.fromJson(item));
         } catch (e) {
-          AppLogger.appLogE(tag: "module insertion", message: e.toString());
+          AppLogger.appLogE(
+              tag: "module insertion error at $item", message: e.toString());
         }
       });
       _moduleRepository.insertModuleItems(modules);

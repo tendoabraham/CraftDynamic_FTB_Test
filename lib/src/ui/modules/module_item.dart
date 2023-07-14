@@ -45,6 +45,8 @@ class VerticalModule extends StatelessWidget {
     return Consumer<DynamicState>(builder: (context, state, child) {
       MenuProperties? menuProperties = moduleItem.menuProperties;
       MenuBorder? menuBorder = moduleItem.menuBorder;
+
+      AppLogger.appLogD(tag: "Menu border color", message: menuBorder?.color);
       MainAxisAlignment getAlignment() {
         if (menuProperties?.alignment == "END") {
           return MainAxisAlignment.end;

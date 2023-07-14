@@ -271,13 +271,14 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       minValue: fields[16] as String?,
       maxValue: fields[17] as String?,
       hidden: fields[18] as bool?,
+      linkedToActionID: fields[19] as String?,
     )..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(19)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -315,7 +316,9 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(17)
       ..write(obj.maxValue)
       ..writeByte(18)
-      ..write(obj.hidden);
+      ..write(obj.hidden)
+      ..writeByte(19)
+      ..write(obj.linkedToActionID);
   }
 
   @override
