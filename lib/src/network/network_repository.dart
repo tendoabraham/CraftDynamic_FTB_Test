@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import '../../craft_dynamic.dart';
 
@@ -24,7 +24,13 @@ class UIDataRepository {
     if (uiResponse?.formControl != null) {
       List<FormItem> forms = [];
       uiResponse?.formControl?.forEach((formItem) {
-        forms.add(FormItem.fromJson(formItem));
+        try {
+          forms.add(FormItem.fromJson(formItem));
+        } catch (e) {
+          AppLogger.appLogE(
+              tag: "formitem insertion error at $formItem",
+              message: e.toString());
+        }
       });
       _formRepository.insertFormItems(forms);
     }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ConfirmationForm {
   static confirmTransaction(context, List<FormItem> formItems,
-      ModuleItem moduleItem, List<Map<String?, dynamic>> input) {
+      ModuleItem moduleItem, Map<String?, dynamic> input) {
     final formKey = GlobalKey<FormState>();
 
     return showModalBottomSheet<void>(

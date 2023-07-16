@@ -253,32 +253,34 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FormItem(
-      controlType: fields[1] as String?,
-      controlText: fields[2] as String?,
-      moduleId: fields[3] as String?,
-      linkedToControl: fields[7] as String?,
-      controlId: fields[4] as String?,
-      containerID: fields[5] as String?,
-      actionId: fields[6] as String?,
-      formSequence: fields[8] as int?,
-      serviceParamId: fields[9] as String?,
-      displayOrder: fields[10] as double?,
-      controlFormat: fields[11] as String?,
-      dataSourceId: fields[12] as String?,
-      controlValue: fields[13] as String?,
-      isMandatory: fields[14] as bool?,
-      isEncrypted: fields[15] as bool?,
-      minValue: fields[16] as String?,
-      maxValue: fields[17] as String?,
-      hidden: fields[18] as bool?,
-      linkedToActionID: fields[19] as String?,
-    )..no = fields[0] as int?;
+        controlType: fields[1] as String?,
+        controlText: fields[2] as String?,
+        moduleId: fields[3] as String?,
+        linkedToControl: fields[7] as String?,
+        controlId: fields[4] as String?,
+        containerID: fields[5] as String?,
+        actionId: fields[6] as String?,
+        formSequence: fields[8] as int?,
+        serviceParamId: fields[9] as String?,
+        displayOrder: fields[10] as double?,
+        controlFormat: fields[11] as String?,
+        dataSourceId: fields[12] as String?,
+        controlValue: fields[13] as String?,
+        isMandatory: fields[14] as bool?,
+        isEncrypted: fields[15] as bool?,
+        minValue: fields[16] as String?,
+        maxValue: fields[17] as String?,
+        hidden: fields[18] as bool?,
+        linkedToRowID: fields[19] as String?,
+        isEnabled: fields[20] as bool?,
+        rowID: fields[21] as String?)
+      ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -318,7 +320,11 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(18)
       ..write(obj.hidden)
       ..writeByte(19)
-      ..write(obj.linkedToActionID);
+      ..write(obj.linkedToRowID)
+      ..writeByte(20)
+      ..write(obj.isEnabled)
+      ..writeByte(21)
+      ..write(obj.rowID);
   }
 
   @override

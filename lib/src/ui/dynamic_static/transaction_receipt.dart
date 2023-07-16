@@ -121,14 +121,17 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                         .spaceBetween,
                                                 children: [
                                                   Text(title),
-                                                  Text(
+                                                  Flexible(
+                                                      child: Text(
                                                     value.isEmpty
                                                         ? "****"
                                                         : value,
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
-                                                  )
+                                                    softWrap: true,
+                                                    textAlign: TextAlign.end,
+                                                  ))
                                                 ],
                                               ));
                                         }),

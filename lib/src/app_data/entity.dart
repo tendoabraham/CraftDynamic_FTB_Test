@@ -182,9 +182,12 @@ class FormItem {
   @HiveField(18)
   bool? hidden;
   @HiveField(19)
-  String? linkedToActionID;
+  String? linkedToRowID;
+  @HiveField(20)
+  bool? isEnabled;
+  @HiveField(21)
+  String? rowID;
 
-  @HiveField(19)
   FormItem(
       {required this.controlType,
       required this.controlText,
@@ -204,29 +207,32 @@ class FormItem {
       this.minValue,
       this.maxValue,
       this.hidden,
-      this.linkedToActionID});
+      this.linkedToRowID,
+      this.isEnabled,
+      this.rowID});
 
-  FormItem.fromJson(Map<String, dynamic> json) {
-    controlType = json['ControlType'];
-    controlText = json['ControlText'];
-    moduleId = json['ModuleID'];
-    linkedToControl = json['LinkedToControl'];
-    controlId = json['ControlID'];
-    containerID = json["ContainerID"];
-    actionId = json['ActionID'];
-    formSequence = json['FormSequence'];
-    serviceParamId = json['ServiceParamID'];
-    displayOrder = json['DisplayOrder'];
-    isMandatory = json['IsMandatory'];
-    isEncrypted = json['IsEncrypted'];
-    controlFormat = json['ControlFormat'];
-    dataSourceId = json['DataSourceID'];
-    controlValue = json['ControlValue'];
-    minValue = json['MinValue'];
-    maxValue = json["MaxValue"];
-    hidden = json["Hidden"];
-    linkedToActionID = json["LinkedToActionID"];
-  }
+  FormItem.fromJson(Map<String, dynamic> json)
+      : controlType = json['ControlType'],
+        controlText = json['ControlText'],
+        moduleId = json['ModuleID'],
+        linkedToControl = json['LinkedToControl'],
+        controlId = json['ControlID'],
+        containerID = json["ContainerID"],
+        actionId = json['ActionID'],
+        formSequence = json['FormSequence'],
+        serviceParamId = json['ServiceParamID'],
+        displayOrder = json['DisplayOrder'],
+        isMandatory = json['IsMandatory'],
+        isEncrypted = json['IsEncrypted'],
+        controlFormat = json['ControlFormat'],
+        dataSourceId = json['DataSourceID'],
+        controlValue = json['ControlValue'],
+        minValue = json['MinValue'],
+        maxValue = json['MaxValue'],
+        hidden = json['Hidden'],
+        linkedToRowID = json['LinkedToRowID'],
+        isEnabled = json["DisplayControl"],
+        rowID = json["RowID"];
 }
 
 @HiveType(typeId: 3)

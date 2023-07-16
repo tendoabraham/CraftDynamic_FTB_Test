@@ -1,7 +1,7 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 
 abstract class IRequestObject {
-  List<Map<String?, dynamic>> dataObject = [];
+  Map<String?, dynamic> dataObject = {};
   Map<String, dynamic> requestObject = {};
   ActionType? actionType;
 
@@ -58,7 +58,7 @@ abstract class IRequestObject {
 
 class DefaultObject implements IRequestObject {
   @override
-  List<Map<String?, dynamic>> dataObject = [];
+  Map<String?, dynamic> dataObject = {};
 
   @override
   Map<String, dynamic> requestObject = {};
@@ -79,7 +79,7 @@ class Validate implements IRequestObject {
   ActionType? actionType;
 
   @override
-  List<Map<String?, dynamic>> dataObject;
+  Map<String?, dynamic> dataObject;
 
   @override
   Map<String, dynamic> requestObject = {};
@@ -93,9 +93,7 @@ class Validate implements IRequestObject {
   @override
   Map<String, dynamic> getRequestObject() {
     Map<String?, dynamic> fields = {};
-    for (var element in dataObject) {
-      fields.addAll(element);
-    }
+    fields.addAll(dataObject);
     requestObject[RequestParam.FormID.name] = actionType?.name;
     requestObject[RequestParam.MerchantID.name] = merchantID;
     requestObject[RequestParam.Validate.name] = fields;
@@ -105,8 +103,8 @@ class Validate implements IRequestObject {
 
 class PayBill implements IRequestObject {
   @override
-  List<Map<String?, dynamic>> dataObject;
-  List<Map<String?, dynamic>> encryptedFieldsObject;
+  Map<String?, dynamic> dataObject;
+  Map<String?, dynamic> encryptedFieldsObject;
 
   @override
   Map<String, dynamic> requestObject = {};
@@ -128,12 +126,9 @@ class PayBill implements IRequestObject {
   Map<String, dynamic> getRequestObject() {
     Map<String?, dynamic> fields = {};
     Map<String?, dynamic> encryptedFields = {};
-    for (var element in dataObject) {
-      fields.addAll(element);
-    }
-    for (var field in encryptedFieldsObject) {
-      encryptedFields.addAll(field);
-    }
+    fields.addAll(dataObject);
+    encryptedFields.addAll(encryptedFieldsObject);
+
     fields.addAll({RequestParam.MerchantID.name: merchantID});
     requestObject[RequestParam.FormID.name] = actionType?.name;
     requestObject[RequestParam.MerchantID.name] = merchantID;
@@ -145,7 +140,7 @@ class PayBill implements IRequestObject {
 
 class DBCall implements IRequestObject {
   @override
-  List<Map<String?, dynamic>> dataObject;
+  Map<String?, dynamic> dataObject;
   List<Map<String?, dynamic>>? encryptedFieldsObject;
 
   @override
@@ -172,9 +167,8 @@ class DBCall implements IRequestObject {
   Map<String, dynamic> getRequestObject() {
     Map<String?, dynamic> fields = {};
     Map<String?, dynamic> encryptedFields = {};
-    for (var element in dataObject) {
-      fields.addAll(element);
-    }
+    fields.addAll(dataObject);
+
     encryptedFieldsObject?.forEach((field) {
       encryptedFields.addAll(field);
     });
@@ -198,9 +192,9 @@ class ChangePin implements IRequestObject {
   ActionType? actionType;
 
   @override
-  List<Map<String?, dynamic>> dataObject;
+  Map<String?, dynamic> dataObject;
 
-  List<Map<String?, dynamic>> encryptedFieldsObject;
+  Map<String?, dynamic> encryptedFieldsObject;
 
   @override
   Map<String, dynamic> requestObject = {};
@@ -215,13 +209,9 @@ class ChangePin implements IRequestObject {
   Map<String, dynamic> getRequestObject() {
     Map<String?, dynamic> fields = {};
     Map<String?, dynamic> encryptedFields = {};
+    fields.addAll(dataObject);
+    encryptedFields.addAll(encryptedFieldsObject);
 
-    for (var element in dataObject) {
-      fields.addAll(element);
-    }
-    for (var field in encryptedFieldsObject) {
-      encryptedFields.addAll(field);
-    }
     requestObject[RequestParam.FormID.name] = actionType?.name;
     requestObject[RequestParam.CHANGEPIN.name] = fields;
     requestObject[RequestParam.EncryptedFields.name] = encryptedFields;

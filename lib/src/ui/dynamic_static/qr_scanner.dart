@@ -25,6 +25,7 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner> {
   final cameraController = MobileScannerController();
   final _dynamicRequest = DynamicFormRequest();
+  Set<Map<String, dynamic>> input = {};
   MobileScannerArguments? arguments;
   Barcode? barcode;
   BarcodeCapture? capture;
@@ -94,6 +95,8 @@ class _QRScannerState extends State<QRScanner> {
                 onDetect: (capture) {
                   final Barcode barcode = capture.barcodes.first;
                   final Uint8List? image = capture.image;
+                  input.add({"ACCOUNTID": barcode.rawValue});
+
                   if (barcode.rawValue != null && barcode.rawValue != "") {
                     AppLogger.appLogD(
                         tag: "qr code",
@@ -104,9 +107,7 @@ class _QRScannerState extends State<QRScanner> {
                     _dynamicRequest
                         .dynamicRequest(widget.moduleItem,
                             formItem: widget.formItem,
-                            dataObj: [
-                              {"ACCOUNTID": barcode.rawValue}
-                            ],
+                            dataObj: input,
                             context: context,
                             tappedButton: true)
                         .then((value) => DynamicPostCall.processDynamicResponse(

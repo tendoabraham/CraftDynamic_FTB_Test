@@ -9,8 +9,8 @@ import '../builder/factory_builder.dart';
 
 class DynamicFormRequest {
   Map<String, dynamic> requestObj = {};
-  List<Map<String?, dynamic>> formvalues = [];
-  List<Map<String?, dynamic>> encryptedvalues = [];
+  Map<String?, dynamic> formvalues = {};
+  Map<String?, dynamic> encryptedvalues = {};
   final _actionControlRepository = ActionControlRepository();
   final _formsRepository = FormsRepository();
   final _services = APIService();

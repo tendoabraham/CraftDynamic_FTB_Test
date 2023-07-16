@@ -25,8 +25,8 @@ import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'dynamic_static/qr_scanner.dart';
 
 class DynamicInput {
-  static List<Map<String?, dynamic>> formInputValues = [];
-  static Map<String?, dynamic> encryptedField = {};
+  static Set<Map<String?, dynamic>> formInputValues = {};
+  static Set<Map<String?, dynamic>> encryptedField = {};
 
   clearDynamicInput() {
     formInputValues.clear();
@@ -164,6 +164,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    bool isEnabled = formItem?.isEnabled ?? false;
+
     return Consumer<PluginState>(builder: (context, state, child) {
       isObscured = formItem?.controlFormat == ControlFormat.PinNumber.name ||
               formItem?.controlFormat == ControlFormat.PIN.name
@@ -186,17 +188,18 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       }
 
       String linkedDropDownValue =
-          state.screenDropDowns[formItem?.linkedToActionID?.toLowerCase()] ??
-              "";
+          state.screenDropDowns[formItem?.linkedToRowID?.toLowerCase()] ?? "";
 
       if (linkedDropDownValue.isNotEmpty) {
         controller.text = linkedDropDownValue;
       }
 
       var properties = TextFormFieldProperties(
-          isEnabled: formFieldValue.isNotEmpty || linkedDropDownValue.isNotEmpty
+          isEnabled: formFieldValue.isNotEmpty ||
+                  linkedDropDownValue.isNotEmpty ||
+                  isEnabled
               ? false
-              : widget.isEnabled,
+              : true,
           isObscured: isObscured ? state.obscureText : false,
           controller: controller,
           textInputType: inputType,
@@ -463,9 +466,9 @@ class DynamicDropDown implements IFormWidget {
                       _currentValue = value.toString(),
                       Provider.of<PluginState>(context, listen: false)
                           .addScreenDropDown({
-                        formItem?.actionId?.toLowerCase():
+                        formItem?.rowID?.toLowerCase():
                             extraFieldMap[_currentValue]
-                      })
+                      }),
                     }),
                 validator: (value) {
                   Provider.of<PluginState>(context, listen: false)
@@ -486,9 +489,8 @@ class DynamicDropDown implements IFormWidget {
         if (Provider.of<PluginState>(context, listen: false)
             .screenDropDowns
             .isEmpty) {
-          Provider.of<PluginState>(context, listen: false).addScreenDropDown({
-            formItem?.controlId?.toLowerCase(): extraFieldMap[_currentValue]
-          });
+          Provider.of<PluginState>(context, listen: false).addScreenDropDown(
+              {formItem?.rowID?.toLowerCase(): extraFieldMap[_currentValue]});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -540,7 +542,8 @@ class DropDown implements IFormWidget {
               if (dropdownPicks != null) {
                 if (dropdownPicks.isNotEmpty) {
                   _currentValue = dropdownPicks[0].value;
-                  addInitialValueToLinkedField(context);
+                  addInitialValueToLinkedField(
+                      context, extraFieldMap[_currentValue] ?? "");
                 }
               }
 
@@ -553,9 +556,9 @@ class DropDown implements IFormWidget {
                       _currentValue = value.toString(),
                       Provider.of<PluginState>(context, listen: false)
                           .addScreenDropDown({
-                        formItem?.controlId?.toLowerCase():
+                        formItem?.actionId?.toLowerCase():
                             extraFieldMap[_currentValue]
-                      })
+                      }),
                     }),
                 validator: (value) {
                   Provider.of<PluginState>(context, listen: false)
@@ -569,15 +572,14 @@ class DropDown implements IFormWidget {
     });
   }
 
-  void addInitialValueToLinkedField(BuildContext context) {
+  void addInitialValueToLinkedField(BuildContext context, String initialValue) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        if (Provider.of<PluginState>(context, listen: false)
-            .screenDropDowns
-            .isEmpty) {
-          Provider.of<PluginState>(context, listen: false).addScreenDropDown({
-            formItem?.controlId?.toLowerCase(): extraFieldMap[_currentValue]
-          });
+        var items =
+            Provider.of<PluginState>(context, listen: false).screenDropDowns;
+        if (!items.containsKey(formItem?.actionId?.toLowerCase())) {
+          Provider.of<PluginState>(context, listen: false).addScreenDropDown(
+              {formItem?.actionId?.toLowerCase(): initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -1124,7 +1126,7 @@ class CheckboxFormField extends FormField<bool> {
 class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
   const DynamicHorizontalText({super.key, required this.input});
 
-  final List<Map<String?, dynamic>> input;
+  final Map<String?, dynamic> input;
 
   @override
   State<StatefulWidget> createState() => _DynamicHorizontalText();
@@ -1136,23 +1138,22 @@ class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
 }
 
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
-  List<Map<String?, dynamic>>? inputFields;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    inputFields = widget.input;
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
-    var formInput = inputFields?.firstWhere(
-      (input) => input.containsKey(formItem?.controlId),
-      orElse: () => {},
-    );
+    var formInput = widget.input[formItem?.controlId];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(formItem?.controlText ?? ""),
         Text(
-          formInput?[formItem?.controlId] ?? "****",
+          formInput ?? "****",
           style: const TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.start,
         )

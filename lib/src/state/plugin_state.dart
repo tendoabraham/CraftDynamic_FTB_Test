@@ -12,8 +12,8 @@ class PluginState extends ChangeNotifier {
   Widget? _logoutScreen;
   MenuType? _menuType;
   Color? _menuColor;
-  final List<Map<String?, dynamic>> _formInputValues = [];
-  final List<Map<String?, dynamic>> _encryptedFields = [];
+  final Map<String?, dynamic> _formInputValues = {};
+  final Map<String?, dynamic> _encryptedFields = {};
   final Map<String?, dynamic> _screenDropDowns = {};
 
   bool get loadingNetworkData => _loadingNetworkData;
@@ -30,9 +30,9 @@ class PluginState extends ChangeNotifier {
 
   Color? get menuColor => _menuColor;
 
-  List<Map<String?, dynamic>> get formInputValues => _formInputValues;
+  Map<String?, dynamic> get formInputValues => _formInputValues;
 
-  List<Map<String?, dynamic>> get encryptedFields => _encryptedFields;
+  Map<String?, dynamic> get encryptedFields => _encryptedFields;
 
   Map<String?, dynamic> get screenDropDowns => _screenDropDowns;
 
@@ -69,12 +69,12 @@ class PluginState extends ChangeNotifier {
   }
 
   addFormInput(Map<String?, dynamic> formInput) {
-    _formInputValues.add(formInput);
+    _formInputValues.addAll(formInput);
     notifyListeners();
   }
 
   addEncryptedFields(Map<String?, dynamic> encryptedField) {
-    _encryptedFields.add(encryptedField);
+    _encryptedFields.addAll(encryptedField);
     notifyListeners();
   }
 
