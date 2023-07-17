@@ -26,7 +26,7 @@ class ModuleRepository {
     ModuleItem? module;
     try {
       var box = await openBox();
-      module = box.values.firstWhere((item) => item.moduleId == moduleID);
+      module = box.values.firstWhereOrNull((item) => item.moduleId == moduleID);
     } catch (e) {
       AppLogger.appLogD(tag: "get module by id", message: e);
     }
