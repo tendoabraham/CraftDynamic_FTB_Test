@@ -161,6 +161,7 @@ enum StatusCode {
   changeLanguage("094"),
   changeBankType("095"),
   changePin("101"),
+  setsecurityquestions("106"),
   unknown("XXXX");
 
   const StatusCode(this.statusCode);
