@@ -162,6 +162,7 @@ enum StatusCode {
   changeLanguage("094"),
   changeBankType("095"),
   changePin("101"),
+  deviceMismatch("102"),
   setsecurityquestions("106"),
   unknown("XXXX");
 
