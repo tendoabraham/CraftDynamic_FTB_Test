@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +50,13 @@ class ConnectionErrorScreen extends StatelessWidget {
                       "Make sure wifi or cellular data is turned\non and try again."
                           .tr,
                       textAlign: TextAlign.center,
-                    )
+                    ),
+                    const SizedBox(
+                      height: 44,
+                    ),
+                    WidgetFactory.buildButton(context, () {
+                      Navigator.of(context).pop();
+                    }, "Close")
                   ],
                 )),
           ))));
