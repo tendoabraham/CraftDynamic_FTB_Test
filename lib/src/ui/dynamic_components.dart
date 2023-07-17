@@ -466,8 +466,7 @@ class DynamicDropDown implements IFormWidget {
                       _currentValue = value.toString(),
                       Provider.of<PluginState>(context, listen: false)
                           .addScreenDropDown({
-                        formItem?.rowID?.toLowerCase():
-                            extraFieldMap[_currentValue]
+                        formItem?.rowID.toString(): extraFieldMap[_currentValue]
                       }),
                     }),
                 validator: (value) {
@@ -490,7 +489,7 @@ class DynamicDropDown implements IFormWidget {
             .screenDropDowns
             .isEmpty) {
           Provider.of<PluginState>(context, listen: false).addScreenDropDown(
-              {formItem?.rowID?.toLowerCase(): extraFieldMap[_currentValue]});
+              {formItem?.rowID?.toString(): extraFieldMap[_currentValue]});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -556,7 +555,7 @@ class DropDown implements IFormWidget {
                       _currentValue = value.toString(),
                       Provider.of<PluginState>(context, listen: false)
                           .addScreenDropDown({
-                        formItem?.actionId?.toLowerCase():
+                        formItem?.rowID?.toString():
                             extraFieldMap[_currentValue]
                       }),
                     }),
@@ -578,8 +577,8 @@ class DropDown implements IFormWidget {
         var items =
             Provider.of<PluginState>(context, listen: false).screenDropDowns;
         if (!items.containsKey(formItem?.actionId?.toLowerCase())) {
-          Provider.of<PluginState>(context, listen: false).addScreenDropDown(
-              {formItem?.actionId?.toLowerCase(): initialValue});
+          Provider.of<PluginState>(context, listen: false)
+              .addScreenDropDown({formItem?.rowID?.toString(): initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());

@@ -273,7 +273,7 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         hidden: fields[18] as bool?,
         linkedToRowID: fields[19] as String?,
         isEnabled: fields[20] as bool?,
-        rowID: fields[21] as String?)
+        rowID: fields[21] as int?)
       ..no = fields[0] as int?;
   }
 

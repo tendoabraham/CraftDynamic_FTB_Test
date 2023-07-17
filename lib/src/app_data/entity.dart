@@ -186,7 +186,7 @@ class FormItem {
   @HiveField(20)
   bool? isEnabled;
   @HiveField(21)
-  String? rowID;
+  int? rowID;
 
   FormItem(
       {required this.controlType,

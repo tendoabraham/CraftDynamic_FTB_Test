@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../craft_dynamic.dart';
 
 final _sharedPref = CommonSharedPref();
