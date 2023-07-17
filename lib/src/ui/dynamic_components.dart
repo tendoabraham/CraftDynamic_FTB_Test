@@ -576,7 +576,7 @@ class DropDown implements IFormWidget {
       try {
         var items =
             Provider.of<PluginState>(context, listen: false).screenDropDowns;
-        if (!items.containsKey(formItem?.actionId?.toLowerCase())) {
+        if (!items.containsKey(formItem?.rowID?.toString())) {
           Provider.of<PluginState>(context, listen: false)
               .addScreenDropDown({formItem?.rowID?.toString(): initialValue});
         }
