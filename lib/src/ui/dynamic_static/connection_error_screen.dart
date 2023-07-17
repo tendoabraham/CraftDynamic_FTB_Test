@@ -54,9 +54,11 @@ class ConnectionErrorScreen extends StatelessWidget {
                     const SizedBox(
                       height: 44,
                     ),
-                    WidgetFactory.buildButton(context, () {
-                      Navigator.of(context).pop();
-                    }, "Close")
+                    SizedBox(
+                        width: 200,
+                        child: WidgetFactory.buildButton(context, () {
+                          Navigator.of(context).pop();
+                        }, "Close"))
                   ],
                 )),
           ))));
