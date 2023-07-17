@@ -23,25 +23,36 @@ class ModuleRepository {
   }
 
   Future<ModuleItem?> getModuleById(String moduleID) async {
-    var box = await openBox();
-    var module = box.values.firstWhere((item) => item.moduleId == moduleID);
+    ModuleItem? module;
+    try {
+      var box = await openBox();
+      module = box.values.firstWhere((item) => item.moduleId == moduleID);
+    } catch (e) {
+      AppLogger.appLogD(tag: "get module by id", message: e);
+    }
     return module;
   }
 
   Future<List<ModuleItem>?> getModulesById(String moduleID) async {
-    var box = await openBox();
-    var loginHiddenModulesRepo = ModuleToHideRepository();
-    List<ModuleToHide>? modulesToHide =
-        await loginHiddenModulesRepo.getAllModulesToHide();
-    var modules = box.values
-        .where(
-            (item) => item.parentModule == moduleID && item.isHidden == false)
-        .toList();
-    modulesToHide?.forEach((module) {
-      modules.removeWhere((item) => item.moduleId == module.moduleId);
-    });
-    modules
-        .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+    List<ModuleItem>? modules;
+    try {
+      var box = await openBox();
+      var loginHiddenModulesRepo = ModuleToHideRepository();
+      List<ModuleToHide>? modulesToHide =
+          await loginHiddenModulesRepo.getAllModulesToHide();
+      var modules = box.values
+          .where(
+              (item) => item.parentModule == moduleID && item.isHidden == false)
+          .toList();
+      modulesToHide?.forEach((module) {
+        modules.removeWhere((item) => item.moduleId == module.moduleId);
+      });
+      modules
+          .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+    } catch (e) {
+      AppLogger.appLogD(tag: "get modules by id", message: e);
+    }
+
     return modules;
   }
 
