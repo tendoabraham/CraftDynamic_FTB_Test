@@ -27,6 +27,7 @@ class ModuleRepository {
     try {
       var box = await openBox();
       module = box.values.firstWhereOrNull((item) => item.moduleId == moduleID);
+      return module;
     } catch (e) {
       AppLogger.appLogD(tag: "get module by id", message: e);
     }
@@ -37,6 +38,7 @@ class ModuleRepository {
     List<ModuleItem>? modules;
     try {
       var box = await openBox();
+
       var loginHiddenModulesRepo = ModuleToHideRepository();
       List<ModuleToHide>? modulesToHide =
           await loginHiddenModulesRepo.getAllModulesToHide();
@@ -44,11 +46,13 @@ class ModuleRepository {
           .where(
               (item) => item.parentModule == moduleID && item.isHidden == false)
           .toList();
+
       modulesToHide?.forEach((module) {
         modules.removeWhere((item) => item.moduleId == module.moduleId);
       });
       modules
           .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+      return modules;
     } catch (e) {
       AppLogger.appLogD(tag: "get modules by id", message: e);
     }
