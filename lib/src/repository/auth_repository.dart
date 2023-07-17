@@ -55,6 +55,16 @@ class AuthRepository {
           moduleItem: module,
         ));
       });
+    } else if (activationResponse.status ==
+        StatusCode.setsecurityquestions.statusCode) {
+      _moduleRepository
+          .getModuleById(ModuleId.SECRETQUESTIONS.name)
+          .then((module) {
+        CommonUtils.getxNavigate(
+            widget: DynamicWidget(
+          moduleItem: module,
+        ));
+      });
     }
     return activationResponse;
   }
