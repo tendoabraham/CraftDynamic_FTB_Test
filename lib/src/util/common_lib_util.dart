@@ -120,8 +120,16 @@ class CommonUtils {
   }
 
   static Color parseColor(String colorhex) {
-    String color = colorhex.replaceAll('#', '0xff');
-    return Color(int.parse(color));
+    String color = colorhex.replaceAll('#', '');
+    try {
+      if (color.length == 6) {
+        color = "FF$color";
+      }
+      return Color(int.parse(color, radix: 16));
+    } catch (e) {
+      AppLogger.appLogE(tag: "error parsing color $color", message: e);
+    }
+    return Colors.white;
   }
 
   static vibrate() {
