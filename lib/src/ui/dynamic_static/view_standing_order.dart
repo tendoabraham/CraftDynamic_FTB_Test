@@ -111,8 +111,8 @@ class _ViewStandingOrderState extends State<ViewStandingOrder> {
 
     DynamicInput.formInputValues.clear();
     DynamicInput.formInputValues
-        .add({"MerchantID": widget.moduleItem.merchantID});
-    DynamicInput.formInputValues.add({"HEADER": "VIEWSTANDINGORDER"});
+        .addAll({"MerchantID": widget.moduleItem.merchantID});
+    DynamicInput.formInputValues.addAll({"HEADER": "VIEWSTANDINGORDER"});
     // DynamicInput.formInputValues.add({"INFOFIELD1": "TRANSFER"});
     var results = await _dynamicRequest.dynamicRequest(widget.moduleItem,
         dataObj: DynamicInput.formInputValues,
@@ -264,11 +264,11 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
       StandingOrder standingOrder, ModuleItem moduleItem, context) async {
     DynamicInput.formInputValues.clear();
     DynamicInput.formInputValues
-        .add({"INFOFIELD3": standingOrder.standingOrderID});
+        .addAll({"INFOFIELD3": standingOrder.standingOrderID});
     DynamicInput.formInputValues
-        .add({RequestParam.MerchantID.name: moduleItem.merchantID});
+        .addAll({RequestParam.MerchantID.name: moduleItem.merchantID});
     DynamicInput.formInputValues
-        .add({RequestParam.HEADER.name: "DELETESTANDINGORDER"});
+        .addAll({RequestParam.HEADER.name: "DELETESTANDINGORDER"});
 
     await _dynamicRequest
         .dynamicRequest(moduleItem,

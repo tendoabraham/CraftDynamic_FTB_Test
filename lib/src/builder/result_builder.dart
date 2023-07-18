@@ -27,6 +27,10 @@ abstract class IPostDynamicCheck {
         return PostDynamicChangePin(
             dynamicResponse: dynamicData.dynamicResponse);
 
+      case ActionType.FORGOTPIN:
+        return PostDynamicChangePin(
+            dynamicResponse: dynamicData.dynamicResponse);
+
       default:
         return DefaultPostDynamic();
     }

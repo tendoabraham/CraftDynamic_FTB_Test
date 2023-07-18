@@ -25,8 +25,8 @@ import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'dynamic_static/qr_scanner.dart';
 
 class DynamicInput {
-  static Set<Map<String?, dynamic>> formInputValues = {};
-  static Set<Map<String?, dynamic>> encryptedField = {};
+  static Map<String?, dynamic> formInputValues = {};
+  static Map<String?, dynamic> encryptedField = {};
 
   clearDynamicInput() {
     formInputValues.clear();
@@ -1189,12 +1189,14 @@ class _TextLinkState extends State<TextLink> {
               },
               child: Text(formItem?.controlText ?? "Link"));
           if (snapshot.hasData) {
-            return TextButton(
-                onPressed: () {
-                  CommonUtils.openUrl(
-                      Uri.parse(snapshot.data?.otherText ?? ""));
-                },
-                child: Text(formItem?.controlText ?? "Link"));
+            return Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                    onPressed: () {
+                      CommonUtils.openUrl(
+                          Uri.parse(snapshot.data?.otherText ?? ""));
+                    },
+                    child: Text(formItem?.controlText ?? "Link")));
           }
           return child;
         });

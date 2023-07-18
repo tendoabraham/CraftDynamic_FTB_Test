@@ -48,6 +48,14 @@ abstract class IRequestObject {
           encryptedFieldsObject: encryptedFields,
         );
 
+      case ActionType.FORGOTPIN:
+        return ForgotPin(
+          dataObject: dataObject,
+          actionType: action,
+          requestObject: requestMap,
+          encryptedFieldsObject: encryptedFields,
+        );
+
       default:
         return DefaultObject();
     }
@@ -141,7 +149,7 @@ class PayBill implements IRequestObject {
 class DBCall implements IRequestObject {
   @override
   Map<String?, dynamic> dataObject;
-  List<Map<String?, dynamic>>? encryptedFieldsObject;
+  Map<String?, dynamic>? encryptedFieldsObject;
 
   @override
   Map<String, dynamic> requestObject = {};
@@ -168,10 +176,8 @@ class DBCall implements IRequestObject {
     Map<String?, dynamic> fields = {};
     Map<String?, dynamic> encryptedFields = {};
     fields.addAll(dataObject);
+    encryptedFields.addAll(encryptedFieldsObject ?? {});
 
-    encryptedFieldsObject?.forEach((field) {
-      encryptedFields.addAll(field);
-    });
     requestObject[RequestParam.FormID.name] = actionType?.name;
     requestObject[RequestParam.MerchantID.name] = merchantID;
     if (fields.containsKey(RequestParam.HEADER.name) == false) {
@@ -200,6 +206,38 @@ class ChangePin implements IRequestObject {
   Map<String, dynamic> requestObject = {};
 
   ChangePin(
+      {this.actionType,
+      required this.dataObject,
+      required this.requestObject,
+      required this.encryptedFieldsObject});
+
+  @override
+  Map<String, dynamic> getRequestObject() {
+    Map<String?, dynamic> fields = {};
+    Map<String?, dynamic> encryptedFields = {};
+    fields.addAll(dataObject);
+    encryptedFields.addAll(encryptedFieldsObject);
+
+    requestObject[RequestParam.FormID.name] = actionType?.name;
+    requestObject[RequestParam.CHANGEPIN.name] = fields;
+    requestObject[RequestParam.EncryptedFields.name] = encryptedFields;
+    return requestObject;
+  }
+}
+
+class ForgotPin implements IRequestObject {
+  @override
+  ActionType? actionType;
+
+  @override
+  Map<String?, dynamic> dataObject;
+
+  Map<String?, dynamic> encryptedFieldsObject;
+
+  @override
+  Map<String, dynamic> requestObject = {};
+
+  ForgotPin(
       {this.actionType,
       required this.dataObject,
       required this.requestObject,

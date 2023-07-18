@@ -86,10 +86,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   @override
   Widget build(BuildContext context) {
-    var message = widget.postDynamic.notifyText == null ||
-            widget.postDynamic.notifyText == ""
-        ? widget.postDynamic.message
-        : widget.postDynamic.notifyText;
+    var message = widget.postDynamic.message;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
@@ -188,9 +185,11 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
   }
 
   closeOrLogout() {
-    widget.moduleItem != null && widget.moduleItem?.moduleId == "PIN" ||
+    widget.moduleItem != null &&
+                widget.moduleItem?.moduleId == ModuleId.PIN.name ||
             widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name ||
-            widget.postDynamic.status == StatusCode.changeBankType.statusCode
+            widget.postDynamic.status == StatusCode.changeBankType.statusCode ||
+            widget.moduleItem?.moduleId == ModuleId.FORGOTPIN.name
         ? logout()
         : closePage();
   }

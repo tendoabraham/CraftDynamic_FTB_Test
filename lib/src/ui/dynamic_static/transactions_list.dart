@@ -23,7 +23,7 @@ class _TransactionListState extends State<TransactionList> {
   void initState() {
     super.initState();
     DynamicInput.formInputValues.clear();
-    DynamicInput.formInputValues.add({"HEADER": "GETTRXLIST"});
+    DynamicInput.formInputValues.addAll({"HEADER": "GETTRXLIST"});
   }
 
   getTransactionList() => _dynamicRequest.dynamicRequest(widget.moduleItem,

@@ -29,8 +29,12 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
-    formvalues.addAll(dataObj);
-    encryptedvalues.addAll(encryptedField);
+    try {
+      formvalues.addAll(dataObj);
+      encryptedvalues.addAll(encryptedField);
+    } catch (e) {
+      AppLogger.appLogE(tag: "error adding values", message: e);
+    }
 
     ActionItem? actionControl;
     var merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
@@ -52,9 +56,6 @@ class DynamicFormRequest {
     requestObj["SessionID"] = "ffffffff-e46c-53ce-0000-00001d093e12";
 
     if (formItem != null) {
-      AppLogger.appLogD(
-          tag: "control id::moduleid",
-          message: "${formItem.controlId}:${moduleItem?.moduleId}");
       actionControl =
           await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
@@ -71,8 +72,6 @@ class DynamicFormRequest {
     if (actionControl != null) {
       var actionMerchantID = actionControl.merchantID;
       if (actionMerchantID != null && actionMerchantID != "") {
-        AppLogger.appLogD(
-            tag: "action merchantid", message: actionControl.merchantID);
         merchantID = actionMerchantID;
       }
     }

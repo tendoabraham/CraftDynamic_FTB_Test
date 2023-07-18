@@ -11,6 +11,8 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:provider/provider.dart';
 
 class DynamicPostCall {
+  static final _moduleRepo = ModuleRepository();
+
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {
       CommonUtils.navigateToRoute(
@@ -39,6 +41,7 @@ class DynamicPostCall {
 
     var builder = DynamicFactory.getPostDynamicObject(
         dynamicData); //Get a builder based on action type
+
     var postDynamic = PostDynamic(builder, context, controlID ?? "");
 
     switch (postDynamic.status) {
@@ -90,6 +93,19 @@ class DynamicPostCall {
           }
         }
         break;
+      case forgotpin:
+        {
+          _moduleRepo.getModuleById(ModuleId.FORGOTPIN.name).then((module) {
+            try {
+              context.navigate(DynamicWidget(
+                moduleItem: module,
+              ));
+            } catch (e) {
+              debugPrint("Unable to route---------->$e");
+            }
+          });
+        }
+        break;
       case failure:
         {
           AlertUtil.showAlertDialog(
@@ -122,7 +138,7 @@ class DynamicPostCall {
         break;
       default:
         {
-          CommonUtils.showToast("Please try again later");
+          CommonUtils.showToast(postDynamic.message ?? "Try Again Later!");
         }
     }
   }

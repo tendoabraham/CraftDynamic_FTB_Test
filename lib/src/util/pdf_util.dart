@@ -1,11 +1,4 @@
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/ui/dynamic_static/pdf_screen.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
+part of craft_dynamic;
 
 class PDFUtil {
   static downloadReceipt(PostDynamic postDynamic,

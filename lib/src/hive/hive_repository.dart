@@ -391,9 +391,7 @@ class AtmLocationRepository {
   insertAtmLocations(List<AtmLocation> atmLocations) async {
     var box = await openBox();
     await box.clear();
-    for (var locations in atmLocations) {
-      box.put(locations.no, locations);
-    }
+    box.addAll(atmLocations);
   }
 
   Future<List<AtmLocation>> getAllAtmLocations() async {
@@ -414,8 +412,10 @@ class BranchLocationRepository {
   insertBranchLocations(List<BranchLocation> branchLocations) async {
     var box = await openBox();
     await box.clear();
-    for (var locations in branchLocations) {
-      box.put(locations.no, locations);
+    try {
+      box.addAll(branchLocations);
+    } catch (e) {
+      AppLogger.appLogD(tag: "error inserting branch", message: e);
     }
   }
 

@@ -62,6 +62,18 @@ class CommonSharedPref {
     await storage.write(key: key, value: value);
   }
 
+  acceptTermsAndConditions(bool accept) async {
+    await storage.write(key: "terms&conditions", value: accept.toString());
+  }
+
+  checkTermsAndConditions() async {
+    var value = await storage.read(key: "terms&conditions");
+    if (value == "true") {
+      return true;
+    }
+    return false;
+  }
+
   getUserAccountInfo(UserAccountData key) async =>
       await storage.read(key: key.name);
 

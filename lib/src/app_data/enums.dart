@@ -75,7 +75,8 @@ enum ActionType {
   CHANGEPIN,
   ACTIVATE,
   BENEFICIARY,
-  CHANGELANGUAGE
+  CHANGELANGUAGE,
+  FORGOTPIN
 }
 
 enum ActionID { GETTRXLIST }
@@ -144,7 +145,9 @@ enum ModuleId {
   PIN,
   LANGUAGEPREFERENCE,
   ADDBENEFICIARY,
-  SECRETQUESTIONS
+  SECRETQUESTIONS,
+  SECRETQUESTIONSCHECK,
+  FORGOTPIN
 }
 
 enum LittleProduct {
@@ -201,4 +204,5 @@ const otp = "093";
 const changeLanguage = "094";
 const changeBankType = "095";
 const changePin = "101";
+const forgotpin = "107";
 const unknown = "xxx";

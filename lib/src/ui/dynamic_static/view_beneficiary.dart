@@ -141,13 +141,19 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
   Future<List<Beneficiary>> viewBeneficiaries() async {
     isCallingService.value = true;
     List<Beneficiary> beneficiaries = [];
+    try {
+      DynamicInput.formInputValues.clear();
+      DynamicInput.formInputValues
+          .addAll({"MerchantID": widget.moduleItem.merchantID});
 
-    DynamicInput.formInputValues.clear();
-    DynamicInput.formInputValues
-        .add({"MerchantID": widget.moduleItem.merchantID});
+      DynamicInput.formInputValues.addAll({"HEADER": "GETBENEFICIARY"});
+      DynamicInput.formInputValues.addAll({"INFOFIELD1": "TRANSFER"});
+    } catch (e) {
+      debugPrint("benefifciary error $e");
+    }
 
-    DynamicInput.formInputValues.add({"HEADER": "GETBENEFICIARY"});
-    // DynamicInput.formInputValues.add({"INFOFIELD1": "TRANSFER"});
+    debugPrint("calling view beneficiary-------------->");
+
     await _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
             dataObj: DynamicInput.formInputValues,
@@ -170,13 +176,15 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
   deleteBeneficiary(Beneficiary beneficiary, context) {
     isCallingService.value = true;
     DynamicInput.formInputValues.clear();
-    DynamicInput.formInputValues.add({"INFOFIELD1": beneficiary.accountAlias});
-    DynamicInput.formInputValues.add({"INFOFIELD2": beneficiary.merchantName});
-    DynamicInput.formInputValues.add({"INFOFIELD4": beneficiary.accountID});
-    DynamicInput.formInputValues.add({"INFOFIELD3": beneficiary.rowId});
     DynamicInput.formInputValues
-        .add({"MerchantID": widget.moduleItem.merchantID});
-    DynamicInput.formInputValues.add({"HEADER": "DELETEBENEFICIARY"});
+        .addAll({"INFOFIELD1": beneficiary.accountAlias});
+    DynamicInput.formInputValues
+        .addAll({"INFOFIELD2": beneficiary.merchantName});
+    DynamicInput.formInputValues.addAll({"INFOFIELD4": beneficiary.accountID});
+    DynamicInput.formInputValues.addAll({"INFOFIELD3": beneficiary.rowId});
+    DynamicInput.formInputValues
+        .addAll({"MerchantID": widget.moduleItem.merchantID});
+    DynamicInput.formInputValues.addAll({"HEADER": "DELETEBENEFICIARY"});
     _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
             dataObj: DynamicInput.formInputValues,

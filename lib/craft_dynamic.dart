@@ -52,6 +52,8 @@ import 'package:vibration/vibration.dart';
 import 'package:yaml/yaml.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:collection/collection.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/pdf_screen.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 import 'dynamic_widget.dart';
 import 'src/network/api_util.dart';
@@ -62,8 +64,8 @@ import 'src/session_manager/session_manager.dart';
 import 'src/state/plugin_state.dart';
 import 'src/ui/dynamic_components.dart';
 import 'src/util/clipper_util.dart';
-import 'src/util/pdf_util.dart';
 
+part 'src/util/pdf_util.dart';
 part 'src/util/logger_util.dart';
 part 'src/app_data/model.dart';
 part 'src/app_data/entity.dart';
