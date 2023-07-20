@@ -54,6 +54,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:collection/collection.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/pdf_screen.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'dynamic_widget.dart';
 import 'src/network/api_util.dart';
@@ -65,6 +66,7 @@ import 'src/state/plugin_state.dart';
 import 'src/ui/dynamic_components.dart';
 import 'src/util/clipper_util.dart';
 
+part 'src/hive/hive_util.dart';
 part 'src/util/pdf_util.dart';
 part 'src/util/logger_util.dart';
 part 'src/app_data/model.dart';

@@ -609,5 +609,25 @@ class PendingTrxDisplay {
         pendingUniqueID = json["PendingUniqueID"];
 }
 
+@HiveType(typeId: 19)
+class Faq {
+  @HiveField(0)
+  int? code;
+  @HiveField(1)
+  String? subject;
+  @HiveField(2)
+  String? keywords;
+  @HiveField(3)
+  String? message;
+
+  Faq({this.code, this.subject, this.keywords, this.message});
+
+  Faq.fromJson(Map<String, dynamic> json)
+      : code = json["Code"],
+        subject = json["FAQSubject"],
+        keywords = json["KeyWords"],
+        message = json["MessageBodyContent"];
+}
+
 //TODO Add Entity for service alerts
 //TODO Add Entity for loanlimit

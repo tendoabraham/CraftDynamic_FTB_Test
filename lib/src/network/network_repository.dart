@@ -16,6 +16,7 @@ final _branchLocationRepository = BranchLocationRepository();
 final _moduleRepository = ModuleRepository();
 final _formRepository = FormsRepository();
 final _actionControlRepository = ActionControlRepository();
+final _faqRepository = FaqRepository();
 
 class UIDataRepository {
   addUIDataToDB({required UIResponse? uiResponse}) async {
@@ -124,6 +125,7 @@ class StaticDataRepository {
     List<AtmLocation> atms = [];
     List<OnlineAccountProduct> products = [];
     List<ImageData> images = [];
+    List<Faq> _faqs = [];
 
     staticResponse?.usercode?.forEach((item) {
       userCodes.add(UserCode.fromJson(item));
@@ -154,5 +156,10 @@ class StaticDataRepository {
       branchLocations.add(BranchLocation.fromJson(item));
     });
     _branchLocationRepository.insertBranchLocations(branchLocations);
+
+    staticResponse?.faqs?.forEach((item) {
+      _faqs.add(Faq.fromJson(item));
+    });
+    _faqRepository.insertFaqs(_faqs);
   }
 }

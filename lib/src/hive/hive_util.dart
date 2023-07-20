@@ -1,7 +1,4 @@
-import 'dart:io';
-
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
+part of craft_dynamic;
 
 class HiveBox<T> {
   static final Map<Type, HiveBox<dynamic>> _instances = {};
@@ -41,5 +38,28 @@ class HiveUtil {
     if (await cacheDir.exists()) {
       await cacheDir.delete(recursive: true);
     }
+  }
+
+  static initializeHive() async {
+    await Hive.initFlutter();
+    Hive.registerAdapter(FaqAdapter());
+    Hive.registerAdapter(MenuBorderAdapter());
+    Hive.registerAdapter(MenuPropertiesAdapter());
+    Hive.registerAdapter(BlockSpacingAdapter());
+    Hive.registerAdapter(ModuleItemAdapter());
+    Hive.registerAdapter(FormItemAdapter());
+    Hive.registerAdapter(ActionItemAdapter());
+    Hive.registerAdapter(UserCodeAdapter());
+    Hive.registerAdapter(BankBranchAdapter());
+    Hive.registerAdapter(AtmLocationAdapter());
+    Hive.registerAdapter(ImageDataAdapter());
+    Hive.registerAdapter(BranchLocationAdapter());
+    Hive.registerAdapter(FrequentAccessedModuleAdapter());
+    Hive.registerAdapter(BankAccountAdapter());
+    Hive.registerAdapter(BeneficiaryAdapter());
+    Hive.registerAdapter(ModuleToHideAdapter());
+    Hive.registerAdapter(ModuleToDisableAdapter());
+    Hive.registerAdapter(PendingTrxDisplayAdapter());
+    Hive.registerAdapter(OnlineAccountProductAdapter());
   }
 }

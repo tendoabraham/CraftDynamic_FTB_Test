@@ -447,3 +447,24 @@ class PendingTrxDisplayRepository {
     return box.values.toList();
   }
 }
+
+class FaqRepository {
+  Future<Box<Faq>> openBox() async {
+    if (Hive.isBoxOpen("faqs")) {
+      return Hive.box<Faq>("faqs");
+    } else {
+      return await Hive.openBox<Faq>("faqs");
+    }
+  }
+
+  insertFaqs(List<Faq> faqs) async {
+    var box = await openBox();
+    await box.clear();
+    box.addAll(faqs);
+  }
+
+  Future<List<Faq>> getAllFaqs() async {
+    var box = await openBox();
+    return box.values.toList();
+  }
+}

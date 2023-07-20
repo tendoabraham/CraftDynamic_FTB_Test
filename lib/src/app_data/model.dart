@@ -174,7 +174,8 @@ class StaticResponse {
       bankBranch,
       atmLocation,
       branchLocation,
-      image;
+      image,
+      faqs;
 
   StaticResponse(
       {required this.status,
@@ -187,7 +188,8 @@ class StaticResponse {
       this.bankBranch,
       this.atmLocation,
       this.branchLocation,
-      this.image});
+      this.image,
+      this.faqs});
 
   StaticResponse.fromJson(Map<String, dynamic> json)
       : status = json["Status"],
@@ -200,6 +202,7 @@ class StaticResponse {
         atmLocation = json["ATMLocations"],
         bankBranch = json["BankBranch"],
         image = json["Images"],
+        faqs = json["FAQ"],
         onlineAccountProduct = json["OnlineAccountProduct"];
 }
 

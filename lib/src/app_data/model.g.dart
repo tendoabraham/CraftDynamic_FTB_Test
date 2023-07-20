@@ -960,3 +960,45 @@ class PendingTrxDisplayAdapter extends TypeAdapter<PendingTrxDisplay> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class FaqAdapter extends TypeAdapter<Faq> {
+  @override
+  final int typeId = 19;
+
+  @override
+  Faq read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Faq(
+        code: fields[0] as int?,
+        subject: fields[1] as String?,
+        keywords: fields[2] as String?,
+        message: fields[3] as String?);
+  }
+
+  @override
+  void write(BinaryWriter writer, Faq obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.code)
+      ..writeByte(1)
+      ..write(obj.subject)
+      ..writeByte(2)
+      ..write(obj.keywords)
+      ..writeByte(3)
+      ..write(obj.message);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FaqAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
