@@ -32,6 +32,7 @@ class AuthRepository {
   // Call this method to login
   Future<ActivationResponse> login(String pin) async {
     String? currentLanguage = await _sharedPref.getLanguageID();
+    var localdataversion = await _sharedPref.getStaticDataVersion();
     bool refreshUIData = false;
 
     ActivationResponse activationResponse =
@@ -39,6 +40,8 @@ class AuthRepository {
     if (activationResponse.status == StatusCode.success.statusCode) {
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
+      var newdataversion = activationResponse.staticDataVersion;
+      await _sharedPref.addStaticDataVersion(newdataversion ?? 0);
 
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&
@@ -47,7 +50,10 @@ class AuthRepository {
         await _sharedPref.setLanguageID(currentLanguageIDSetting);
         refreshUIData = true;
       }
-      await _initRepository.getAppUIData(refreshData: refreshUIData);
+
+      if (newdataversion != null && newdataversion > localdataversion) {
+        await _initRepository.getAppUIData(refreshData: refreshUIData);
+      }
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
       _moduleRepository.getModuleById(ModuleId.PIN.name).then((module) {
         CommonUtils.getxNavigate(

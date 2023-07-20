@@ -42,50 +42,47 @@ class VerticalModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuProperties? menuProperties = moduleItem.menuProperties;
-      MenuBorder? menuBorder = moduleItem.menuBorder;
+    MenuProperties? menuProperties = moduleItem.menuProperties;
+    MenuBorder? menuBorder = moduleItem.menuBorder;
 
-      MainAxisAlignment getAlignment() {
-        if (menuProperties?.alignment == "END") {
-          return MainAxisAlignment.end;
-        } else if (menuProperties?.alignment == "START") {
-          return MainAxisAlignment.start;
-        }
-        return MainAxisAlignment.center;
+    MainAxisAlignment getAlignment() {
+      if (menuProperties?.alignment == "END") {
+        return MainAxisAlignment.end;
+      } else if (menuProperties?.alignment == "START") {
+        return MainAxisAlignment.start;
       }
+      return MainAxisAlignment.center;
+    }
 
-      return Card(
-          surfaceTintColor: CommonUtils.parseColor(
-              menuProperties?.backgroundColor ?? "#fffff"),
-          elevation: menuProperties?.elevation ?? 0,
-          shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  width: menuBorder?.width ?? 1.5,
-                  color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
-              borderRadius: BorderRadius.all(
-                Radius.circular(menuBorder?.radius ?? 12),
-              )),
-          child: Padding(
-              padding: EdgeInsets.all(menuProperties?.padding ?? 8),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: getAlignment(),
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MenuItemImage(
-                      imageUrl: moduleItem.moduleUrl ?? "",
-                      iconSize: menuProperties?.iconSize ?? 54,
-                    ),
-                    SizedBox(
-                      height:
-                          double.parse(menuProperties?.spaceBetween ?? "12"),
-                    ),
-                    Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
-                  ],
-                ),
-              )));
-    });
+    return Card(
+        surfaceTintColor:
+            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "#fffff"),
+        elevation: menuProperties?.elevation ?? 0,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: menuBorder?.width ?? 1.5,
+                color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
+            borderRadius: BorderRadius.all(
+              Radius.circular(menuBorder?.radius ?? 12),
+            )),
+        child: Padding(
+            padding: EdgeInsets.all(menuProperties?.padding ?? 8),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: getAlignment(),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MenuItemImage(
+                    imageUrl: moduleItem.moduleUrl ?? "",
+                    iconSize: menuProperties?.iconSize ?? 54,
+                  ),
+                  SizedBox(
+                    height: double.parse(menuProperties?.spaceBetween ?? "12"),
+                  ),
+                  Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
+                ],
+              ),
+            )));
   }
 
   Color? getMenuColor(context) =>
@@ -102,47 +99,45 @@ class HorizontalModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DynamicState>(builder: (context, state, child) {
-      MenuProperties? menuProperties = moduleItem.menuProperties;
-      MenuBorder? menuBorder = moduleItem.menuBorder;
-      MainAxisAlignment getAlignment() {
-        if (menuProperties?.alignment == "END") {
-          return MainAxisAlignment.end;
-        } else if (menuProperties?.alignment == "START") {
-          return MainAxisAlignment.start;
-        }
-        return MainAxisAlignment.center;
+    MenuProperties? menuProperties = moduleItem.menuProperties;
+    MenuBorder? menuBorder = moduleItem.menuBorder;
+    MainAxisAlignment getAlignment() {
+      if (menuProperties?.alignment == "END") {
+        return MainAxisAlignment.end;
+      } else if (menuProperties?.alignment == "START") {
+        return MainAxisAlignment.start;
       }
+      return MainAxisAlignment.center;
+    }
 
-      return Card(
-          surfaceTintColor: CommonUtils.parseColor(
-              menuProperties?.backgroundColor ?? "ffffff"),
-          elevation: menuProperties?.elevation ?? 0,
-          shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  width: menuBorder?.width ?? 1.5,
-                  color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
-              borderRadius: BorderRadius.all(
-                Radius.circular(menuBorder?.radius ?? 12),
-              )),
-          child: Padding(
-              padding: EdgeInsets.all(menuProperties?.padding ?? 8),
-              child: Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: getAlignment(),
-                  children: [
-                    MenuItemImage(
-                      imageUrl: moduleItem.moduleUrl ?? "",
-                    ),
-                    SizedBox(
-                      width: double.parse(menuProperties?.spaceBetween ?? "12"),
-                    ),
-                    MenuItemTitle(title: moduleItem.moduleName)
-                  ],
-                ),
-              )));
-    });
+    return Card(
+        surfaceTintColor:
+            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "ffffff"),
+        elevation: menuProperties?.elevation ?? 0,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: menuBorder?.width ?? 1.5,
+                color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
+            borderRadius: BorderRadius.all(
+              Radius.circular(menuBorder?.radius ?? 12),
+            )),
+        child: Padding(
+            padding: EdgeInsets.all(menuProperties?.padding ?? 8),
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: getAlignment(),
+                children: [
+                  MenuItemImage(
+                    imageUrl: moduleItem.moduleUrl ?? "",
+                  ),
+                  SizedBox(
+                    width: double.parse(menuProperties?.spaceBetween ?? "12"),
+                  ),
+                  MenuItemTitle(title: moduleItem.moduleName)
+                ],
+              ),
+            )));
   }
 
   Color? getMenuColor(context) =>

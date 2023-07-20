@@ -116,12 +116,14 @@ class APIService {
     var tokenRefreshed = await _sharedPref.getTokenIsRefreshed();
 
     if (!APIUtil.verifyConnection()) {
+      _sharedPref.setTokenIsRefreshed("false");
       return data;
     }
 
     if (!tokenRefreshed) {
       await _initRepository.getAppToken();
     }
+
     String uniqueID = await _sharedPref.getUniqueID();
     // var localToken = await _sharedPref.getLocalToken();
     var localToken = currentToken.value;
@@ -204,6 +206,7 @@ class APIService {
     var dioResponse;
     var rsaEncrypted = await RSAUtil.rsaEncrypt(requestBody);
     if (!APIUtil.verifyConnection()) {
+      await _sharedPref.setTokenIsRefreshed("false");
       return 1;
     }
     try {

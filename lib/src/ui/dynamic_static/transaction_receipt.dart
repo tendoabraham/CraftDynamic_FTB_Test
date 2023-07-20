@@ -135,56 +135,56 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                 ],
                                               ));
                                         }),
-                                    const SizedBox(
-                                      height: 44,
-                                    ),
-                                    Container(
-                                        child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                            iconSize: 28,
-                                            onPressed: () {
-                                              PDFUtil.downloadReceipt(
-                                                postDynamic,
-                                              );
-                                            },
-                                            icon: const Column(children: [
-                                              Icon(
-                                                color: Colors.grey,
-                                                Icons.download,
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Text("Download",
-                                                  style:
-                                                      TextStyle(fontSize: 12))
-                                            ])),
-                                        const VerticalDivider(
-                                            color: Colors.black),
-                                        IconButton(
-                                            iconSize: 28,
-                                            onPressed: () {
-                                              PDFUtil.downloadReceipt(
-                                                  postDynamic,
-                                                  downloadReceipt: false);
-                                            },
-                                            icon: const Column(children: [
-                                              Icon(
-                                                color: Colors.grey,
-                                                Icons.share,
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Text("Share",
-                                                  style:
-                                                      TextStyle(fontSize: 12))
-                                            ])),
-                                      ],
-                                    )),
+                                    // const SizedBox(
+                                    //   height: 44,
+                                    // ),
+                                    // Container(
+                                    //     child: Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.center,
+                                    //   children: [
+                                    //     IconButton(
+                                    //         iconSize: 28,
+                                    //         onPressed: () {
+                                    //           PDFUtil.downloadReceipt(
+                                    //             postDynamic,
+                                    //           );
+                                    //         },
+                                    //         icon: const Column(children: [
+                                    //           Icon(
+                                    //             color: Colors.grey,
+                                    //             Icons.download,
+                                    //           ),
+                                    //           SizedBox(
+                                    //             height: 8,
+                                    //           ),
+                                    //           Text("Download",
+                                    //               style:
+                                    //                   TextStyle(fontSize: 12))
+                                    //         ])),
+                                    //     const VerticalDivider(
+                                    //         color: Colors.black),
+                                    //     IconButton(
+                                    //         iconSize: 28,
+                                    //         onPressed: () {
+                                    //           PDFUtil.downloadReceipt(
+                                    //               postDynamic,
+                                    //               downloadReceipt: false);
+                                    //         },
+                                    //         icon: const Column(children: [
+                                    //           Icon(
+                                    //             color: Colors.grey,
+                                    //             Icons.share,
+                                    //           ),
+                                    //           SizedBox(
+                                    //             height: 8,
+                                    //           ),
+                                    //           Text("Share",
+                                    //               style:
+                                    //                   TextStyle(fontSize: 12))
+                                    //         ])),
+                                    //   ],
+                                    // )),
                                     const SizedBox(
                                       height: 24,
                                     ),
