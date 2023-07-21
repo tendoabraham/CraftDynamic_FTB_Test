@@ -238,6 +238,7 @@ class APIService {
         await CommonSharedPref.addRoutes(json.decode(routes));
       }
     } catch (e) {
+      await _sharedPref.setTokenIsRefreshed("false");
       AppLogger.appLogE(tag: "GET TOKEN ERROR:", message: e.toString());
     }
     return dioResponse?.statusCode;

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
