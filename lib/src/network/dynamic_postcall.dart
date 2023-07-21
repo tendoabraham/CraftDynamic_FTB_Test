@@ -15,7 +15,8 @@ class DynamicPostCall {
 
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {
-      context.navigate(TransactionReceipt(
+      CommonUtils.getxNavigate(
+          widget: TransactionReceipt(
         postDynamic: postDynamic,
         moduleName: moduleName,
       ));
@@ -52,6 +53,9 @@ class DynamicPostCall {
       case success:
         {
           if (postDynamic.opensDynamicRoute) {
+            AppLogger.appLogD(
+                tag: "dynamic postcall",
+                message: "will show a bottom dialog/open a new sceen");
             postDynamic.formID != null &&
                     postDynamic.formID == FormId.ALERTCONFIRMATIONFORM.name
                 ? AlertUtil.showModalBottomDialog(
