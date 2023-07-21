@@ -87,6 +87,16 @@ class AuthRepository {
       if (bankID != null && bankID.isNotEmpty) {
         await _sharedPref.setBankID(bankID);
       }
+    } else if (activationResponse.status ==
+        StatusCode.setsecurityquestions.statusCode) {
+      _moduleRepository
+          .getModuleById(ModuleId.SECRETQUESTIONS.name)
+          .then((module) {
+        CommonUtils.getxNavigate(
+            widget: DynamicWidget(
+          moduleItem: module,
+        ));
+      });
     }
     return activationResponse;
   }

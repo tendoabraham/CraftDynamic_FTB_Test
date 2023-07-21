@@ -741,12 +741,11 @@ class DynamicQRScanner implements IFormWidget {
           ),
           InkWell(
             onTap: () {
-              CommonUtils.navigateToRoute(
-                  context: context,
-                  widget: QRScanner(
-                    moduleItem: moduleItem!,
-                    formItem: formItem!,
-                  ));
+              context.navigate(QRScanner(
+                moduleItem: moduleItem!,
+                formItem: formItem!,
+                context: context,
+              ));
             },
             child: Image.asset(
               "packages/craft_dynamic/assets/images/qr-code.png",
@@ -764,7 +763,14 @@ class DynamicQRScanner implements IFormWidget {
           const SizedBox(
             height: 12,
           ),
-          const Text("Tap on the above image to start scanning")
+          const Text("Tap on the above image to start scanning"),
+          const SizedBox(
+            height: 44,
+          ),
+          Consumer<PluginState>(
+            builder: (context, state, child) =>
+                state.scanvalidationloading ? LoadUtil() : const SizedBox(),
+          )
         ],
       );
     });

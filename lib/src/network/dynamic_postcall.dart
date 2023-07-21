@@ -15,12 +15,10 @@ class DynamicPostCall {
 
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {
-      CommonUtils.navigateToRoute(
-          context: context,
-          widget: TransactionReceipt(
-            postDynamic: postDynamic,
-            moduleName: moduleName,
-          ));
+      context.navigate(TransactionReceipt(
+        postDynamic: postDynamic,
+        moduleName: moduleName,
+      ));
     });
   }
 
@@ -37,7 +35,13 @@ class DynamicPostCall {
   static processDynamicResponse(
       DynamicData? dynamicData, BuildContext context, String? controlID,
       {moduleItem}) {
-    Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    try {
+      Provider.of<PluginState>(context, listen: false)
+          .setScanValidationLoading(false);
+      Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    } catch (e) {
+      AppLogger.appLogD(tag: "loader error", message: e);
+    }
 
     var builder = DynamicFactory.getPostDynamicObject(
         dynamicData); //Get a builder based on action type
@@ -52,15 +56,13 @@ class DynamicPostCall {
                     postDynamic.formID == FormId.ALERTCONFIRMATIONFORM.name
                 ? AlertUtil.showModalBottomDialog(
                     postDynamic.context, postDynamic.jsonDisplay)
-                : CommonUtils.navigateToRoute(
-                    context: postDynamic.context,
-                    widget: DynamicWidget(
-                      nextFormSequence: postDynamic.nextFormSequence,
-                      isWizard: true,
-                      jsonDisplay: postDynamic.jsonDisplay,
-                      formFields: postDynamic.formFields,
-                      moduleItem: moduleItem,
-                    ));
+                : context.navigate(DynamicWidget(
+                    nextFormSequence: postDynamic.nextFormSequence,
+                    isWizard: true,
+                    jsonDisplay: postDynamic.jsonDisplay,
+                    formFields: postDynamic.formFields,
+                    moduleItem: moduleItem,
+                  ));
             break;
           }
 

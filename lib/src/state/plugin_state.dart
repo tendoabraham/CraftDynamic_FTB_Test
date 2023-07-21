@@ -8,6 +8,7 @@ class PluginState extends ChangeNotifier {
   bool _loadingNetworkData = false;
   bool _obscureText = true;
   bool _deleteFormValues = true;
+  bool _scanvalidationloading = false;
   String _currentTab = "";
   Widget? _logoutScreen;
   MenuType? _menuType;
@@ -23,6 +24,8 @@ class PluginState extends ChangeNotifier {
   bool get obscureText => _obscureText;
 
   bool get deleteFormInput => _deleteFormValues;
+
+  bool get scanvalidationloading => _scanvalidationloading;
 
   Widget? get logoutScreen => _logoutScreen;
 
@@ -66,6 +69,11 @@ class PluginState extends ChangeNotifier {
 
   setMenuColor(Color color) {
     _menuColor = color;
+  }
+
+  setScanValidationLoading(bool state) {
+    _scanvalidationloading = state;
+    notifyListeners();
   }
 
   addFormInput(Map<String?, dynamic> formInput) {

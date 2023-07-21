@@ -146,7 +146,11 @@ class DynamicFormRequest {
       _sharedPref.setBio(false);
     }
 
-    Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    try {
+      Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    } catch (e) {
+      AppLogger.appLogD(tag: "loader error", message: e);
+    }
 
     return dynamicResponse;
   }
