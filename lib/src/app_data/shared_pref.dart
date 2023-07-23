@@ -167,6 +167,13 @@ class CommonSharedPref {
     }
   }
 
+  setTempLanguage(String templanguage) async {
+    return await storage.write(key: "templanguage", value: templanguage);
+  }
+
+  Future<String?> getTempLanguage() async =>
+      await storage.read(key: "templanguage");
+
   clearPrefs() async {
     await storage.deleteAll();
   }

@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:io';
-
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -182,6 +180,12 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         break;
       case StatusCode.otp:
         break;
+      case StatusCode.changeBankType:
+        break;
+      case StatusCode.deviceMismatch:
+        break;
+      case StatusCode.setsecurityquestions:
+        break;
     }
     return "packages/craft_dynamic/assets/lottie/information.json";
   }
@@ -200,12 +204,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
     Widget? logoutScreen =
         Provider.of<PluginState>(context, listen: false).logoutScreen;
     if (widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name) {
-      if (Platform.isAndroid) {
-        SystemNavigator.pop();
-      }
-      if (Platform.isIOS) {
-        exit(0);
-      }
+      await _sharedPref.setTempLanguage(widget.postDynamic.languageID ?? "ENG");
     }
     if (logoutScreen != null) {
       CommonUtils.getXRouteAndPopAll(widget: logoutScreen);
