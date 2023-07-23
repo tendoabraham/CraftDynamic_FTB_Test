@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -198,7 +200,12 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
     Widget? logoutScreen =
         Provider.of<PluginState>(context, listen: false).logoutScreen;
     if (widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name) {
-      await _sharedPref.setLanguageID(widget.postDynamic.languageID ?? "ENG");
+      if (Platform.isAndroid) {
+        SystemNavigator.pop();
+      }
+      if (Platform.isIOS) {
+        exit(0);
+      }
     }
     if (logoutScreen != null) {
       CommonUtils.getXRouteAndPopAll(widget: logoutScreen);
