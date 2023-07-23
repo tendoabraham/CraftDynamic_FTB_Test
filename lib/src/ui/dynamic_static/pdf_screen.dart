@@ -6,6 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PDFScreen extends StatefulWidget {
   final String? path;
@@ -25,6 +26,8 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +52,11 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                 ),
         ],
       ),
-      body: Stack(
-        children: <Widget>[],
+      body: SfPdfViewer.file(
+        File.fromUri(Uri.parse(widget.path ?? "")),
+        key: _pdfViewerKey,
+        pageLayoutMode: PdfPageLayoutMode.single,
+        canShowPageLoadingIndicator: true,
       ),
     );
   }

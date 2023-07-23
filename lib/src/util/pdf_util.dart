@@ -9,6 +9,8 @@ class PDFUtil {
     final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
 
+    AppLogger.appLogD(tag: "pdf", message: "started creating pdf");
+
     PdfPage page = document.pages.add();
 
     PdfPageTemplateElement header = PdfPageTemplateElement(
@@ -93,6 +95,8 @@ class PDFUtil {
 
     String receiptname = "Receipt$receiptNo";
     String filePath = "${directory?.path}/$receiptname.pdf";
+
+    AppLogger.appLogD(tag: "pdf", message: "saving pdf $filePath");
 
     await saveFile(filePath, document);
 

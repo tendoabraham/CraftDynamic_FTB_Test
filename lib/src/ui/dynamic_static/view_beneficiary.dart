@@ -114,7 +114,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                     onPressed: () {
                                       AlertUtil.showAlertDialog(context,
                                               "Confirm action to delete ${beneficiary.merchantName}",
-                                              isConfirm: true)
+                                              isConfirm: true, title: "Delete")
                                           .then((value) {
                                         if (value) {
                                           deleteBeneficiary(
@@ -151,8 +151,6 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
     } catch (e) {
       debugPrint("benefifciary error $e");
     }
-
-    debugPrint("calling view beneficiary-------------->");
 
     await _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
