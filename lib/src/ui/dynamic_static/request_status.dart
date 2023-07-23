@@ -194,16 +194,14 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         : closePage();
   }
 
-  void logout() {
+  void logout() async {
     Widget? logoutScreen =
         Provider.of<PluginState>(context, listen: false).logoutScreen;
     if (widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name) {
-      _sharedPref.setLanguageID(widget.postDynamic.languageID ?? "ENG");
-      return;
+      await _sharedPref.setLanguageID(widget.postDynamic.languageID ?? "ENG");
     }
     if (logoutScreen != null) {
-      CommonUtils.navigateToRouteAndPopAll(
-          context: context, widget: logoutScreen);
+      CommonUtils.getXRouteAndPopAll(widget: logoutScreen);
     }
   }
 
