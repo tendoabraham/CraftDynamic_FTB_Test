@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../craft_dynamic.dart';
@@ -200,7 +199,6 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         Provider.of<PluginState>(context, listen: false).logoutScreen;
     if (widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name) {
       _sharedPref.setLanguageID(widget.postDynamic.languageID ?? "ENG");
-      Restart.restartApp();
       return;
     }
     if (logoutScreen != null) {
