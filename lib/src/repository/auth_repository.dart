@@ -51,7 +51,8 @@ class AuthRepository {
         refreshUIData = true;
       }
 
-      if (newdataversion != null && newdataversion > localdataversion) {
+      if (newdataversion != null && newdataversion > localdataversion ||
+          refreshUIData) {
         await _initRepository.getAppUIData(refreshData: refreshUIData);
       }
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
