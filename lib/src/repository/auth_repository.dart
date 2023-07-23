@@ -41,7 +41,7 @@ class AuthRepository {
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
       var newdataversion = activationResponse.staticDataVersion;
-      await _sharedPref.addStaticDataVersion(newdataversion ?? 0);
+      // await _sharedPref.addStaticDataVersion(newdataversion ?? 0);
 
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&
