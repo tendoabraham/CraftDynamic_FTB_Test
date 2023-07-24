@@ -48,7 +48,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(milliseconds: 5000), () {
-          if (!mounted) {
+          if (mounted) {
             _controller.forward(from: 0.0);
           }
         });
