@@ -45,6 +45,7 @@ class SessionRepository {
       } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
         AppLogger.appLogD(tag: "Session", message: "App lost focus...");
         try {
+          _sharedPref.setTokenIsRefreshed("false");
           _sharedPref.getAppIsActivated().then((value) {
             if (value == "true") {
               CommonUtils.getXRouteAndPopAll(widget: focusTimeoutRoute);
