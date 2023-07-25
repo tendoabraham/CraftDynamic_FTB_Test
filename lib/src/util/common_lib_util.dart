@@ -82,7 +82,9 @@ class CommonUtils {
   }
 
   static showToast(message,
-      {backgroundColor = Colors.greenAccent, textColor = Colors.white}) {
+      {backgroundColor = Colors.black87,
+      textColor = Colors.white,
+      lenth = Toast.LENGTH_SHORT}) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,

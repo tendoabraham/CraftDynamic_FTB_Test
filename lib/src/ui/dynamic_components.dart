@@ -226,12 +226,12 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
         if (formItem!.maxValue!.isNotEmpty) {
           if (double.parse(formattedValue) >
               double.parse(formItem!.maxValue!)) {
-            return "Input exceeds max value(${formItem!.maxValue})";
+            return "Maximum accepted is ${formItem!.maxValue}";
           }
           if (formItem?.minValue != null) {
             if (double.parse(formattedValue) <
                 double.parse(formItem!.minValue!)) {
-              return "Input less min value(${formItem?.minValue})";
+              return "Minimum required is ${formItem?.minValue}";
             }
           }
         }
@@ -420,6 +420,14 @@ class DynamicDropDown implements IFormWidget {
               (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
             Widget child = DropdownButtonFormField2(
               value: _currentValue,
+              decoration: InputDecoration(
+                  prefixIcon: SizedBox(
+                      height: 28,
+                      width: 28,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: APIService.appSecondaryColor,
+                      )))),
               hint: Text(
                 formItem!.controlText!,
                 style:
