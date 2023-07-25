@@ -140,9 +140,9 @@ class _TabWidgetState extends State<TabWidget> {
         child: DefaultTabController(
             length: tabs.length,
             child: Builder(builder: (BuildContext context) {
-              final TabController? tabController =
+              final TabController tabController =
                   DefaultTabController.of(context);
-              tabController?.addListener(() {
+              tabController.addListener(() {
                 if (!tabController.indexIsChanging) {
                   Provider.of<PluginState>(context, listen: false)
                       .setRequestState(false,
@@ -233,7 +233,7 @@ class _TabWidgetListState extends State<TabWidgetList> {
               key: _formKey,
               child: ListView.builder(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
+                  padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: sortedForms.length,
                   itemBuilder: (context, index) {

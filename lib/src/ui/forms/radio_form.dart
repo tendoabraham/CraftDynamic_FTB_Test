@@ -184,7 +184,7 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                 height: 12,
               ),
               Padding(
-                  padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
+                  padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
                   child: Align(
                       child: Row(
                     children: chips,
