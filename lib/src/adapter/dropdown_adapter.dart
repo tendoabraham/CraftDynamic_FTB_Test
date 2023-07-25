@@ -52,11 +52,19 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
 
   String? merchantID;
   final _beneficiaryRepository = BeneficiaryRepository();
+  final _sharedPref = CommonSharedPref();
 
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
+    var customerNo = await _sharedPref.getCustomerMobile();
     var beneficiaries =
         await _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
+    beneficiaries?.add(Beneficiary(
+        merchantID: merchantID ?? "",
+        merchantName: "global",
+        accountID: customerNo,
+        accountAlias: "My Number",
+        rowId: 0));
     return beneficiaries?.fold<Map<String, dynamic>>(
         {}, (acc, curr) => acc..[curr.accountID] = curr.accountAlias);
   }
