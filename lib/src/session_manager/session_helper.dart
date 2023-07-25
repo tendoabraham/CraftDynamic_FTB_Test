@@ -19,10 +19,9 @@ class SessionRepository {
 
   MySessionConfig config({required appTimeout}) {
     return MySessionConfig(
-        invalidateSessionForAppLostFocus:
-            Duration(milliseconds: appTimeout == null ? 5000 : appTimeout!),
+        invalidateSessionForAppLostFocus: const Duration(milliseconds: 2000),
         invalidateSessionForUserInactiviity:
-            const Duration(milliseconds: 1500));
+            Duration(milliseconds: appTimeout == null ? 5000 : appTimeout!));
   }
 
   void addSessionStateStream(MySessionConfig sessionConfig,
