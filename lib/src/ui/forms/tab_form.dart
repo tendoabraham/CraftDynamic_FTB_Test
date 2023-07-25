@@ -219,11 +219,6 @@ class _TabWidgetListState extends State<TabWidgetList> {
   Widget build(BuildContext context) {
     return SizedBox(
         height: double.infinity,
-        // padding: containsQR
-        //     ? const EdgeInsets.only(left: 8, right: 8, top: 8)
-        //     : const EdgeInsets.symmetric(
-        //         horizontal: 0,
-        //       ),
         child: SingleChildScrollView(
             child: Column(mainAxisSize: MainAxisSize.max, children: [
           const SizedBox(
