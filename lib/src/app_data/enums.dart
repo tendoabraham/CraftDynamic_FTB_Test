@@ -63,7 +63,8 @@ enum ControlID {
   AMOUNT,
   BIBLELIST,
   TOACCOUNTID,
-  SELECTTYPE
+  FROMACCOUNTID,
+  SELECTTYPE,
 }
 
 enum ActionType {

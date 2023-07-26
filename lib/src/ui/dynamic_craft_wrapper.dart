@@ -6,8 +6,6 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appTimeoutScreen;
   final Widget appInactivityScreen;
   final ThemeData appTheme;
-  MenuScreenProperties? menuScreenProperties;
-  MenuProperties? menuProperties;
   bool localizationIsEnabled;
 
   DynamicCraftWrapper(
@@ -17,8 +15,6 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
       required this.appTheme,
-      this.menuScreenProperties,
-      this.menuProperties,
       this.localizationIsEnabled = false});
 
   @override
@@ -96,6 +92,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
           providers: [
             ChangeNotifierProvider(create: (context) => PluginState()),
             ChangeNotifierProvider(create: (context) => DynamicState()),
+            ChangeNotifierProvider(create: (context) => DropDownState()),
           ],
           child: GetMaterialApp(
             localizationsDelegates: widget.localizationIsEnabled
@@ -114,8 +111,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             }),
             navigatorKey: Get.key,
             builder: (context, child) {
-              setPluginWidgets(widget.appTimeoutScreen, context,
-                  widget.menuProperties, widget.menuScreenProperties);
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: child!,
@@ -127,24 +122,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         _appTimeout,
         widget.appInactivityScreen,
         widget.appTimeoutScreen);
-  }
-
-  setPluginWidgets(
-      Widget logoutWidget,
-      BuildContext context,
-      MenuProperties? menuProperties,
-      MenuScreenProperties? menuScreenProperties) {
-    if (menuProperties != null) {
-      Provider.of<DynamicState>(context, listen: false)
-          .setMenuProperties(menuProperties);
-    }
-
-    if (menuScreenProperties != null) {
-      Provider.of<DynamicState>(context, listen: false)
-          .setMenuScreen(menuScreenProperties);
-    }
-    Provider.of<PluginState>(context, listen: false)
-        .setLogoutScreen(logoutWidget);
   }
 
   @override

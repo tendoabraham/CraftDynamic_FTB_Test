@@ -16,6 +16,7 @@ class PluginState extends ChangeNotifier {
   final Map<String?, dynamic> _formInputValues = {};
   final Map<String?, dynamic> _encryptedFields = {};
   final Map<String?, dynamic> _screenDropDowns = {};
+  final Map<String?, dynamic> _toAndFromAccounts = {};
 
   bool get loadingNetworkData => _loadingNetworkData;
 
@@ -38,6 +39,8 @@ class PluginState extends ChangeNotifier {
   Map<String?, dynamic> get encryptedFields => _encryptedFields;
 
   Map<String?, dynamic> get screenDropDowns => _screenDropDowns;
+
+  Map<String?, dynamic> get toAndFromAccounts => _toAndFromAccounts;
 
   void setRequestState(bool state, {String? currentTab}) {
     _loadingNetworkData = state;
@@ -91,10 +94,16 @@ class PluginState extends ChangeNotifier {
     notifyListeners();
   }
 
+  setToAndFroAccount(Map<String?, dynamic> input) {
+    _toAndFromAccounts.addAll(input);
+    notifyListeners();
+  }
+
   clearDynamicInput() {
     _formInputValues.clear();
     _encryptedFields.clear();
     _screenDropDowns.clear();
+    _toAndFromAccounts.clear();
     notifyListeners();
   }
 }
@@ -115,6 +124,8 @@ class DynamicState extends ChangeNotifier {
     _menuProperties = menuProperties;
   }
 }
+
+class DropDownState extends ChangeNotifier {}
 
 var currentToken = "".obs;
 

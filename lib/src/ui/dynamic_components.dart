@@ -554,25 +554,30 @@ class DropDown implements IFormWidget {
                 }
               }
 
-              child = DropdownButtonFormField(
-                value: _currentValue,
-                decoration: InputDecoration(labelText: formItem?.controlText),
-                isExpanded: true,
-                style: const TextStyle(fontWeight: FontWeight.normal),
-                onChanged: ((value) => {
-                      _currentValue = value.toString(),
-                      Provider.of<PluginState>(context, listen: false)
-                          .addScreenDropDown({
-                        formItem?.rowID?.toString():
-                            extraFieldMap[_currentValue]
-                      }),
-                    }),
-                validator: (value) {
-                  Provider.of<PluginState>(context, listen: false)
-                      .addFormInput({"${formItem?.serviceParamId}": value});
-                },
-                items: dropdownPicks,
-              );
+              child = Consumer<DropDownState>(
+                  builder: (context, state, child) => DropdownButtonFormField(
+                        value: _currentValue,
+                        decoration:
+                            InputDecoration(labelText: formItem?.controlText),
+                        isExpanded: true,
+                        style: const TextStyle(fontWeight: FontWeight.normal),
+                        onChanged: ((value) => {
+                              _currentValue = value.toString(),
+                              debugPrint(
+                                  "Dropdown changed --------------> ${formItem?.controlId}"),
+                              Provider.of<PluginState>(context, listen: false)
+                                  .addScreenDropDown({
+                                formItem?.rowID?.toString():
+                                    extraFieldMap[_currentValue]
+                              }),
+                            }),
+                        validator: (value) {
+                          Provider.of<PluginState>(context, listen: false)
+                              .addFormInput(
+                                  {"${formItem?.serviceParamId}": value});
+                        },
+                        items: dropdownPicks,
+                      ));
             }
             return child;
           });
