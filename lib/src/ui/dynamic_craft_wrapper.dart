@@ -7,6 +7,7 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appInactivityScreen;
   final ThemeData appTheme;
   bool localizationIsEnabled;
+  bool useExternalBankID;
 
   DynamicCraftWrapper(
       {super.key,
@@ -15,6 +16,7 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
       required this.appTheme,
+      this.useExternalBankID = false,
       this.localizationIsEnabled = false});
 
   @override
@@ -40,6 +42,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     await HiveUtil.initializeHive();
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
+    _sharedPref.setIsExternalBankIDType(widget.useExternalBankID);
     await getAppLaunchCount();
     if (!kIsWeb) {
       await PermissionUtil.checkRequiredPermissions();

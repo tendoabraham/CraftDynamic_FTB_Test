@@ -125,7 +125,21 @@ class DynamicState extends ChangeNotifier {
   }
 }
 
-class DropDownState extends ChangeNotifier {}
+class DropDownState extends ChangeNotifier {
+  final Map<String?, dynamic> _currentSelections = {};
+
+  Map<String?, dynamic>? get currentSelections => _currentSelections;
+
+  setCurrentSelections(Map<String?, dynamic> newSelection) {
+    _currentSelections.addAll(newSelection);
+    notifyListeners();
+  }
+
+  clearSelections() {
+    _currentSelections.clear();
+    notifyListeners();
+  }
+}
 
 var currentToken = "".obs;
 

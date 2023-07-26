@@ -174,6 +174,19 @@ class CommonSharedPref {
   Future<String?> getTempLanguage() async =>
       await storage.read(key: "templanguage");
 
+  //Set type of bank id used for app (false if defined in plugin config, true if used from activation response)
+  setIsExternalBankIDType(bool type) async {
+    return await storage.write(key: "bankidtype", value: type.toString());
+  }
+
+  Future<bool> getExternalBankIDType() async {
+    var type = await storage.read(key: "bankidtype");
+    if (type == "false") {
+      return false;
+    }
+    return true;
+  }
+
   clearPrefs() async {
     await storage.deleteAll();
   }

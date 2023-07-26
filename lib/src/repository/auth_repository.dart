@@ -84,9 +84,11 @@ class AuthRepository {
       encryptedPin: CryptLib.encryptField(pin),
     );
     if (activationResponse.status == StatusCode.success.statusCode) {
-      var bankID = activationResponse.message;
-      if (bankID != null && bankID.isNotEmpty) {
-        await _sharedPref.setBankID(bankID);
+      if (await _sharedPref.getExternalBankIDType()) {
+        var bankID = activationResponse.message;
+        if (bankID != null && bankID.isNotEmpty) {
+          await _sharedPref.setBankID(bankID);
+        }
       }
     } else if (activationResponse.status ==
         StatusCode.setsecurityquestions.statusCode) {
