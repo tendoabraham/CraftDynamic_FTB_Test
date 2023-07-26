@@ -43,6 +43,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
     _sharedPref.setIsExternalBankIDType(widget.useExternalBankID);
+
     await getAppLaunchCount();
     if (!kIsWeb) {
       await PermissionUtil.checkRequiredPermissions();
@@ -114,6 +115,8 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             }),
             navigatorKey: Get.key,
             builder: (context, child) {
+              Provider.of<PluginState>(context, listen: false)
+                  .setLogoutScreen(widget.appTimeoutScreen);
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: child!,
