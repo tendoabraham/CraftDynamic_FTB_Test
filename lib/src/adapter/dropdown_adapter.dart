@@ -64,7 +64,7 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
           merchantID: merchantID ?? "",
           merchantName: "global",
           accountID: customerNo,
-          accountAlias: "My Number",
+          accountAlias: "Own Number",
           rowId: 0));
     }
 

@@ -554,12 +554,11 @@ class DropDown implements IFormWidget {
                 }
 
                 if (formItem?.controlId == ControlID.TOACCOUNTID.name) {
-                  var dropdowns = dropdownPicks.where((item) =>
+                  var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
                       item.value ==
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]);
-                  dropdowns.forEach((element) {
-                    debugPrint("value to elimindate ${element.value}");
-                  });
+                  dropdownPicks.remove(dropdowns);
+                  _currentValue = dropdownPicks[0].value;
                 }
                 return DropdownButtonFormField(
                   value: _currentValue,
@@ -596,11 +595,17 @@ class DropDown implements IFormWidget {
       Map<String?, dynamic> mapItems) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        // Provider.of<DropDownState>(context, listen: false)
-        //     .setCurrentSelections({formItem?.controlId: _currentValue});
-
+        var selections = Provider.of<DropDownState>(context, listen: false)
+                .currentSelections ??
+            {};
         var items =
             Provider.of<PluginState>(context, listen: false).screenDropDowns;
+
+        if (formItem?.controlId == ControlID.BANKACCOUNTID.name &&
+            selections.isEmpty) {
+          Provider.of<DropDownState>(context, listen: false)
+              .setCurrentSelections({formItem?.controlId: _currentValue});
+        }
         if (!items.containsKey(formItem?.rowID?.toString())) {
           Provider.of<PluginState>(context, listen: false)
               .addScreenDropDown({formItem?.rowID?.toString(): initialValue});

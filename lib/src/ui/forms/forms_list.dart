@@ -43,6 +43,7 @@ class FormsListWidget extends StatelessWidget {
         Provider.of<PluginState>(context, listen: false)
             .screenDropDowns
             .clear();
+        Provider.of<DropDownState>(context, listen: false).clearSelections();
       });
     }
 

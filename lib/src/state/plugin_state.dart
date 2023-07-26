@@ -140,7 +140,6 @@ class DropDownState extends ChangeNotifier {
 
   clearSelections() {
     _currentSelections.clear();
-    notifyListeners();
   }
 }
 
