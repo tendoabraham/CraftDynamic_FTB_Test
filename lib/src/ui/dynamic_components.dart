@@ -506,17 +506,7 @@ class DynamicDropDown implements IFormWidget {
   }
 }
 
-class DropDown extends StatefulWidget implements IFormWidget {
-  const DropDown({super.key});
-
-  @override
-  State<DropDown> createState() => _DropDownState();
-
-  @override
-  Widget render() => const DropDown();
-}
-
-class _DropDownState extends State<DropDown> {
+class DropDown implements IFormWidget {
   final _userCodeRepository = UserCodeRepository();
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};
@@ -526,7 +516,7 @@ class _DropDownState extends State<DropDown> {
   String? _currentValue;
 
   @override
-  Widget build(BuildContext context) {
+  Widget render() {
     return Builder(builder: (BuildContext context) {
       formItem = BaseFormInheritedComponent.of(context)?.formItem;
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
@@ -544,32 +534,32 @@ class _DropDownState extends State<DropDown> {
               items: const [],
             );
             if (snapshot.hasData) {
-              var dropdownItems = snapshot.data;
-
-              var dropdownPicks = dropdownItems?.entries.map((item) {
-                return DropdownMenuItem(
-                  value: item.key,
-                  child: Text(
-                    item.value,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                );
-              }).toList();
-              dropdownPicks?.toSet().toList();
-              if (dropdownPicks != null) {
-                if (dropdownPicks.isNotEmpty) {
-                  _currentValue = dropdownPicks[0].value;
-
-                  addInitialValueToLinkedField(
-                      context, extraFieldMap[_currentValue] ?? "");
-                }
-              }
+              var dropdownItems = snapshot.data ?? {};
 
               child = Consumer<DropDownState>(builder: (context, state, child) {
+                var dropdownPicks = dropdownItems.entries.map((item) {
+                  return DropdownMenuItem(
+                    value: item.key,
+                    child: Text(
+                      item.value,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  );
+                }).toList();
+                dropdownPicks.toSet().toList();
+                if (dropdownPicks.isNotEmpty) {
+                  _currentValue = dropdownPicks[0].value;
+                  addInitialValueToLinkedField(context,
+                      extraFieldMap[_currentValue] ?? "", dropdownItems);
+                }
+
                 if (formItem?.controlId == ControlID.TOACCOUNTID.name) {
-                  dropdownPicks?.removeWhere((item) =>
+                  var dropdowns = dropdownPicks.where((item) =>
                       item.value ==
-                      state.currentSelections?[ControlID.FROMACCOUNTID]);
+                      state.currentSelections?[ControlID.BANKACCOUNTID.name]);
+                  dropdowns.forEach((element) {
+                    debugPrint("value to elimindate ${element.value}");
+                  });
                 }
                 return DropdownButtonFormField(
                   value: _currentValue,
@@ -578,10 +568,11 @@ class _DropDownState extends State<DropDown> {
                   style: const TextStyle(fontWeight: FontWeight.normal),
                   onChanged: ((value) => {
                         _currentValue = value.toString(),
-                        state.setCurrentSelections(
-                            {formItem?.controlId: _currentValue}),
-                        debugPrint(
-                            "Dropdown changed --------------> ${state.currentSelections}"),
+                        if (formItem?.controlId == ControlID.BANKACCOUNTID.name)
+                          {
+                            state.setCurrentSelections(
+                                {formItem?.controlId: _currentValue}),
+                          },
                         Provider.of<PluginState>(context, listen: false)
                             .addScreenDropDown({
                           formItem?.rowID?.toString():
@@ -601,11 +592,13 @@ class _DropDownState extends State<DropDown> {
     });
   }
 
-  void addInitialValueToLinkedField(BuildContext context, String initialValue) {
+  void addInitialValueToLinkedField(BuildContext context, String initialValue,
+      Map<String?, dynamic> mapItems) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        Provider.of<DropDownState>(context, listen: false)
-            .setCurrentSelections({formItem?.controlId: _currentValue});
+        // Provider.of<DropDownState>(context, listen: false)
+        //     .setCurrentSelections({formItem?.controlId: _currentValue});
+
         var items =
             Provider.of<PluginState>(context, listen: false).screenDropDowns;
         if (!items.containsKey(formItem?.rowID?.toString())) {

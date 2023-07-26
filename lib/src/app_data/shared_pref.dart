@@ -181,10 +181,10 @@ class CommonSharedPref {
 
   Future<bool> getExternalBankIDType() async {
     var type = await storage.read(key: "bankidtype");
-    if (type == "false") {
-      return false;
+    if (type == "true") {
+      return true;
     }
-    return true;
+    return false;
   }
 
   clearPrefs() async {

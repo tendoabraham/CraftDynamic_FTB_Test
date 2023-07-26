@@ -127,8 +127,11 @@ class DynamicState extends ChangeNotifier {
 
 class DropDownState extends ChangeNotifier {
   final Map<String?, dynamic> _currentSelections = {};
+  final List<DropdownMenuItem<String>> _toAccountItems = [];
 
   Map<String?, dynamic>? get currentSelections => _currentSelections;
+
+  List<DropdownMenuItem<String>> get toAccountItems => _toAccountItems;
 
   setCurrentSelections(Map<String?, dynamic> newSelection) {
     _currentSelections.addAll(newSelection);
