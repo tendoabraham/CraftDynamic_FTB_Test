@@ -162,6 +162,9 @@ var selectedRadio = "".obs;
 var currentIv = "".obs;
 var currentKey = "".obs;
 
+var previousIv = "".obs;
+var previousKey = "".obs;
+
 var currentBankID = "".obs;
 
 var connectionState = ConnectivityResult.none.obs;

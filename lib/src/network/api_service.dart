@@ -178,6 +178,8 @@ class APIService {
     Map<String, dynamic> requestObject = {};
     Map<String, dynamic> keyIV = CryptLib.generateKeyIV();
     AppLogger.appLogD(tag: "generated key and iv", message: keyIV.toString());
+    previousIv.value = currentIv.value;
+    previousKey.value = currentKey.value;
     currentIv.value = keyIV["iv"];
     currentKey.value = keyIV["key"];
 

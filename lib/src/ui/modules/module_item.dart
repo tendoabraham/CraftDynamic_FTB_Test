@@ -20,7 +20,7 @@ class ModuleItemWidget extends StatelessWidget {
       MenuProperties? menuProperties = moduleItem.menuProperties;
 
       MenuType getMenuType() {
-        if (menuProperties?.axisDirection == "HORIZONTAL") {
+        if (menuProperties?.axisDirection?.toUpperCase() == "HORIZONTAL") {
           return MenuType.Horizontal;
         }
         return MenuType.Vertical;
@@ -102,12 +102,12 @@ class HorizontalModule extends StatelessWidget {
     MenuProperties? menuProperties = moduleItem.menuProperties;
     MenuBorder? menuBorder = moduleItem.menuBorder;
     MainAxisAlignment getAlignment() {
-      if (menuProperties?.alignment == "END") {
+      if (menuProperties?.alignment?.toUpperCase() == "END") {
         return MainAxisAlignment.end;
-      } else if (menuProperties?.alignment == "START") {
+      } else if (menuProperties?.alignment?.toUpperCase() == "START") {
         return MainAxisAlignment.start;
       }
-      return MainAxisAlignment.center;
+      return MainAxisAlignment.spaceBetween;
     }
 
     return Card(
@@ -134,7 +134,7 @@ class HorizontalModule extends StatelessWidget {
                   SizedBox(
                     width: double.parse(menuProperties?.spaceBetween ?? "12"),
                   ),
-                  MenuItemTitle(title: moduleItem.moduleName)
+                  Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
                 ],
               ),
             )));

@@ -68,7 +68,8 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                       beneficiary.merchantName,
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: APIService.appPrimaryColor),
+                                          color: APIService.appPrimaryColor,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(
                                       height: 12,
