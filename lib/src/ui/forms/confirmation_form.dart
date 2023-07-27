@@ -41,7 +41,7 @@ class ConfirmationForm {
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: formItems.length,
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        padding: const EdgeInsets.only(left: 14, right: 14),
                         itemBuilder: (context, index) {
                           return BaseFormComponent(
                               formItem: formItems[index],
@@ -53,9 +53,14 @@ class ConfirmationForm {
                                       .render());
                         })),
                 const Spacer(),
-                WidgetFactory.buildButton(context, () {
-                  Navigator.of(context).pop(0);
-                }, "Confirm")
+                SizedBox(
+                    width: 300,
+                    child: WidgetFactory.buildButton(context, () {
+                      Navigator.of(context).pop(0);
+                    }, "Confirm Transaction".toUpperCase())),
+                const SizedBox(
+                  height: 44,
+                )
               ],
             ));
       },

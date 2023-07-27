@@ -558,7 +558,9 @@ class DropDown implements IFormWidget {
                       item.value ==
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]);
                   dropdownPicks.remove(dropdowns);
-                  _currentValue = dropdownPicks[0].value;
+                  if (dropdownPicks.isNotEmpty) {
+                    _currentValue = dropdownPicks[0].value;
+                  }
                 }
                 return DropdownButtonFormField(
                   value: _currentValue,
