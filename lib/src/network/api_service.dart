@@ -22,6 +22,7 @@ class APIService {
   static String bankCustomerID = "";
   static String countryName = "";
   static String countryCode = "";
+  static String countryIsoCode = "KE";
 
   static String appLabel = "";
   static Color appPrimaryColor = Colors.blue;
@@ -72,6 +73,7 @@ class APIService {
     bankCustomerID = requestConfig?["bankCustomerID"] ?? "";
     countryName = requestConfig?["country"];
     countryCode = requestConfig?["countryCode"];
+    countryIsoCode = requestConfig?["countryIsoCode"];
   }
 
   Future<Map<String, dynamic>> buildRequestMap(

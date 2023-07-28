@@ -562,13 +562,14 @@ class DropDown implements IFormWidget {
                     _currentValue = dropdownPicks[0].value;
                   }
                 }
+
                 return DropdownButtonFormField(
                   value: _currentValue,
                   decoration: InputDecoration(labelText: formItem?.controlText),
                   isExpanded: true,
                   style: const TextStyle(fontWeight: FontWeight.normal),
                   onChanged: ((value) => {
-                        _currentValue = value.toString(),
+                        // _currentValue = value.toString(),
                         if (formItem?.controlId == ControlID.BANKACCOUNTID.name)
                           {
                             state.setCurrentSelections(
@@ -937,8 +938,7 @@ class _DynamicPhonePickerFormWidgetState
   String? code;
 
   var controller = TextEditingController();
-  String initialCountry = 'ET';
-  PhoneNumber inputNumber = PhoneNumber(isoCode: 'ET');
+  PhoneNumber inputNumber = PhoneNumber(isoCode: APIService.countryIsoCode);
 
   @override
   Widget build(BuildContext context) {
