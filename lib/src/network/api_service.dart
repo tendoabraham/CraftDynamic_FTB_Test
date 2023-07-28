@@ -71,9 +71,9 @@ class APIService {
         ? currentBankID.value
         : requestConfig?["bankId"];
     bankCustomerID = requestConfig?["bankCustomerID"] ?? "";
-    countryName = requestConfig?["country"];
-    countryCode = requestConfig?["countryCode"];
-    countryIsoCode = requestConfig?["countryIsoCode"];
+    countryName = requestConfig?["country"] ?? "";
+    countryCode = requestConfig?["countryCode"] ?? "";
+    countryIsoCode = requestConfig?["countryIsoCode"] ?? "";
   }
 
   Future<Map<String, dynamic>> buildRequestMap(
