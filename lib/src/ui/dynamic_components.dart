@@ -534,7 +534,8 @@ class DropDown implements IFormWidget {
               items: const [],
             );
             if (snapshot.hasData) {
-              var dropdownItems = snapshot.data ?? {};
+              var data = snapshot.data ?? {};
+              var dropdownItems = data;
 
               child = Consumer<DropDownState>(builder: (context, state, child) {
                 var dropdownPicks = dropdownItems.entries.map((item) {
@@ -1079,8 +1080,7 @@ class _DynamicLinkedContainerState extends State<DynamicLinkedContainer> {
                 (string) {
               Provider.of<PluginState>(context, listen: false).addFormInput(
                   {"${formItem?.serviceParamId}": _controller.text});
-              // Provider.of<PluginState>(context, listen: false).formInputValues
-              //     .add({"${formItem?.serviceParamId}": _controller.text});
+
               return null;
             });
           }));

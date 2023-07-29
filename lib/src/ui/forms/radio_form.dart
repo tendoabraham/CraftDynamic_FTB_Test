@@ -122,6 +122,12 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           child: Container(
               margin: const EdgeInsets.only(right: 2),
               child: ChoiceChip(
+                side: _value == index
+                    ? null
+                    : BorderSide(
+                        color: Theme.of(context).primaryColor.withOpacity(.4)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
                 selectedColor: APIService.appSecondaryColor,
                 labelStyle: TextStyle(
                   overflow: TextOverflow.visible,
@@ -173,11 +179,6 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
         },
         child: SizedBox(
             height: double.infinity,
-            // padding: containsQR
-            //     ? const EdgeInsets.only(left: 8, right: 8, top: 8)
-            //     : const EdgeInsets.symmetric(
-            //         horizontal: 0,
-            //       ),
             child: SingleChildScrollView(
                 child: Column(mainAxisSize: MainAxisSize.max, children: [
               const SizedBox(

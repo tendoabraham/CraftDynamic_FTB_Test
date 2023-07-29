@@ -134,6 +134,15 @@ class CommonUtils {
     return Colors.white;
   }
 
+  static Map<String, dynamic> sortDropdown(Map<String, dynamic> list,
+      {searchKeywords = "Own Number"}) {
+    list.entries.toList().sort((a, b) {
+      return a.value.compareTo(b.value);
+    });
+    list.forEach((key, value) => debugPrint("item sorted $value"));
+    return list;
+  }
+
   static vibrate() {
     if (!kIsWeb) {
       Vibration.vibrate();
