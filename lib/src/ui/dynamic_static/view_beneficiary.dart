@@ -193,6 +193,8 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
       isCallingService.value = false;
 
       if (value?.status == StatusCode.success.statusCode) {
+        CommonUtils.showToast(
+            "Beneficiary ${beneficiary.accountAlias} successfully deleted");
         setState(() {
           _beneficiaryRepository.deleteBeneficiary(beneficiary.rowId);
           var beneficiaries = value?.beneficiaries;
