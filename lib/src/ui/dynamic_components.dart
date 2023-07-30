@@ -570,11 +570,13 @@ class DropDown implements IFormWidget {
                   isExpanded: true,
                   style: const TextStyle(fontWeight: FontWeight.normal),
                   onChanged: ((value) => {
-                        // _currentValue = value.toString(),
+                        _currentValue = value.toString(),
                         if (formItem?.controlId == ControlID.BANKACCOUNTID.name)
                           {
                             state.setCurrentSelections(
                                 {formItem?.controlId: _currentValue}),
+                            debugPrint(
+                                "saving selection ${formItem?.controlId} for $_currentValue"),
                           },
                         Provider.of<PluginState>(context, listen: false)
                             .addScreenDropDown({
