@@ -570,21 +570,16 @@ class _DropDownState extends State<DropDown> {
                   dropdownPicks.remove(dropdowns);
                   dropdownPicks.forEach((element) =>
                       debugPrint("item in to::::${element.value}"));
-                  _toAccountValue =
-                      dropdownPicks.isNotEmpty ? dropdownPicks[0].value : null;
-
-                  debugPrint(
-                      "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
                 }
 
                 _currentValue =
                     dropdownPicks.isNotEmpty ? dropdownPicks[0].value : null;
 
+                debugPrint(
+                    "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
+
                 return DropdownButtonFormField(
-                  key: UniqueKey(),
-                  value: isToAccountField(formItem?.controlId ?? "")
-                      ? _toAccountValue
-                      : _currentValue,
+                  value: _currentValue,
                   decoration: InputDecoration(labelText: formItem?.controlText),
                   isExpanded: true,
                   style: const TextStyle(fontWeight: FontWeight.normal),
@@ -597,6 +592,8 @@ class _DropDownState extends State<DropDown> {
                         }),
                         if (isFromAccountField(formItem?.controlId ?? ""))
                           {
+                            debugPrint(
+                                "current to account value is $_toAccountValue"),
                             state.setCurrentSelections(
                                 {formItem?.controlId: _currentValue}),
                             debugPrint(
