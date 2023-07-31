@@ -21,6 +21,7 @@ class ModuleItemWidget extends StatelessWidget {
 
       MenuType getMenuType() {
         if (menuProperties?.axisDirection?.toUpperCase() == "HORIZONTAL") {
+          AppLogger.appLogD(tag: "module item", message: "horizontal found!");
           return MenuType.Horizontal;
         }
         return MenuType.Vertical;

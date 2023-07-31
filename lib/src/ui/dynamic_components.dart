@@ -506,17 +506,27 @@ class DynamicDropDown implements IFormWidget {
   }
 }
 
-class DropDown implements IFormWidget {
+class DropDown extends StatefulWidget implements IFormWidget {
+  const DropDown({super.key});
+
+  @override
+  State<DropDown> createState() => _DropDownState();
+
+  @override
+  Widget render() => DropDown();
+}
+
+class _DropDownState extends State<DropDown> {
   final _userCodeRepository = UserCodeRepository();
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};
-
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
+  String? _toAccountValue;
 
   @override
-  Widget render() {
+  Widget build(BuildContext context) {
     return Builder(builder: (BuildContext context) {
       formItem = BaseFormInheritedComponent.of(context)?.formItem;
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
@@ -549,40 +559,47 @@ class DropDown implements IFormWidget {
                 }).toList();
                 dropdownPicks.toSet().toList();
                 if (dropdownPicks.isNotEmpty) {
-                  _currentValue = dropdownPicks[0].value;
                   addInitialValueToLinkedField(context,
                       extraFieldMap[_currentValue] ?? "", dropdownItems);
                 }
 
-                if (formItem?.controlId == ControlID.TOACCOUNTID.name) {
+                if (isToAccountField(formItem?.controlId ?? "")) {
                   var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
                       item.value ==
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]);
                   dropdownPicks.remove(dropdowns);
-                  if (dropdownPicks.isNotEmpty) {
-                    _currentValue = dropdownPicks[0].value;
-                  }
+                  dropdownPicks.forEach((element) =>
+                      debugPrint("item in to::::${element.value}"));
+                  _toAccountValue = dropdownPicks[0].value;
+
+                  debugPrint(
+                      "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
                 }
 
+                _currentValue = dropdownPicks[0].value;
+
                 return DropdownButtonFormField(
-                  value: _currentValue,
+                  key: UniqueKey(),
+                  value: isToAccountField(formItem?.controlId ?? "")
+                      ? _toAccountValue
+                      : _currentValue,
                   decoration: InputDecoration(labelText: formItem?.controlText),
                   isExpanded: true,
                   style: const TextStyle(fontWeight: FontWeight.normal),
                   onChanged: ((value) => {
                         _currentValue = value.toString(),
-                        if (formItem?.controlId == ControlID.BANKACCOUNTID.name)
-                          {
-                            state.setCurrentSelections(
-                                {formItem?.controlId: _currentValue}),
-                            debugPrint(
-                                "saving selection ${formItem?.controlId} for $_currentValue"),
-                          },
                         Provider.of<PluginState>(context, listen: false)
                             .addScreenDropDown({
                           formItem?.rowID?.toString():
                               extraFieldMap[_currentValue]
                         }),
+                        if (isFromAccountField(formItem?.controlId ?? ""))
+                          {
+                            state.setCurrentSelections(
+                                {formItem?.controlId: _currentValue}),
+                            debugPrint(
+                                "saving selection ${formItem?.controlId} for $_currentValue"),
+                          }
                       }),
                   validator: (value) {
                     Provider.of<PluginState>(context, listen: false)
@@ -596,6 +613,16 @@ class DropDown implements IFormWidget {
           });
     });
   }
+
+  bool isToAccountField(String controlID) =>
+      controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
+          ? true
+          : false;
+
+  bool isFromAccountField(String controlID) =>
+      controlID.toLowerCase() == ControlID.BANKACCOUNTID.name.toLowerCase()
+          ? true
+          : false;
 
   void addInitialValueToLinkedField(BuildContext context, String initialValue,
       Map<String?, dynamic> mapItems) {

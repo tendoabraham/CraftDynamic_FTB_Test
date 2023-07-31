@@ -126,12 +126,20 @@ class DynamicState extends ChangeNotifier {
 }
 
 class DropDownState extends ChangeNotifier {
+  bool _loadingFromAccounts = false;
   final Map<String?, dynamic> _currentSelections = {};
   final List<DropdownMenuItem<String>> _toAccountItems = [];
+
+  bool get loadingFromAccounts => _loadingFromAccounts;
 
   Map<String?, dynamic>? get currentSelections => _currentSelections;
 
   List<DropdownMenuItem<String>> get toAccountItems => _toAccountItems;
+
+  setLoadingFromAccounts(bool status) {
+    _loadingFromAccounts = status;
+    notifyListeners();
+  }
 
   setCurrentSelections(Map<String?, dynamic> newSelection) {
     _currentSelections.addAll(newSelection);
