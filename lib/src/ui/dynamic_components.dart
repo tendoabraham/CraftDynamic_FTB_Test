@@ -570,7 +570,8 @@ class _DropDownState extends State<DropDown> {
                   dropdownPicks.remove(dropdowns);
                   dropdownPicks.forEach((element) =>
                       debugPrint("item in to::::${element.value}"));
-                  _toAccountValue = dropdownPicks[0].value;
+                  _toAccountValue =
+                      dropdownPicks.isNotEmpty ? dropdownPicks[0].value : null;
 
                   debugPrint(
                       "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
