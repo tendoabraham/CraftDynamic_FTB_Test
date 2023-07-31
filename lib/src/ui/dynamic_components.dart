@@ -577,7 +577,8 @@ class _DropDownState extends State<DropDown> {
                       "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
                 }
 
-                _currentValue = dropdownPicks[0].value;
+                _currentValue =
+                    dropdownPicks.isNotEmpty ? dropdownPicks[0].value : null;
 
                 return DropdownButtonFormField(
                   key: UniqueKey(),
