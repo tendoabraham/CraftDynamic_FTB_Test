@@ -18,10 +18,11 @@ class ModuleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DynamicState>(builder: (context, state, child) {
       MenuProperties? menuProperties = moduleItem.menuProperties;
+      AppLogger.appLogD(
+          tag: "module item", message: menuProperties?.axisDirection);
 
       MenuType getMenuType() {
         if (menuProperties?.axisDirection?.toUpperCase() == "HORIZONTAL") {
-          AppLogger.appLogD(tag: "module item", message: "horizontal found!");
           return MenuType.Horizontal;
         }
         return MenuType.Vertical;
