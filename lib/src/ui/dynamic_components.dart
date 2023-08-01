@@ -513,7 +513,7 @@ class DropDown extends StatefulWidget implements IFormWidget {
   State<DropDown> createState() => _DropDownState();
 
   @override
-  Widget render() => DropDown();
+  Widget render() => const DropDown();
 }
 
 class _DropDownState extends State<DropDown> {
