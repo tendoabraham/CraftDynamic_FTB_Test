@@ -546,6 +546,11 @@ class _DropDownState extends State<DropDown> {
             if (snapshot.hasData) {
               var data = snapshot.data ?? {};
               var dropdownItems = data;
+              if (!isToAccountField(formItem?.controlId ?? "")) {
+                _currentValue = dropdownItems.isNotEmpty
+                    ? dropdownItems.entries.first.key
+                    : null;
+              }
 
               child = Consumer<DropDownState>(builder: (context, state, child) {
                 var dropdownPicks = dropdownItems.entries.map((item) {
@@ -568,15 +573,13 @@ class _DropDownState extends State<DropDown> {
                       item.value ==
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]);
                   dropdownPicks.remove(dropdowns);
-                  dropdownPicks.forEach((element) =>
-                      debugPrint("item in to::::${element.value}"));
+                  if (_currentValue ==
+                      state.currentSelections?[ControlID.BANKACCOUNTID.name]) {
+                    _currentValue = dropdownPicks.isNotEmpty
+                        ? dropdownPicks[0].value
+                        : null;
+                  }
                 }
-
-                _currentValue =
-                    dropdownPicks.isNotEmpty ? dropdownPicks[0].value : null;
-
-                debugPrint(
-                    "****** current value is set as for ${formItem?.controlId} ****** $_toAccountValue");
 
                 return DropdownButtonFormField(
                   value: _currentValue,
@@ -584,7 +587,9 @@ class _DropDownState extends State<DropDown> {
                   isExpanded: true,
                   style: const TextStyle(fontWeight: FontWeight.normal),
                   onChanged: ((value) => {
-                        _currentValue = value.toString(),
+                        setState(() {
+                          _currentValue = value.toString();
+                        }),
                         Provider.of<PluginState>(context, listen: false)
                             .addScreenDropDown({
                           formItem?.rowID?.toString():
@@ -592,12 +597,8 @@ class _DropDownState extends State<DropDown> {
                         }),
                         if (isFromAccountField(formItem?.controlId ?? ""))
                           {
-                            debugPrint(
-                                "current to account value is $_toAccountValue"),
                             state.setCurrentSelections(
                                 {formItem?.controlId: _currentValue}),
-                            debugPrint(
-                                "saving selection ${formItem?.controlId} for $_currentValue"),
                           }
                       }),
                   validator: (value) {
