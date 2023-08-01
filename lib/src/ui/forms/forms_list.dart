@@ -30,7 +30,7 @@ class FormsListWidget extends StatelessWidget {
       : super(key: key);
 
   int? currentForm;
-
+  final myKey = UniqueKey();
   final _formsRepository = FormsRepository();
 
   getFormItems() => _formsRepository.getFormsByModuleId(moduleItem.moduleId);
@@ -43,7 +43,6 @@ class FormsListWidget extends StatelessWidget {
         Provider.of<PluginState>(context, listen: false)
             .screenDropDowns
             .clear();
-        Provider.of<DropDownState>(context, listen: false).clearSelections();
       });
     }
 

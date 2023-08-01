@@ -1,7 +1,7 @@
 part of dynamic_widget;
 
 abstract class IFormWidget {
-  factory IFormWidget(FormItem formItem, {jsonText, formFields}) {
+  factory IFormWidget(FormItem formItem, {key, jsonText, formFields}) {
     ViewType? controlType = EnumFormatter.getViewType(formItem.controlType!);
     switch (controlType) {
       case ViewType.TEXT:
@@ -17,7 +17,9 @@ abstract class IFormWidget {
         return const DynamicButton();
 
       case ViewType.DROPDOWN:
-        return DropDown();
+        return DropDown(
+          key: key,
+        );
 
       case ViewType.DYNAMICDROPDOWN:
         return DynamicDropDown();

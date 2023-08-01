@@ -523,7 +523,14 @@ class _DropDownState extends State<DropDown> {
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
-  String? _toAccountValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<DropDownState>(context, listen: false).clearSelections();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

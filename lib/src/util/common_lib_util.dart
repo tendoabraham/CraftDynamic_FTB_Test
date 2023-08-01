@@ -58,8 +58,7 @@ class CommonUtils {
   }
 
   static navigateToRoute({required context, required widget}) {
-    Navigator.push(
-      context,
+    Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => widget),
     );
   }
