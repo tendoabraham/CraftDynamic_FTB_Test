@@ -58,7 +58,7 @@ class UIDataRepository {
 }
 
 class UserAccountRepository {
-  addUserAccountData(ActivationResponse activationResponse) {
+  addUserAccountData(ActivationResponse activationResponse) async {
     List<BankAccount> userAccounts = [];
     List<Beneficiary> beneficiaries = [];
     List<ModuleToHide> modulesToHide = [];
@@ -86,32 +86,33 @@ class UserAccountRepository {
     activationResponse.accounts?.forEach((item) {
       userAccounts.add(BankAccount.fromJson(item));
     });
-    _bankAccountRepository.insertBankAccounts(userAccounts);
+    await _bankAccountRepository.insertBankAccounts(userAccounts);
 
     activationResponse.frequentAccessedModules?.forEach((item) {
       frequentModules.add(FrequentAccessedModule.fromJson(item));
     });
-    _frequentAccessedModulesRepository.insertFrequentModules(frequentModules);
+    await _frequentAccessedModulesRepository
+        .insertFrequentModules(frequentModules);
 
     activationResponse.beneficiary?.forEach((item) {
       beneficiaries.add(Beneficiary.fromJson(item));
     });
-    _beneficiaryRepository.insertBeneficiaries(beneficiaries);
+    await _beneficiaryRepository.insertBeneficiaries(beneficiaries);
 
     activationResponse.modulesToHide?.forEach((item) {
       modulesToHide.add(ModuleToHide.fromJson(item));
     });
-    _moduleToHideRepository.insertModulesToHide(modulesToHide);
+    await _moduleToHideRepository.insertModulesToHide(modulesToHide);
 
     activationResponse.modulesToDisable?.forEach((item) {
       modulesToDisable.add(ModuleToDisable.fromJson(item));
     });
-    _moduleToDisableRepository.insertModulesToDisable(modulesToDisable);
+    await _moduleToDisableRepository.insertModulesToDisable(modulesToDisable);
 
     activationResponse.pendingTransactions?.forEach((item) {
       pendingTransactions.add(PendingTrxDisplay.fromJson(item));
     });
-    _pendingTransactionsRepository
+    await _pendingTransactionsRepository
         .insertPendingTransactions(pendingTransactions);
   }
 }
