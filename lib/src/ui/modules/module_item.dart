@@ -130,6 +130,7 @@ class HorizontalModule extends StatelessWidget {
                 children: [
                   MenuItemImage(
                     imageUrl: moduleItem.moduleUrl ?? "",
+                    iconSize: menuProperties?.iconSize ?? 54,
                   ),
                   SizedBox(
                     width: double.parse(menuProperties?.spaceBetween ?? "12"),
