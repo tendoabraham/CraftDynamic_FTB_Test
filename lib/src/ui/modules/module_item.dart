@@ -106,6 +106,8 @@ class HorizontalModule extends StatelessWidget {
         return MainAxisAlignment.end;
       } else if (menuProperties?.alignment?.toUpperCase() == "START") {
         return MainAxisAlignment.start;
+      } else if (menuProperties?.alignment?.toUpperCase() == "CENTER") {
+        return MainAxisAlignment.center;
       }
       return MainAxisAlignment.spaceBetween;
     }
