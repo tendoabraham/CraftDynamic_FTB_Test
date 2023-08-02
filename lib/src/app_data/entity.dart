@@ -97,10 +97,14 @@ class ModuleItem {
   @HiveField(11)
   double? blockAspectRatio;
   @HiveField(12)
-  MenuBorder? menuBorder;
+  bool? isDBCall;
   @HiveField(13)
-  MenuProperties? menuProperties;
+  String? header;
   @HiveField(14)
+  MenuBorder? menuBorder;
+  @HiveField(15)
+  MenuProperties? menuProperties;
+  @HiveField(16)
   BlockSpacing? blockSpacing;
 
   ModuleItem(
@@ -116,6 +120,8 @@ class ModuleItem {
       this.moduleUrl2,
       this.displayOrder,
       this.blockAspectRatio,
+      this.isDBCall,
+      this.header,
       this.menuBorder,
       this.menuProperties,
       this.blockSpacing});
@@ -132,6 +138,8 @@ class ModuleItem {
         isDisabled = json["IsDisabled"],
         isHidden = json["IsHidden"],
         displayOrder = json['DisplayOrder'],
+        isDBCall = json["ISDBCALL"],
+        header = json["HEADER"],
         blockAspectRatio = double.parse(json["BlockAspectRatio"] ?? "1"),
         menuBorder =
             MenuBorder.fromJson(jsonDecode(json["MenuBorder"] ?? "{}") ?? {}),

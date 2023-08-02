@@ -189,16 +189,18 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       moduleUrl2: fields[5] as String?,
       displayOrder: fields[10] as double?,
       blockAspectRatio: fields[11] as double?,
-      menuBorder: fields[12] as MenuBorder?,
-      menuProperties: fields[13] as MenuProperties?,
-      blockSpacing: fields[14] as BlockSpacing?,
+      isDBCall: fields[12] as bool?,
+      header: fields[13] as String?,
+      menuBorder: fields[14] as MenuBorder?,
+      menuProperties: fields[15] as MenuProperties?,
+      blockSpacing: fields[16] as BlockSpacing?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ModuleItem obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.moduleId)
       ..writeByte(1)
@@ -224,10 +226,14 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       ..writeByte(11)
       ..write(obj.blockAspectRatio)
       ..writeByte(12)
-      ..write(obj.menuBorder)
+      ..write(obj.isDBCall)
       ..writeByte(13)
-      ..write(obj.menuProperties)
+      ..write(obj.header)
       ..writeByte(14)
+      ..write(obj.menuBorder)
+      ..writeByte(15)
+      ..write(obj.menuProperties)
+      ..writeByte(16)
       ..write(obj.blockSpacing);
   }
 
