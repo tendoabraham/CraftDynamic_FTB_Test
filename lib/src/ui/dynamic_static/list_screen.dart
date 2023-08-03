@@ -76,10 +76,33 @@ class ListWidget extends StatelessWidget {
                                                       Flexible(
                                                           child: Text(
                                                         value.toString(),
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                                FontWeight.bold,
+                                                            color: MapKey
+                                                                        .TRANSTYPE
+                                                                        .name ==
+                                                                    key
+                                                                        .toString()
+                                                                        .toUpperCase()
+                                                                ? MapKey.CREDIT
+                                                                            .name ==
+                                                                        value
+                                                                            .toString()
+                                                                            .toUpperCase()
+                                                                    ? Colors.red
+                                                                    : Colors
+                                                                        .green
+                                                                : MapKey.TRXCURRENCY
+                                                                            .name ==
+                                                                        key
+                                                                            .toString()
+                                                                            .toUpperCase()
+                                                                    ? Theme.of(
+                                                                            context)
+                                                                        .primaryColor
+                                                                    : Colors
+                                                                        .black),
                                                         textAlign:
                                                             TextAlign.right,
                                                       ))
