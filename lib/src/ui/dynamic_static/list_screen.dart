@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'package:flutter/material.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 
@@ -79,30 +80,10 @@ class ListWidget extends StatelessWidget {
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            color: MapKey
-                                                                        .TRANSTYPE
-                                                                        .name ==
-                                                                    key
-                                                                        .toString()
-                                                                        .toUpperCase()
-                                                                ? MapKey.CREDIT
-                                                                            .name ==
-                                                                        value
-                                                                            .toString()
-                                                                            .toUpperCase()
-                                                                    ? Colors.red
-                                                                    : Colors
-                                                                        .green
-                                                                : MapKey.TRXCURRENCY
-                                                                            .name ==
-                                                                        key
-                                                                            .toString()
-                                                                            .toUpperCase()
-                                                                    ? Theme.of(
-                                                                            context)
-                                                                        .primaryColor
-                                                                    : Colors
-                                                                        .black),
+                                                            color: WidgetUtil
+                                                                .getTextColor(
+                                                                    value,
+                                                                    key)),
                                                         textAlign:
                                                             TextAlign.right,
                                                       ))

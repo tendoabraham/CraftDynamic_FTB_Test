@@ -1,5 +1,6 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
+import 'package:craft_dynamic/src/util/enum_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,6 +76,24 @@ class WidgetUtil {
       "suffixIcon": suffixIcon
     };
     return textFieldParams;
+  }
+
+  static Color getTextColor(String value, String key) {
+    var mapvalue = EnumFormatter.getMapValueAsString(value);
+    var mapKey = EnumFormatter.getMapKeyAsString(key);
+    if (mapKey == MapKey.TRXCURRENCY) {
+      return APIService.appPrimaryColor;
+    }
+    switch (mapvalue) {
+      case MapValue.CREDIT:
+        return Colors.green;
+      case MapValue.DEBIT:
+        return Colors.red;
+      case MapValue.DEFAULT:
+        return Colors.black;
+      default:
+        return Colors.black;
+    }
   }
 
   static List<FormItem> sortForms(List<FormItem> formItems) {

@@ -198,7 +198,9 @@ enum FormId {
   DBCALL
 }
 
-enum MapKey { TRANSTYPE, CREDIT, DEBIT, TRXCURRENCY }
+enum MapKey { TRANSTYPE, TRXCURRENCY, DATE, DEFAULT }
+
+enum MapValue { CREDIT, DEBIT, DEFAULT }
 
 const success = "000";
 const failure = "091";

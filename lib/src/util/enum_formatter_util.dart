@@ -48,6 +48,26 @@ class EnumFormatter {
     return formID;
   }
 
+  static MapValue getMapValueAsString(String key) {
+    MapValue mapValue = MapValue.DEFAULT;
+    try {
+      mapValue = MapValue.values.byName(key.toUpperCase());
+    } catch (e) {
+      debugPrint("Error!, $e");
+    }
+    return mapValue;
+  }
+
+  static MapKey getMapKeyAsString(String key) {
+    MapKey mapKey = MapKey.DEFAULT;
+    try {
+      mapKey = MapKey.values.byName(key.toUpperCase());
+    } catch (e) {
+      debugPrint("Error!, $e");
+    }
+    return mapKey;
+  }
+
   static ModuleId getModuleId(String moduleIdToConvert) {
     ModuleId moduleId = ModuleId.DEFAULT;
     try {
