@@ -279,14 +279,15 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         hidden: fields[18] as bool?,
         linkedToRowID: fields[19] as String?,
         isEnabled: fields[20] as bool?,
-        rowID: fields[21] as int?)
+        rowID: fields[21] as int?,
+        verticalPadding: fields[22] as double?)
       ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(23)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -330,7 +331,9 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(20)
       ..write(obj.isEnabled)
       ..writeByte(21)
-      ..write(obj.rowID);
+      ..write(obj.rowID)
+      ..writeByte(22)
+      ..write(obj.verticalPadding);
   }
 
   @override

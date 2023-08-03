@@ -204,10 +204,13 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           controller: controller,
           textInputType: inputType,
           inputDecoration: InputDecoration(
-            // border: const OutlineInputBorder(),
-            labelText: formItem?.controlText,
-            suffixIcon: textFieldParams['suffixIcon'],
-          ),
+              // border: const OutlineInputBorder(),
+              labelText: formItem?.controlText,
+              suffixIcon: textFieldParams['suffixIcon'],
+              contentPadding: formItem?.verticalPadding != null
+                  ? EdgeInsets.symmetric(
+                      vertical: formItem?.verticalPadding ?? 18, horizontal: 14)
+                  : null),
           isAmount: formItem?.controlFormat == ControlFormat.Amount.name);
 
       return WidgetFactory.buildTextField(context, properties, validator);

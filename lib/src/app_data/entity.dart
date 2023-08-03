@@ -195,6 +195,8 @@ class FormItem {
   bool? isEnabled;
   @HiveField(21)
   int? rowID;
+  @HiveField(22)
+  double? verticalPadding;
 
   FormItem(
       {required this.controlType,
@@ -217,7 +219,8 @@ class FormItem {
       this.hidden,
       this.linkedToRowID,
       this.isEnabled,
-      this.rowID});
+      this.rowID,
+      this.verticalPadding});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -240,7 +243,8 @@ class FormItem {
         hidden = json['Hidden'],
         linkedToRowID = json['LinkedToRowID'],
         isEnabled = json["DisplayControl"],
-        rowID = json["RowID"];
+        rowID = json["RowID"],
+        verticalPadding = json["VerticalPadding"];
 }
 
 @HiveType(typeId: 3)
