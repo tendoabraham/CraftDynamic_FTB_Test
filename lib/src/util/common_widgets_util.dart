@@ -58,3 +58,32 @@ class EmptyUtil extends StatelessWidget {
         ],
       ));
 }
+
+class GlobalLoader extends StatelessWidget {
+  const GlobalLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Container(
+          color: Theme.of(context).primaryColor.withOpacity(.1),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoadUtil(),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                "Please wait...",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: APIService.appPrimaryColor),
+              )
+            ],
+          )),
+        ));
+  }
+}

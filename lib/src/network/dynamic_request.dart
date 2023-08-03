@@ -134,7 +134,7 @@ class DynamicFormRequest {
         dynamicResponse:
             dynamicResponse ?? DynamicResponse(status: StatusCode.unknown.name),
         moduleItem: moduleItem,
-        controlID: formItem?.controlId,
+        controlID: formItem?.controlId ?? "",
         isList: isList,
         listType: listType,
         tappedButton: tappedButton);

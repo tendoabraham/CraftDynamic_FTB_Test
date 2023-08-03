@@ -139,7 +139,7 @@ class ModuleItem {
         isHidden = json["IsHidden"],
         displayOrder = json['DisplayOrder'],
         isDBCall = json["ISDBCALL"],
-        header = json["HEADER"],
+        header = json["DBCALLHEADER"],
         blockAspectRatio = double.parse(json["BlockAspectRatio"] ?? "1"),
         menuBorder =
             MenuBorder.fromJson(jsonDecode(json["MenuBorder"] ?? "{}") ?? {}),

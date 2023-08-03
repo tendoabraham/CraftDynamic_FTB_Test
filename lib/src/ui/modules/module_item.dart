@@ -148,6 +148,8 @@ class HorizontalModule extends StatelessWidget {
 }
 
 class ModuleUtil {
+  static final _dynamicRequest = DynamicFormRequest();
+
   static onItemClick(ModuleItem moduleItem, BuildContext context) {
     bool isDisabled = moduleItem.isDisabled ?? false;
 
@@ -155,6 +157,24 @@ class ModuleUtil {
       CommonUtils.showToast("Coming soon");
       return;
     }
+    if (moduleItem.isDBCall ?? false) {
+      CommonUtils.navigateToRoute(
+          context: context,
+          widget: const GlobalLoader(),
+          isTransparentScreen: true);
+      Map<String?, dynamic> dataObject = {};
+      dataObject.addAll({"HEADER": moduleItem.header});
+      _dynamicRequest
+          .dynamicRequest(moduleItem, dataObj: dataObject)
+          .then((value) {
+        Navigator.of(context).pop();
+        DynamicPostCall.processDynamicResponse(
+            value!.dynamicData!, context, null,
+            moduleItem: moduleItem);
+      });
+      return;
+    }
+
     switch (EnumFormatter.getModuleId(moduleItem.moduleId)) {
       case ModuleId.FINGERPRINT:
         {

@@ -57,10 +57,19 @@ class CommonUtils {
     }
   }
 
-  static navigateToRoute({required context, required widget}) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => widget),
-    );
+  static navigateToRoute(
+      {required context, required widget, isTransparentScreen = false}) {
+    isTransparentScreen
+        ? Navigator.push(
+            context,
+            PageRouteBuilder(
+              opaque: false, // Set the route as transparent
+              pageBuilder: (context, animation, secondaryAnimation) => widget,
+            ),
+          )
+        : Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => widget),
+          );
   }
 
   static navigateToRouteAndPopAll({required context, required widget}) {
