@@ -33,6 +33,15 @@ class DynamicPostCall {
     });
   }
 
+  static showOTPForm(
+      PostDynamic postDynamic, ModuleItem moduleItem, context) async {
+    final formsRepository = FormsRepository();
+    List<FormItem> formItems =
+        await formsRepository.getFormsByModuleId(postDynamic.formID ?? "") ??
+            [];
+    OTPForm.showModalBottomDialog(context, formItems, moduleItem, []);
+  }
+
   static processDynamicResponse(
       DynamicData? dynamicData, BuildContext context, String? controlID,
       {moduleItem}) {
@@ -147,14 +156,5 @@ class DynamicPostCall {
           CommonUtils.showToast(postDynamic.message ?? "Try Again Later!");
         }
     }
-  }
-
-  static showOTPForm(
-      PostDynamic postDynamic, ModuleItem moduleItem, context) async {
-    final formsRepository = FormsRepository();
-    List<FormItem> formItems =
-        await formsRepository.getFormsByModuleId(postDynamic.formID ?? "") ??
-            [];
-    OTPForm.showModalBottomDialog(context, formItems, moduleItem, []);
   }
 }

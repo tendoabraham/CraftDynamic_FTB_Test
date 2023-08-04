@@ -130,7 +130,7 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                     borderRadius: BorderRadius.circular(8)),
                 selectedColor: APIService.appSecondaryColor,
                 labelStyle: TextStyle(
-                  overflow: TextOverflow.visible,
+                  overflow: TextOverflow.ellipsis,
                   color: _value == index
                       ? Colors.white
                       : APIService.appSecondaryColor,

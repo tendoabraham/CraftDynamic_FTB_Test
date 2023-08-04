@@ -29,7 +29,7 @@ class ModuleRepository {
       module = box.values.firstWhereOrNull((item) => item.moduleId == moduleID);
       return module;
     } catch (e) {
-      AppLogger.appLogD(tag: "get module by id", message: e);
+      AppLogger.appLogE(tag: "get module by id", message: e);
     }
     return module;
   }
@@ -54,7 +54,7 @@ class ModuleRepository {
           .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
       return modules;
     } catch (e) {
-      AppLogger.appLogD(tag: "get modules by id", message: e);
+      AppLogger.appLogE(tag: "get modules by id", message: e);
     }
 
     return modules;
