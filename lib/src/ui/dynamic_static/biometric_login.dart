@@ -5,6 +5,7 @@ import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -50,7 +51,7 @@ class _BiometricLoginState extends State<BiometricLogin> {
               color: Colors.white,
             ),
           ),
-          title: const Text("Enroll fingerprint"),
+          title: const Text("Enable fingerprint/face login"),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -66,7 +67,7 @@ class _BiometricLoginState extends State<BiometricLogin> {
                 height: 12.0,
               ),
               const Text(
-                "Login with Fingerprint",
+                "Login with Fingerprint/Face",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
@@ -77,7 +78,7 @@ class _BiometricLoginState extends State<BiometricLogin> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 12.0,
+                height: 44.0,
               ),
               ElevatedButton(
                   onPressed: () {
@@ -95,6 +96,7 @@ class _BiometricLoginState extends State<BiometricLogin> {
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
+        showDragHandle: true,
         builder: (BuildContext context) => const ModalBottomSheet());
   }
 
@@ -165,9 +167,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
       if (enrolledFingerprints.length > 0) {
         _handleBiometrics(CryptLib.encryptField(_pinController.text));
       } else {
-        CommonUtils.buildErrorSnackBar(
-            context: context,
-            message: "No fingerprints enrolled on this device");
+        CommonUtils.showToast("No fingerprints enrolled on this device",
+            lenth: Toast.LENGTH_LONG);
       }
     }
   }
@@ -180,7 +181,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
       Future.delayed(const Duration(milliseconds: 500), () async {
         await _services.login(encryptedPin).then((value) async => {
               Future.delayed(const Duration(milliseconds: 1000), () {
-                if (value.status == "000") {
+                if (value.status == StatusCode.success.statusCode) {
                   _sharedPref.setBioPin(encryptedPin);
                   isBiometricEnabled.value
                       ? _sharedPref.setBio(false)
@@ -189,8 +190,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   Navigator.pop(context);
                   _pinController.clear();
                 } else {
-                  CommonUtils.buildErrorSnackBar(
-                      context: context, message: value.message);
+                  CommonUtils.showToast(value.message);
                 }
               }),
             });

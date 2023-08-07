@@ -159,7 +159,10 @@ class DynamicFormRequest {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         Provider.of<PluginState>(context, listen: false).setDeleteForm(status);
-      } catch (e) {}
+      } catch (e) {
+        AppLogger.appLogE(
+            tag: "dynamic request", message: "delete form error!");
+      }
     });
   }
 }
