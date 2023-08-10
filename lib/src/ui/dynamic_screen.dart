@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-part of dynamic_widget;
+part of craft_dynamic;
 
 class DynamicWidget extends StatelessWidget {
   List<dynamic>? jsonDisplay, formFields;
@@ -10,7 +10,7 @@ class DynamicWidget extends StatelessWidget {
   String? formID;
 
   DynamicWidget({
-    Key? key,
+    super.key,
     this.moduleItem,
     this.favouriteModule,
     this.jsonDisplay,
@@ -18,7 +18,7 @@ class DynamicWidget extends StatelessWidget {
     this.nextFormSequence,
     this.formID,
     this.isWizard = false,
-  }) : super(key: key);
+  });
 
   List<FormItem> content = [];
 

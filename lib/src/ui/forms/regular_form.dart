@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:provider/provider.dart';
 

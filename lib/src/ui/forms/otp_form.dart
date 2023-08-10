@@ -1,5 +1,4 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

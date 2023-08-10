@@ -1,8 +1,6 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/material.dart';
 
-import '../../../dynamic_widget.dart';
-
 abstract class IMenuUtil {
   factory IMenuUtil(MenuType menuType, ModuleItem moduleItem) {
     switch (menuType) {

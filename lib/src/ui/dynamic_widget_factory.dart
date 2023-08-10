@@ -1,4 +1,4 @@
-part of dynamic_widget;
+part of craft_dynamic;
 
 abstract class IFormWidget {
   factory IFormWidget(FormItem formItem, {key, jsonText, formFields}) {

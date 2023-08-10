@@ -16,7 +16,6 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
-import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/providers/group_button_provider.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/network/dynamic_postcall.dart';

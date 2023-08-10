@@ -1,9 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../../../craft_dynamic.dart';
 
 class ConnectionErrorScreen extends StatelessWidget {
   const ConnectionErrorScreen({super.key});

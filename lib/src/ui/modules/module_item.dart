@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable
 
-part of dynamic_widget;
+part of craft_dynamic;
 
 class ModuleItemWidget extends StatelessWidget {
   bool isMain = false;
@@ -8,11 +8,7 @@ class ModuleItemWidget extends StatelessWidget {
   ModuleItem moduleItem;
 
   ModuleItemWidget(
-      {Key? key,
-      this.isMain = false,
-      this.isSearch = false,
-      required this.moduleItem})
-      : super(key: key);
+      {this.isMain = false, this.isSearch = false, required this.moduleItem});
 
   @override
   Widget build(BuildContext context) {

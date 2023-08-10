@@ -1,11 +1,11 @@
 // ignore_for_file: must_be_immutable
 
-part of dynamic_widget;
+part of craft_dynamic;
 
 class LoadUtil extends StatelessWidget {
   List<Color> colors;
 
-  LoadUtil({Key? key, this.colors = const []}) : super(key: key);
+  LoadUtil({super.key, this.colors = const []});
 
   @override
   Widget build(BuildContext context) => SpinKitWave(
@@ -38,8 +38,7 @@ class ThreeLoadUtil extends StatelessWidget {
   List<Color> colors;
   double? size;
 
-  ThreeLoadUtil({Key? key, this.colors = const [], this.size})
-      : super(key: key);
+  ThreeLoadUtil({super.key, this.colors = const [], this.size});
 
   @override
   Widget build(BuildContext context) => SpinKitThreeBounce(

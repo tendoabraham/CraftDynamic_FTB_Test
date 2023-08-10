@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/util/local_data_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

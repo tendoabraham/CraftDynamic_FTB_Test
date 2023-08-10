@@ -5,8 +5,6 @@ import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
 
-import '../../../dynamic_widget.dart';
-
 class TransactionList extends StatefulWidget {
   TransactionList({Key? key, required this.moduleItem}) : super(key: key);
   ModuleItem moduleItem;
