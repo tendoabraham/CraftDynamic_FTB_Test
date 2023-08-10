@@ -17,6 +17,7 @@ class PluginState extends ChangeNotifier {
   final Map<String?, dynamic> _encryptedFields = {};
   final Map<String?, dynamic> _screenDropDowns = {};
   final Map<String?, dynamic> _toAndFromAccounts = {};
+  final Map<String, Map<String, dynamic>> _dynamicDropDownData = {};
 
   bool get loadingNetworkData => _loadingNetworkData;
 
@@ -41,6 +42,9 @@ class PluginState extends ChangeNotifier {
   Map<String?, dynamic> get screenDropDowns => _screenDropDowns;
 
   Map<String?, dynamic> get toAndFromAccounts => _toAndFromAccounts;
+
+  Map<String, Map<String, dynamic>> get dynamicDropDownData =>
+      _dynamicDropDownData;
 
   void setRequestState(bool state, {String? currentTab}) {
     _loadingNetworkData = state;
@@ -99,12 +103,22 @@ class PluginState extends ChangeNotifier {
     notifyListeners();
   }
 
+  addDynamicDropDownData(Map<String, Map<String, dynamic>> data) {
+    _dynamicDropDownData.clear();
+    _dynamicDropDownData.addAll(data);
+    notifyListeners();
+  }
+
   clearDynamicInput() {
     _formInputValues.clear();
     _encryptedFields.clear();
     _screenDropDowns.clear();
     _toAndFromAccounts.clear();
     notifyListeners();
+  }
+
+  clearDynamicDropDown() {
+    _dynamicDropDownData.clear();
   }
 }
 

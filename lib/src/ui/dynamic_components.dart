@@ -187,16 +187,19 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
         controller.text = formFieldValue[FormFieldProp.ControlValue.name] ?? "";
       }
 
-      String linkedDropDownValue =
-          state.screenDropDowns[formItem?.linkedToRowID?.toLowerCase()] ?? "";
+      if (formItem?.linkedToRowID != null) {
+        linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
+                ?[formItem?.controlId] ??
+            "";
+      }
 
-      if (linkedDropDownValue.isNotEmpty) {
-        controller.text = linkedDropDownValue;
+      if (linkedToControlText.isNotEmpty) {
+        setInitialText(linkedToControlText);
       }
 
       var properties = TextFormFieldProperties(
           isEnabled: formFieldValue.isNotEmpty ||
-                  linkedDropDownValue.isNotEmpty ||
+                  linkedToControlText.isNotEmpty ||
                   isEnabled
               ? false
               : true,
@@ -250,6 +253,12 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           .addFormInput({"${formItem?.serviceParamId}": "$value"});
     }
     return null;
+  }
+
+  void setInitialText(String? initialText) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.text = initialText ?? "";
+    });
   }
 
   void refreshParent(bool status, {newText}) {
@@ -400,107 +409,113 @@ class _DynamicButtonState extends State<DynamicButton> {
   getModule(String moduleID) => _moduleRepository.getModuleById(moduleID);
 }
 
-class DynamicDropDown implements IFormWidget {
+class DynamicDropDown extends StatefulWidget implements IFormWidget {
+  const DynamicDropDown({super.key});
+
+  @override
+  State<DynamicDropDown> createState() => _DynamicDropDownState();
+
+  @override
+  Widget render() => const DynamicDropDown();
+}
+
+class _DynamicDropDownState extends State<DynamicDropDown> {
   final _apiService = APIService();
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
   Map<String, dynamic> extraFieldMap = {};
+  List<dynamic> dropdownItems = [];
 
   Future<DynamicResponse?> dbCall(
           String actionID, ModuleItem moduleItem) async =>
       _apiService.getDynamicDropDownValues(actionID, moduleItem);
 
   @override
-  Widget render() {
-    return Builder(builder: (BuildContext context) {
-      formItem = BaseFormInheritedComponent.of(context)?.formItem;
-      moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
-
-      return FutureBuilder<DynamicResponse?>(
-          future: dbCall(formItem?.actionId ?? "", moduleItem!),
-          builder:
-              (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
-            Widget child = DropdownButtonFormField2(
-              value: _currentValue,
-              decoration: InputDecoration(
-                  prefixIcon: SizedBox(
-                      height: 28,
-                      width: 28,
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: APIService.appSecondaryColor,
-                      )))),
-              hint: Text(
-                formItem!.controlText!,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              isExpanded: true,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              items: const [],
-            );
-            if (snapshot.hasData) {
-              var dropdownItems = snapshot.data?.dynamicList ?? [];
-
-              Map<String, String> mapList = {};
-
-              for (dynamic item in dropdownItems) {
-                if (item is Map<String, dynamic>) {
-                  // Assuming each item in the list is a map with a single key-value pair
-                  String key = item.values.last;
-                  String value = item.values.first;
-                  mapList[key] = value;
-                }
-              }
-
-              var dropdownPicks = mapList.entries.map((item) {
-                return DropdownMenuItem(
-                  value: item.key,
-                  child: Text(
-                    item.value,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                );
-              }).toList();
-              dropdownPicks.toSet().toList();
-              if (dropdownPicks.isNotEmpty) {
-                _currentValue = dropdownPicks[0].value;
-                addInitialValueToLinkedField(context);
-              }
-              child = DropdownButtonFormField(
-                value: _currentValue,
-                decoration: InputDecoration(labelText: formItem?.controlText),
-                isExpanded: true,
-                style: const TextStyle(fontWeight: FontWeight.normal),
-                onChanged: ((value) => {
-                      _currentValue = value.toString(),
-                      Provider.of<PluginState>(context, listen: false)
-                          .addScreenDropDown({
-                        formItem?.rowID.toString(): extraFieldMap[_currentValue]
-                      }),
-                    }),
-                validator: (value) {
-                  Provider.of<PluginState>(context, listen: false)
-                      .addFormInput({"${formItem?.serviceParamId}": value});
-                },
-                items: dropdownPicks,
-              );
-            }
-
-            return child;
-          });
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
     });
   }
 
-  void addInitialValueToLinkedField(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
+    return FutureBuilder<DynamicResponse?>(
+        future: dbCall(formItem?.actionId ?? "", moduleItem!),
+        builder:
+            (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+          Widget child = DropdownButtonFormField2(
+            value: _currentValue,
+            decoration: InputDecoration(
+                prefixIcon: ThreeLoadUtil(
+              size: 24,
+            )),
+            hint: Text(
+              formItem!.controlText!,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            isExpanded: true,
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+            items: const [],
+          );
+          if (snapshot.hasData) {
+            dropdownItems = snapshot.data?.dynamicList ?? [];
+            _currentValue = dropdownItems.first[formItem?.controlId] ??
+                formItem?.controlText;
+            var dropdownPicks = dropdownItems.asMap().entries.map((item) {
+              return DropdownMenuItem(
+                value: item.value[formItem?.controlId] ?? formItem?.controlText,
+                child: Text(
+                  item.value[formItem?.controlId] ?? formItem?.controlText,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              );
+            }).toList();
+            dropdownPicks.toSet().toList();
+            if (dropdownPicks.isNotEmpty) {
+              addInitialValueToLinkedField(context, dropdownItems.first);
+            }
+            child = DropdownButtonFormField(
+              value: _currentValue,
+              decoration: InputDecoration(labelText: formItem?.controlText),
+              isExpanded: true,
+              style: const TextStyle(fontWeight: FontWeight.normal),
+              onChanged: (value) {
+                Provider.of<PluginState>(context, listen: false)
+                    .addDynamicDropDownData({
+                  formItem?.rowID.toString() ?? "": getValueFromList(value)
+                });
+              },
+              validator: (value) {
+                Provider.of<PluginState>(context, listen: false).addFormInput({
+                  "${formItem?.serviceParamId}":
+                      getValueFromList(value)[formItem?.controlId ?? ""]
+                });
+              },
+              items: dropdownPicks,
+            );
+          }
+
+          return child;
+        });
+  }
+
+  getValueFromList(value) => dropdownItems
+      .firstWhereOrNull((element) => element[formItem?.controlId] == value);
+
+  void addInitialValueToLinkedField(BuildContext context, var initialValue) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         if (Provider.of<PluginState>(context, listen: false)
-            .screenDropDowns
+            .dynamicDropDownData
             .isEmpty) {
-          Provider.of<PluginState>(context, listen: false).addScreenDropDown(
-              {formItem?.rowID?.toString(): extraFieldMap[_currentValue]});
+          Provider.of<PluginState>(context, listen: false)
+              .addDynamicDropDownData(
+                  {formItem?.rowID.toString() ?? "": initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -574,8 +589,8 @@ class _DropDownState extends State<DropDown> {
                 }).toList();
                 dropdownPicks.toSet().toList();
                 if (dropdownPicks.isNotEmpty) {
-                  addInitialValueToLinkedField(context,
-                      extraFieldMap[_currentValue] ?? "", dropdownItems);
+                  addInitialValueToLinkedField(
+                      context, _currentValue ?? "", dropdownItems);
                 }
 
                 if (isToAccountField(formItem?.controlId ?? "")) {
@@ -601,10 +616,8 @@ class _DropDownState extends State<DropDown> {
                           _currentValue = value.toString();
                         }),
                         Provider.of<PluginState>(context, listen: false)
-                            .addScreenDropDown({
-                          formItem?.rowID?.toString():
-                              extraFieldMap[_currentValue]
-                        }),
+                            .addScreenDropDown(
+                                {formItem?.rowID?.toString(): _currentValue}),
                         if (isFromAccountField(formItem?.controlId ?? ""))
                           {
                             state.setCurrentSelections(

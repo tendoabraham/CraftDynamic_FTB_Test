@@ -34,6 +34,40 @@ class LoadUtil extends StatelessWidget {
       );
 }
 
+class ThreeLoadUtil extends StatelessWidget {
+  List<Color> colors;
+  double? size;
+
+  ThreeLoadUtil({Key? key, this.colors = const [], this.size})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => SpinKitThreeBounce(
+        size: size ?? 28,
+        itemBuilder: (BuildContext context, int index) {
+          Color? isEvenColor, isOddColor;
+          bool useCustomColor = false;
+          if (colors.length >= 2) {
+            isEvenColor = colors[0];
+            isOddColor = colors[1];
+            useCustomColor = true;
+          }
+
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              color: index.isEven
+                  ? useCustomColor
+                      ? isEvenColor
+                      : APIService.appSecondaryColor
+                  : useCustomColor
+                      ? isOddColor
+                      : APIService.appPrimaryColor,
+            ),
+          );
+        },
+      );
+}
+
 class EmptyUtil extends StatelessWidget {
   const EmptyUtil({super.key});
 
