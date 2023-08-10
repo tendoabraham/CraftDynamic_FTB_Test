@@ -23,20 +23,13 @@ class ModulesListWidget extends StatefulWidget {
 
 class _ModulesListWidgetState extends State<ModulesListWidget> {
   final _moduleRepository = ModuleRepository();
-  final _disabledModulesRepo = ModuleToDisableRepository();
 
   Future<List<ModuleItem>?> getModules() async {
-    var disabledModules = await _disabledModulesRepo.getAllModulesToDisable();
-
     List<ModuleItem>? modules = await _moduleRepository.getModulesById(
         widget.favouriteModule == null
             ? widget.moduleItem!.moduleId
             : widget.favouriteModule!.moduleID);
-    disabledModules?.forEach((module) {
-      var moduleFromList =
-          modules?.firstWhere((item) => item.moduleId == module.moduleID);
-      moduleFromList?.isDisabled = true;
-    });
+
     return modules;
   }
 
