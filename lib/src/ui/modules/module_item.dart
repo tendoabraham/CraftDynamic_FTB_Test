@@ -8,7 +8,10 @@ class ModuleItemWidget extends StatelessWidget {
   ModuleItem moduleItem;
 
   ModuleItemWidget(
-      {this.isMain = false, this.isSearch = false, required this.moduleItem});
+      {super.key,
+      this.isMain = false,
+      this.isSearch = false,
+      required this.moduleItem});
 
   @override
   Widget build(BuildContext context) {
