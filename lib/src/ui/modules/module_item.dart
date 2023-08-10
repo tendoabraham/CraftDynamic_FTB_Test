@@ -151,6 +151,10 @@ class ModuleUtil {
 
   static onItemClick(ModuleItem moduleItem, BuildContext context) {
     bool isDisabled = moduleItem.isDisabled ?? false;
+    AppLogger.appLogD(
+        tag: "module util",
+        message:
+            "module ${moduleItem.moduleName} disabled status is $isDisabled");
 
     if (isDisabled) {
       CommonUtils.showToast("Coming soon");
