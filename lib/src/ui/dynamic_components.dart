@@ -455,7 +455,7 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
               size: 24,
             )),
             hint: Text(
-              formItem!.controlText!,
+              formItem?.controlText ?? "",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             isExpanded: true,
