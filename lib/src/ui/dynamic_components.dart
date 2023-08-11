@@ -1,27 +1,27 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+part of craft_dynamic;
+// import 'dart:collection';
+// import 'dart:io';
 
-import 'dart:collection';
-import 'dart:io';
+// import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:intl/intl.dart';
+// import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+// import 'package:provider/provider.dart';
+// import 'package:camera/camera.dart';
+// import 'package:collection/collection.dart';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
-import 'package:collection/collection.dart';
+// import 'package:craft_dynamic/craft_dynamic.dart';
+// import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
+// import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
+// import 'package:craft_dynamic/src/network/dynamic_request.dart';
+// import 'package:craft_dynamic/src/providers/group_button_provider.dart';
+// import 'package:craft_dynamic/src/state/plugin_state.dart';
+// import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
+// import 'package:craft_dynamic/src/util/widget_util.dart';
 
-import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
-import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
-import 'package:craft_dynamic/src/network/dynamic_request.dart';
-import 'package:craft_dynamic/src/providers/group_button_provider.dart';
-import 'package:craft_dynamic/src/state/plugin_state.dart';
-import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
-import 'package:craft_dynamic/src/util/widget_util.dart';
-
-import 'dynamic_static/qr_scanner.dart';
+// import 'dynamic_static/qr_scanner.dart';
 
 class DynamicInput {
   static Map<String?, dynamic> formInputValues = {};
@@ -87,14 +87,14 @@ class BaseFormInheritedComponent extends InheritedWidget {
   List<dynamic>? jsonText;
 
   BaseFormInheritedComponent(
-      {Key? key,
+      {super.key,
       required this.widget,
       required this.formItem,
       required this.moduleItem,
       required this.formItems,
       required this.formKey,
       this.jsonText})
-      : super(key: key, child: widget);
+      : super(child: widget);
 
   static BaseFormInheritedComponent? of(BuildContext context) {
     return context
@@ -115,13 +115,12 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
   List<dynamic>? formFields;
 
   DynamicTextFormField(
-      {Key? key,
+      {super.key,
       this.isEnabled = true,
       this.func,
       this.customText,
       this.controller,
-      this.formFields})
-      : super(key: key);
+      this.formFields});
 
   @override
   Widget render() {
@@ -341,8 +340,8 @@ class _DynamicButtonState extends State<DynamicButton> {
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
                 ? LoadUtil()
-                : WidgetFactory.buildButton(
-                    context, onClick, formItem!.controlText!.capitalize());
+                : WidgetFactory.buildButton(context, onClick,
+                    formItem?.controlText?.capitalizeFirstLetter() ?? "Submit");
           }));
     });
   }
@@ -743,7 +742,6 @@ class DynamicTextViewWidget implements IFormWidget {
   List<LinkedHashMap> mapItems = [];
 
   DynamicTextViewWidget({
-    Key? key,
     this.jsonText,
   });
 

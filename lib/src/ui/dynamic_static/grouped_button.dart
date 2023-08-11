@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import 'package:craft_dynamic/src/providers/group_button_provider.dart';
-import 'package:craft_dynamic/src/ui/dynamic_components.dart';
+import '/src/providers/group_button_provider.dart';
+import '../../../craft_dynamic.dart';
 
 class GroupButtonWidget extends StatefulWidget {
   List<String>? buttons;

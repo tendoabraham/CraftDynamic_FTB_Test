@@ -2,7 +2,6 @@
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
-import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';

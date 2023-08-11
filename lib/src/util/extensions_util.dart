@@ -33,6 +33,9 @@ extension FormatPhone on String {
   String formatPhone() {
     return replaceAll(RegExp('[^0-9]'), '');
   }
+
+  String capitalizeFirstLetter() =>
+      "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
 }
 
 extension APICall on APIService {
@@ -74,7 +77,7 @@ extension Navigate on BuildContext {
         MaterialPageRoute(builder: (context) => widget), (route) => false);
   }
 
-  remove(){
+  remove() {
     Navigator.of(this).pop();
   }
 }
