@@ -119,4 +119,4 @@ part 'src/util/extensions_util.dart';
 part 'src/app_data/constants.dart';
 part 'src/hive/hive_repository.dart';
 part 'src/ui/dynamic_static/transaction_receipt.dart';
-part '/src/ui/dynamic_components.dart';
+part 'src/ui/dynamic_components.dart';
