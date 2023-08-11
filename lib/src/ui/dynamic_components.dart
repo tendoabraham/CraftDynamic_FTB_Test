@@ -1,27 +1,5 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 part of craft_dynamic;
-// import 'dart:collection';
-// import 'dart:io';
-
-// import 'package:dropdown_button2/dropdown_button2.dart';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:intl/intl.dart';
-// import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-// import 'package:provider/provider.dart';
-// import 'package:camera/camera.dart';
-// import 'package:collection/collection.dart';
-
-// import 'package:craft_dynamic/craft_dynamic.dart';
-// import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
-// import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
-// import 'package:craft_dynamic/src/network/dynamic_request.dart';
-// import 'package:craft_dynamic/src/providers/group_button_provider.dart';
-// import 'package:craft_dynamic/src/state/plugin_state.dart';
-// import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
-// import 'package:craft_dynamic/src/util/widget_util.dart';
-
-// import 'dynamic_static/qr_scanner.dart';
 
 class DynamicInput {
   static Map<String?, dynamic> formInputValues = {};
