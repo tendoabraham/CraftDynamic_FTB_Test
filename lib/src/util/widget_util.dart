@@ -81,7 +81,7 @@ class WidgetUtil {
   static Color getTextColor(String value, String key) {
     var mapvalue = EnumFormatter.getMapValueAsString(value);
     var mapKey = EnumFormatter.getMapKeyAsString(key);
-    if (mapKey == MapKey.Amount) {
+    if (mapKey == MapKey.AMOUNT) {
       return APIService.appPrimaryColor;
     }
     switch (mapvalue) {
