@@ -198,7 +198,7 @@ enum FormId {
   DBCALL
 }
 
-enum MapKey { TRANSTYPE, TRXCURRENCY, DATE, DEFAULT }
+enum MapKey { TRANSTYPE, TRXCURRENCY, DATE, DEFAULT, Amount }
 
 enum MapValue { CREDIT, DEBIT, DEFAULT }
 
