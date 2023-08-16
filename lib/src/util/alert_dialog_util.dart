@@ -22,30 +22,19 @@ class AlertUtil {
             child: Align(
               alignment: FractionalOffset.bottomCenter,
               child: AlertDialog(
-                insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+                actionsPadding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 14),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 34),
                 titlePadding: const EdgeInsets.only(
                     top: 12, left: 12, right: 12, bottom: 12),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
                 title: Center(
-                    child: Container(
-                        child: Row(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // showTitleIcon
-                    //     ? isInfoAlert
-                    //         ? Lottie.asset(
-                    //             "packages/craft_dynamic/assets/lottie/info_lottie.json",
-                    //             height: 54,
-                    //             width: 54)
-                    //         : Lottie.asset(
-                    //             "packages/craft_dynamic/assets/lottie/error.json",
-                    //             height: 54,
-                    //             width: 54)
-                    //     : const SizedBox(),
-
                     title == null
                         ? const SizedBox()
                         : Text(
@@ -70,7 +59,7 @@ class AlertUtil {
                               )
                         : const SizedBox()
                   ],
-                ))),
+                )),
                 content: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
@@ -104,9 +93,11 @@ class AlertUtil {
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
-                                    child: const Text(
+                                    child: Text(
                                       "Cancel",
-                                      style: TextStyle(fontSize: 18),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: APIService.appSecondaryColor),
                                     ).tr()),
                                 const SizedBox(
                                   width: 12,

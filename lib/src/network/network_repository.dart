@@ -126,7 +126,7 @@ class StaticDataRepository {
     List<AtmLocation> atms = [];
     List<OnlineAccountProduct> products = [];
     List<ImageData> images = [];
-    List<Faq> _faqs = [];
+    List<Faq> faqs = [];
 
     staticResponse?.usercode?.forEach((item) {
       userCodes.add(UserCode.fromJson(item));
@@ -159,8 +159,8 @@ class StaticDataRepository {
     _branchLocationRepository.insertBranchLocations(branchLocations);
 
     staticResponse?.faqs?.forEach((item) {
-      _faqs.add(Faq.fromJson(item));
+      faqs.add(Faq.fromJson(item));
     });
-    _faqRepository.insertFaqs(_faqs);
+    _faqRepository.insertFaqs(faqs);
   }
 }

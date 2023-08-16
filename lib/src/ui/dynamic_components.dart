@@ -471,6 +471,7 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                   "${formItem?.serviceParamId}":
                       getValueFromList(value)[formItem?.controlId ?? ""]
                 });
+                return null;
               },
               items: dropdownPicks,
             );
@@ -603,6 +604,7 @@ class _DropDownState extends State<DropDown> {
                   validator: (value) {
                     Provider.of<PluginState>(context, listen: false)
                         .addFormInput({"${formItem?.serviceParamId}": value});
+                    return null;
                   },
                   items: dropdownPicks,
                 );
