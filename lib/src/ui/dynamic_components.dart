@@ -890,6 +890,7 @@ class _DynamicPhonePickerFormWidgetState
                 inputNumber.phoneNumber?.replaceAll("+", "")
           });
         }
+        return null;
       },
     );
   }
@@ -1159,6 +1160,7 @@ class _DynamicCheckBoxState extends State<DynamicCheckBox> {
         title: Text(formItem?.controlText ?? ""),
         validator: (value) {
           validate(value);
+          return null;
         });
   }
 
