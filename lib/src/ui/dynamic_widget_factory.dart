@@ -22,7 +22,7 @@ abstract class IFormWidget {
         );
 
       case ViewType.DYNAMICDROPDOWN:
-        return DynamicDropDown();
+        return const DynamicDropDown();
 
       case ViewType.LABEL:
         return DynamicLabelWidget();
