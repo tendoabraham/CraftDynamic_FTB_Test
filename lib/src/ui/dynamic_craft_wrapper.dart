@@ -104,7 +104,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
                 : null,
             supportedLocales: widget.localizationIsEnabled
                 ? context.supportedLocales
-                : [const Locale('en')],
+                : [const Locale('ENG')],
             locale: widget.localizationIsEnabled ? context.locale : null,
             debugShowCheckedModeBanner: false,
             theme: widget.appTheme,
@@ -118,7 +118,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
               Provider.of<PluginState>(context, listen: false)
                   .setLogoutScreen(widget.appTimeoutScreen);
               if (widget.localizationIsEnabled) {
-                // setLocale();
+                setLocale();
               }
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
