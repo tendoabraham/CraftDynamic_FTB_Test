@@ -117,6 +117,9 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             builder: (context, child) {
               Provider.of<PluginState>(context, listen: false)
                   .setLogoutScreen(widget.appTimeoutScreen);
+              if (widget.localizationIsEnabled) {
+                setLocale();
+              }
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: child!,
@@ -128,6 +131,12 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         _appTimeout,
         widget.appInactivityScreen,
         widget.appTimeoutScreen);
+  }
+
+  setLocale() {
+    _sharedPref.getLanguageID().then((language) {
+      EasyLocalization.of(context)?.setLocale(Locale(language));
+    });
   }
 
   @override
