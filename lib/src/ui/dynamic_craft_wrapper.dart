@@ -118,7 +118,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
               Provider.of<PluginState>(context, listen: false)
                   .setLogoutScreen(widget.appTimeoutScreen);
               if (widget.localizationIsEnabled) {
-                setLocale();
+                // setLocale();
               }
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
