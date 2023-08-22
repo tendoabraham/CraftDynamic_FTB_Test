@@ -135,6 +135,9 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   setLocale() {
     _sharedPref.getLanguageID().then((language) {
+      AppLogger.appLogD(
+          tag: "dynamic craft wrapper",
+          message: "current language setting ---> $language");
       EasyLocalization.of(context)?.setLocale(Locale(language));
     });
   }
