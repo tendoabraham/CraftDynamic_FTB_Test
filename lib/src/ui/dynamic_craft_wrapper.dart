@@ -139,7 +139,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
       AppLogger.appLogD(
           tag: "dynamic craft wrapper",
           message: "current language setting ---> $language");
-      EasyLocalization.of(context)?.setLocale(Locale(language));
+      try {
+        EasyLocalization.of(context)?.setLocale(Locale(language));
+      } catch (e) {
+        AppLogger.appLogE(tag: "dynamic craft wrapper", message: "error: $e");
+      }
     });
   }
 
