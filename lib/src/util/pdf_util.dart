@@ -75,6 +75,18 @@ class PDFUtil {
       row.cells[1].value = value;
     });
 
+    //Watermark image
+    ByteData imageBytes = await rootBundle.load('assets/launcher/launcher.png');
+    List<int> imageBitmap = imageBytes.buffer.asUint8List();
+
+    PdfGraphicsState state = page.graphics.save();
+    page.graphics.setTransparency(0.25);
+    page.graphics.drawImage(
+        PdfBitmap.fromBase64String(base64.encode(imageBitmap)),
+        Rect.fromLTWH((page.graphics.clientSize.width / 2) - 150,
+            (page.graphics.clientSize.height / 2) - 150, 300, 300));
+    page.graphics.restore(state);
+
     // Set margins for the page
     double leftMargin = 8; // Adjust the left margin value as desired
     double rightMargin = 4; // Adjust the right margin value as desired
