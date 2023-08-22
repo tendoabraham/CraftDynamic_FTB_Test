@@ -73,6 +73,8 @@ class ModuleRepository {
     var modules = box.values
         .where((item) => item.isMainMenu == true && item.isHidden == false)
         .toList();
+    modules
+        .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
     return modules;
   }
 
