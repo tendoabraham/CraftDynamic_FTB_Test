@@ -107,7 +107,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
                 : null,
             supportedLocales: widget.localizationIsEnabled
                 ? context.supportedLocales
-                : [const Locale('en')],
+                : [const Locale('ENG')],
             locale: widget.localizationIsEnabled ? context.locale : null,
             debugShowCheckedModeBanner: false,
             theme: widget.appTheme,
