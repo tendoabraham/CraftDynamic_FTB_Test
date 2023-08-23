@@ -45,9 +45,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
     _sharedPref.setIsExternalBankIDType(widget.useExternalBankID);
-    if (widget.localizationIsEnabled) {
-      setLocale();
-    }
 
     await getAppLaunchCount();
     if (!kIsWeb) {
@@ -134,20 +131,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         _appTimeout,
         widget.appInactivityScreen,
         widget.appTimeoutScreen);
-  }
-
-  setLocale() {
-    _sharedPref.getLanguageID().then((language) {
-      AppLogger.appLogD(
-          tag: "dynamic craft wrapper",
-          message:
-              "current language setting ---> $language supported locales ----> ${context.supportedLocales} locaization delegates ${context.localizationDelegates}");
-      try {
-        EasyLocalization.of(context)?.setLocale(Locale(language));
-      } catch (e) {
-        AppLogger.appLogE(tag: "dynamic craft wrapper", message: "error: $e");
-      }
-    });
   }
 
   @override
