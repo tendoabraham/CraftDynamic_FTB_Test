@@ -6,6 +6,7 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appTimeoutScreen;
   final Widget appInactivityScreen;
   final ThemeData appTheme;
+  List<LocalizationsDelegate>? localizationDelegates;
   bool localizationIsEnabled;
   bool useExternalBankID;
 
@@ -16,6 +17,7 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
       required this.appTheme,
+      this.localizationDelegates,
       this.useExternalBankID = false,
       this.localizationIsEnabled = false});
 
@@ -103,7 +105,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
           ],
           child: GetMaterialApp(
             localizationsDelegates: widget.localizationIsEnabled
-                ? context.localizationDelegates
+                ? widget.localizationDelegates ?? context.localizationDelegates
                 : null,
             supportedLocales: widget.localizationIsEnabled
                 ? context.supportedLocales
