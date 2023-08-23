@@ -138,7 +138,8 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     _sharedPref.getLanguageID().then((language) {
       AppLogger.appLogD(
           tag: "dynamic craft wrapper",
-          message: "current language setting ---> $language");
+          message:
+              "current language setting ---> $language supported locales ----> ${context.supportedLocales}");
       try {
         // EasyLocalization.of(context)?.setLocale(Locale(language));
       } catch (e) {
