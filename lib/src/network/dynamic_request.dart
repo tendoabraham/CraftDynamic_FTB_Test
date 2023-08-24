@@ -38,6 +38,7 @@ class DynamicFormRequest {
 
     ActionItem? actionControl;
     var merchantID = moduleItem?.merchantID ?? "BANKIMAGE";
+    bool isDBCall = moduleItem?.isDBCall ?? false;
 
     if (dataObj == null) {
       Fluttertoast.showToast(
@@ -65,7 +66,8 @@ class DynamicFormRequest {
           message: actionControl?.merchantID);
     }
 
-    if (actionControl?.displayFormID == ControlFormat.LISTDATA.name) {
+    if (actionControl?.displayFormID == ControlFormat.LISTDATA.name ||
+        isDBCall) {
       isList = true;
     }
 
