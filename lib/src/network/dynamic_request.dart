@@ -60,7 +60,8 @@ class DynamicFormRequest {
           await _actionControlRepository.getActionControlByModuleIdAndControlId(
               moduleItem?.moduleId ?? "", formItem.controlId);
       AppLogger.appLogD(
-          tag: "action control merchant id-->",
+          tag:
+              "action control merchant id--> formitem control id ---> ${formItem.controlId}",
           message: actionControl?.merchantID);
     }
 
