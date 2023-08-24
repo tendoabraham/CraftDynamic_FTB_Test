@@ -116,7 +116,7 @@ class ListWidget extends StatelessWidget {
                 height: 14,
               ),
               Text(
-                "No transactions yet!",
+                "Nothing found!",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: APIService.appPrimaryColor),
