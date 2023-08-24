@@ -13,6 +13,9 @@ class ConfirmationForm {
         return Container(
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 4),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/launcher/launcher.png'))),
             child: Column(
               children: [
                 Row(
