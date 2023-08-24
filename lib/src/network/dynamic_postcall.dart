@@ -24,7 +24,7 @@ class DynamicPostCall {
 
   static navigateToStatusRoute(PostDynamic postDynamic, {moduleItem}) {
     Future.delayed(const Duration(milliseconds: 500), () {
-      CommonUtils.getxPop(
+      CommonUtils.getxNavigate(
           widget: RequestStatusScreen(
         postDynamic: postDynamic,
         moduleItem: moduleItem,
