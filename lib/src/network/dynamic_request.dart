@@ -64,8 +64,7 @@ class DynamicFormRequest {
           message: actionControl?.merchantID);
     }
 
-    if (actionControl?.displayFormID == ControlFormat.LISTDATA.name ||
-        actionControl == null) {
+    if (actionControl?.displayFormID == ControlFormat.LISTDATA.name) {
       isList = true;
     }
 
