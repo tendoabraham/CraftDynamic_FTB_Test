@@ -124,7 +124,6 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                     ? null
                     : BorderSide(
                         color: Theme.of(context).primaryColor.withOpacity(.4)),
-                selectedColor: APIService.appSecondaryColor,
                 labelStyle: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: _value == index
