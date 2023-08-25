@@ -13,11 +13,13 @@ class ConfirmationForm {
         return Container(
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 4),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        Colors.grey.withOpacity(0.2), BlendMode.darken),
-                    image: const AssetImage('assets/launcher/launcher.png'))),
+              opacity: .1,
+              image: AssetImage(
+                'assets/launcher/launcher.png',
+              ),
+            )),
             child: Column(
               children: [
                 Row(
