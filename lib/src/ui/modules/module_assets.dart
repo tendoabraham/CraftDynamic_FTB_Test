@@ -43,7 +43,7 @@ class MenuItemTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         title,
-        overflow: TextOverflow.ellipsis,
+        overflow: TextOverflow.fade,
         textAlign: TextAlign.center,
         softWrap: true,
       );
