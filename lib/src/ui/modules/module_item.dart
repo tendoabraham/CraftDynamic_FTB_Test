@@ -65,7 +65,7 @@ class VerticalModule extends StatelessWidget {
               Radius.circular(menuBorder?.radius ?? 12),
             )),
         child: Padding(
-            padding: EdgeInsets.all(menuProperties?.padding ?? 8),
+            padding: EdgeInsets.all(menuProperties?.padding ?? 4),
             child: Center(
               child: Column(
                 mainAxisAlignment: getAlignment(),
@@ -73,7 +73,7 @@ class VerticalModule extends StatelessWidget {
                 children: [
                   MenuItemImage(
                     imageUrl: moduleItem.moduleUrl ?? "",
-                    iconSize: menuProperties?.iconSize ?? 54,
+                    iconSize: menuProperties?.iconSize ?? 44,
                   ),
                   SizedBox(
                     height: double.parse(menuProperties?.spaceBetween ?? "12"),
