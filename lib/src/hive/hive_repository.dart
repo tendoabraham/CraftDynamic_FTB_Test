@@ -71,7 +71,10 @@ class ModuleRepository {
   Future<List<ModuleItem>?> getTabModules() async {
     var box = await openBox();
     var modules = box.values
-        .where((item) => item.isMainMenu == true && item.isHidden == false)
+        .where((item) =>
+            item.isMainMenu == true &&
+            item.isHidden == false &&
+            item.parentModule == ModuleId.MAIN.name)
         .toList();
     modules
         .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
