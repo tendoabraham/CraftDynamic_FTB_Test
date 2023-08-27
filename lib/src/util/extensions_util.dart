@@ -45,6 +45,8 @@ extension APICall on APIService {
       String formID,
       String route,
       String? merchantID) async {
+    DynamicResponse dynamicResponse =
+        DynamicResponse(status: StatusCode.unknown.statusCode);
     var request = await dioRequestBodySetUp(formID.toUpperCase(), objectMap: {
       "MerchantID": merchantID ?? moduleItem.merchantID,
       "ModuleID": moduleItem.moduleId,
@@ -56,7 +58,11 @@ extension APICall on APIService {
     final url = await _sharedPref.getRoute(route.toLowerCase());
     var response = await performDioRequest(request, route: url);
     AppLogger.appLogI(tag: "dynamic dropdown", message: "data::$response");
-    return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
+    dynamicResponse = DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
+    if (dynamicResponse.status != StatusCode.success.statusCode) {
+      CommonUtils.showToast(dynamicResponse.message ?? "Unable to get data");
+    }
+    return dynamicResponse;
   }
 
   Future<DynamicResponse?> getDynamicLink(
