@@ -78,7 +78,10 @@ class ModuleRepository {
         .toList();
     modules
         .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
-    AppLogger.appLogD(tag: "tab modules count--->", message: modules.length);
+    modules.forEach((element) {
+      AppLogger.appLogD(
+          tag: "tab modules count--->", message: element.moduleName);
+    });
     return modules;
   }
 
