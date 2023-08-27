@@ -14,9 +14,7 @@ class ModuleRepository {
   insertModuleItems(List<ModuleItem> moduleItems) async {
     var box = await openBox();
     try {
-      for (var module in moduleItems) {
-        box.put(module.moduleId, module);
-      }
+      box.addAll(moduleItems);
     } catch (e) {
       AppLogger.appLogE(tag: "module insertion", message: e.toString());
     }
@@ -76,12 +74,10 @@ class ModuleRepository {
             item.isMainMenu == true &&
             item.isHidden == false)
         .toList();
+
     modules
         .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
-    modules.forEach((element) {
-      AppLogger.appLogD(
-          tag: "tab modules count--->", message: element.moduleName);
-    });
+
     return modules;
   }
 
