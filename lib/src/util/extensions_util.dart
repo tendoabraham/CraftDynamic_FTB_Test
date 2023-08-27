@@ -39,11 +39,18 @@ extension FormatPhone on String {
 }
 
 extension APICall on APIService {
-  Future<DynamicResponse?> getDynamicDropDownValues(String actionID,
-      ModuleItem moduleItem, String formID, String route) async {
+  Future<DynamicResponse?> getDynamicDropDownValues(
+      String actionID,
+      ModuleItem moduleItem,
+      String formID,
+      String route,
+      String? merchantID) async {
     var request = await dioRequestBodySetUp(formID.toUpperCase(), objectMap: {
-      "MerchantID": moduleItem.merchantID,
-      "DynamicForm": {"HEADER": actionID, "MerchantID": moduleItem.merchantID}
+      "MerchantID": merchantID ?? moduleItem.merchantID,
+      "DynamicForm": {
+        "HEADER": actionID,
+        "MerchantID": merchantID ?? moduleItem.merchantID
+      }
     });
     final url = await _sharedPref.getRoute(route.toLowerCase());
     var response = await performDioRequest(request, route: url);

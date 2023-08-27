@@ -282,14 +282,15 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         rowID: fields[21] as int?,
         verticalPadding: fields[22] as double?,
         formID: fields[23] as String?,
-        route: fields[24] as String?)
+        route: fields[24] as String?,
+        merchantID: fields[25] as String?)
       ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(25)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -339,7 +340,9 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(23)
       ..write(obj.formID)
       ..writeByte(24)
-      ..write(obj.route);
+      ..write(obj.route)
+      ..writeByte(25)
+      ..write(obj.merchantID);
   }
 
   @override

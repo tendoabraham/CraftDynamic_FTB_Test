@@ -201,6 +201,8 @@ class FormItem {
   String? formID;
   @HiveField(24)
   String? route;
+  @HiveField(25)
+  String? merchantID;
 
   FormItem(
       {required this.controlType,
@@ -226,7 +228,8 @@ class FormItem {
       this.rowID,
       this.verticalPadding,
       this.formID,
-      this.route});
+      this.route,
+      this.merchantID});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -252,7 +255,8 @@ class FormItem {
         rowID = json["RowID"],
         verticalPadding = json["VerticalPadding"],
         formID = json["FormID"],
-        route = json["ROUTE"];
+        route = json["ROUTE"],
+        merchantID = json["MerchantID"];
 }
 
 @HiveType(typeId: 3)

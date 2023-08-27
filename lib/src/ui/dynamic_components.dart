@@ -405,8 +405,9 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
 
   Future<DynamicResponse?> getDropDownData(
           String actionID, ModuleItem moduleItem,
-          {formID = "DBCALL", route = "other"}) async =>
-      _apiService.getDynamicDropDownValues(actionID, moduleItem, formID, route);
+          {formID = "DBCALL", route = "other", merchantID}) async =>
+      _apiService.getDynamicDropDownValues(
+          actionID, moduleItem, formID, route, merchantID);
 
   @override
   initState() {
@@ -423,7 +424,9 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
 
     return FutureBuilder<DynamicResponse?>(
         future: getDropDownData(formItem?.actionId ?? "", moduleItem!,
-            formID: formItem?.formID, route: formItem?.route),
+            formID: formItem?.formID,
+            route: formItem?.route,
+            merchantID: formItem?.merchantID),
         builder:
             (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
           Widget child = DropdownButtonFormField2(
