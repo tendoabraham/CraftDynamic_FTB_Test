@@ -445,41 +445,61 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
           );
           if (snapshot.hasData) {
             dropdownItems = snapshot.data?.dynamicList ?? [];
-            _currentValue = dropdownItems.first[formItem?.controlId] ??
-                formItem?.controlText;
-            var dropdownPicks = dropdownItems.asMap().entries.map((item) {
-              return DropdownMenuItem(
-                value: item.value[formItem?.controlId] ?? formItem?.controlText,
-                child: Text(
-                  item.value[formItem?.controlId] ?? formItem?.controlText,
-                  style: Theme.of(context).textTheme.labelSmall,
+            if (dropdownItems.isEmpty) {
+              child = DropdownButtonFormField2(
+                value: _currentValue,
+                decoration: InputDecoration(
+                    prefixIcon: ThreeLoadUtil(
+                  size: 24,
+                )),
+                hint: Text(
+                  formItem?.controlText ?? "",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
                 ),
+                isExpanded: true,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                items: const [],
               );
-            }).toList();
-            dropdownPicks.toSet().toList();
-            if (dropdownPicks.isNotEmpty) {
-              addInitialValueToLinkedField(context, dropdownItems.first);
+            } else {
+              _currentValue = dropdownItems.first[formItem?.controlId] ??
+                  formItem?.controlText;
+              var dropdownPicks = dropdownItems.asMap().entries.map((item) {
+                return DropdownMenuItem(
+                  value:
+                      item.value[formItem?.controlId] ?? formItem?.controlText,
+                  child: Text(
+                    item.value[formItem?.controlId] ?? formItem?.controlText,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                );
+              }).toList();
+              dropdownPicks.toSet().toList();
+              if (dropdownPicks.isNotEmpty) {
+                addInitialValueToLinkedField(context, dropdownItems.first);
+              }
+              child = DropdownButtonFormField(
+                value: _currentValue,
+                decoration: InputDecoration(labelText: formItem?.controlText),
+                isExpanded: true,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+                onChanged: (value) {
+                  Provider.of<PluginState>(context, listen: false)
+                      .addDynamicDropDownData({
+                    formItem?.rowID.toString() ?? "": getValueFromList(value)
+                  });
+                },
+                validator: (value) {
+                  Provider.of<PluginState>(context, listen: false)
+                      .addFormInput({
+                    "${formItem?.serviceParamId}":
+                        getValueFromList(value)[formItem?.controlId ?? ""]
+                  });
+                  return null;
+                },
+                items: dropdownPicks,
+              );
             }
-            child = DropdownButtonFormField(
-              value: _currentValue,
-              decoration: InputDecoration(labelText: formItem?.controlText),
-              isExpanded: true,
-              style: const TextStyle(fontWeight: FontWeight.normal),
-              onChanged: (value) {
-                Provider.of<PluginState>(context, listen: false)
-                    .addDynamicDropDownData({
-                  formItem?.rowID.toString() ?? "": getValueFromList(value)
-                });
-              },
-              validator: (value) {
-                Provider.of<PluginState>(context, listen: false).addFormInput({
-                  "${formItem?.serviceParamId}":
-                      getValueFromList(value)[formItem?.controlId ?? ""]
-                });
-                return null;
-              },
-              items: dropdownPicks,
-            );
           }
 
           return child;
