@@ -47,7 +47,7 @@ extension APICall on APIService {
       String? merchantID) async {
     var request = await dioRequestBodySetUp(formID.toUpperCase(), objectMap: {
       "MerchantID": merchantID ?? moduleItem.merchantID,
-      "DynamicForm": {
+      formID == ActionType.DBCALL.name ? "DynamicForm" : "PayBill": {
         "HEADER": actionID,
         "MerchantID": merchantID ?? moduleItem.merchantID
       }
