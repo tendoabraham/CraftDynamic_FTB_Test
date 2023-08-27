@@ -39,17 +39,14 @@ extension FormatPhone on String {
 }
 
 extension APICall on APIService {
-  Future<DynamicResponse?> getDynamicDropDownValues(
-      String actionID, ModuleItem moduleItem,
-      {isDBCall = true}) async {
-    var request =
-        await dioRequestBodySetUp(isDBCall ? "DBCALL" : "PAYBILL", objectMap: {
+  Future<DynamicResponse?> getDynamicDropDownValues(String actionID,
+      ModuleItem moduleItem, String formID, String route) async {
+    var request = await dioRequestBodySetUp(formID.toUpperCase(), objectMap: {
       "MerchantID": moduleItem.merchantID,
       "DynamicForm": {"HEADER": actionID, "MerchantID": moduleItem.merchantID}
     });
-    final route = await _sharedPref
-        .getRoute(isDBCall ? "other".toLowerCase() : "account".toLowerCase());
-    var response = await performDioRequest(request, route: route);
+    final url = await _sharedPref.getRoute(route.toLowerCase());
+    var response = await performDioRequest(request, route: url);
     AppLogger.appLogI(tag: "dynamic dropdown", message: "data::$response");
     return DynamicResponse.fromJson(jsonDecode(response ?? "{}"));
   }

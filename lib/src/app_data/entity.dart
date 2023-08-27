@@ -198,7 +198,9 @@ class FormItem {
   @HiveField(22)
   double? verticalPadding;
   @HiveField(23)
-  bool? isDBCall;
+  String? formID;
+  @HiveField(24)
+  String? route;
 
   FormItem(
       {required this.controlType,
@@ -223,7 +225,8 @@ class FormItem {
       this.isEnabled,
       this.rowID,
       this.verticalPadding,
-      this.isDBCall});
+      this.formID,
+      this.route});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -248,7 +251,8 @@ class FormItem {
         isEnabled = json["DisplayControl"],
         rowID = json["RowID"],
         verticalPadding = json["VerticalPadding"],
-        isDBCall = json["ISDBCALL"];
+        formID = json["FormID"],
+        route = json["ROUTE"];
 }
 
 @HiveType(typeId: 3)
