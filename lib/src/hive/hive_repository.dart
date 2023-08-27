@@ -72,9 +72,9 @@ class ModuleRepository {
     var box = await openBox();
     var modules = box.values
         .where((item) =>
+            item.parentModule == ModuleId.MAIN.name &&
             item.isMainMenu == true &&
-            item.isHidden == false &&
-            item.parentModule == ModuleId.MAIN.name)
+            item.isHidden == false)
         .toList();
     modules
         .sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
