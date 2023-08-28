@@ -142,7 +142,9 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                                 ),
                                 Center(
                                     child: Text(
-                                  message ?? "Please try again later!",
+                                  message ??
+                                      widget.postDynamic.notifyText ??
+                                      "Please try again later!",
                                   style: const TextStyle(
                                       fontSize: 14, height: 1.5),
                                   textAlign: TextAlign.center,
