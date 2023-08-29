@@ -107,7 +107,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
             supportedLocales: widget.localizationIsEnabled
                 ? context.supportedLocales
                 : [const Locale('en')],
-            locale: widget.localizationIsEnabled ? context.locale : null,
+            locale: widget.localizationIsEnabled ? context.deviceLocale : null,
             debugShowCheckedModeBanner: false,
             theme: widget.appTheme,
             home: Obx(() {
