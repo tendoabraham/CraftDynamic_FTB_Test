@@ -7,7 +7,8 @@ class AlertUtil {
       showTitleIcon = true,
       formFields,
       title,
-      confirmButtonText = "Ok"}) {
+      confirmButtonText = "Ok",
+      cancelButtonText = "cancel"}) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -94,7 +95,7 @@ class AlertUtil {
                                       Navigator.of(context).pop(false);
                                     },
                                     child: Text(
-                                      "Cancel",
+                                      cancelButtonText,
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: APIService.appSecondaryColor),
