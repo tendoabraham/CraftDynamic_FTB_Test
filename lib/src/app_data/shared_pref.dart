@@ -167,6 +167,19 @@ class CommonSharedPref {
     }
   }
 
+  setIsListeningToFocusState(bool state) async {
+    return await storage.write(
+        key: "applostfocusstate", value: state.toString());
+  }
+
+  getIsListeningToFocusState() async {
+    var state = await storage.read(key: "applostfocusstate") ?? "true";
+    if (state == "true") {
+      return true;
+    }
+    return false;
+  }
+
   setTempLanguage(String templanguage) async {
     return await storage.write(key: "templanguage", value: templanguage);
   }

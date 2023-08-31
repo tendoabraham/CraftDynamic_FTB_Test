@@ -462,8 +462,9 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                 items: const [],
               );
             } else {
-              _currentValue = dropdownItems.first[formItem?.controlId] ??
-                  formItem?.controlText;
+              _currentValue = formItem?.hasInitialValue ?? true
+                  ? dropdownItems.first[formItem?.controlId]
+                  : null;
               var dropdownPicks = dropdownItems.asMap().entries.map((item) {
                 return DropdownMenuItem(
                   value:
@@ -490,6 +491,10 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                   });
                 },
                 validator: (value) {
+                  if ((formItem?.isMandatory ?? false) &&
+                      value.toString().isEmpty) {
+                    return 'Input required*';
+                  }
                   Provider.of<PluginState>(context, listen: false)
                       .addFormInput({
                     "${formItem?.serviceParamId}":
@@ -574,8 +579,10 @@ class _DropDownState extends State<DropDown> {
               var data = snapshot.data ?? {};
               var dropdownItems = data;
               if (!isToAccountField(formItem?.controlId ?? "")) {
-                _currentValue = dropdownItems.isNotEmpty
-                    ? dropdownItems.entries.first.key
+                _currentValue = formItem?.hasInitialValue ?? true
+                    ? dropdownItems.isNotEmpty
+                        ? dropdownItems.entries.first.key
+                        : null
                     : null;
               }
 
@@ -602,8 +609,10 @@ class _DropDownState extends State<DropDown> {
                   dropdownPicks.remove(dropdowns);
                   if (_currentValue ==
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]) {
-                    _currentValue = dropdownPicks.isNotEmpty
-                        ? dropdownPicks[0].value
+                    _currentValue = formItem?.hasInitialValue ?? true
+                        ? dropdownPicks.isNotEmpty
+                            ? dropdownPicks[0].value
+                            : null
                         : null;
                   }
                 }
@@ -627,6 +636,10 @@ class _DropDownState extends State<DropDown> {
                           }
                       }),
                   validator: (value) {
+                    if ((formItem?.isMandatory ?? false) &&
+                        value.toString().isEmpty) {
+                      return 'Input required*';
+                    }
                     Provider.of<PluginState>(context, listen: false)
                         .addFormInput({"${formItem?.serviceParamId}": value});
                     return null;

@@ -203,6 +203,8 @@ class FormItem {
   String? route;
   @HiveField(25)
   String? merchantID;
+  @HiveField(26)
+  bool? hasInitialValue;
 
   FormItem(
       {required this.controlType,
@@ -229,7 +231,8 @@ class FormItem {
       this.verticalPadding,
       this.formID,
       this.route,
-      this.merchantID});
+      this.merchantID,
+      this.hasInitialValue = true});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -256,7 +259,8 @@ class FormItem {
         verticalPadding = json["VerticalPadding"],
         formID = json["FormID"],
         route = json["ROUTE"],
-        merchantID = json["MerchantID"];
+        merchantID = json["MerchantID"],
+        hasInitialValue = json["HasInitialValue"];
 }
 
 @HiveType(typeId: 3)

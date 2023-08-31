@@ -38,6 +38,7 @@ class AuthRepository {
     ActivationResponse activationResponse =
         await _services.login(CryptLib.encryptField(pin));
     if (activationResponse.status == StatusCode.success.statusCode) {
+      await _sharedPref.setIsListeningToFocusState(true);
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
       var newdataversion = activationResponse.staticDataVersion;
@@ -56,6 +57,7 @@ class AuthRepository {
         await _initRepository.getAppUIData(refreshData: refreshUIData);
       }
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
+      await _sharedPref.setIsListeningToFocusState(true);
       _moduleRepository.getModuleById(ModuleId.PIN.name).then((module) {
         CommonUtils.getxNavigate(
             widget: DynamicWidget(
@@ -64,6 +66,7 @@ class AuthRepository {
       });
     } else if (activationResponse.status ==
         StatusCode.setsecurityquestions.statusCode) {
+      await _sharedPref.setIsListeningToFocusState(true);
       _moduleRepository
           .getModuleById(ModuleId.SECRETQUESTIONS.name)
           .then((module) {

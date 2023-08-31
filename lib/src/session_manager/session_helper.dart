@@ -28,7 +28,7 @@ class SessionRepository {
       {required BuildContext context,
       required Widget inactivityTimeoutRoute,
       required Widget focusTimeoutRoute}) {
-    sessionConfig.stream.listen((SessionTimeoutState timeoutEvent) {
+    sessionConfig.stream.listen((SessionTimeoutState timeoutEvent) async {
       sessionStateStream.add(SessionState.stopListening);
 
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
@@ -43,16 +43,20 @@ class SessionRepository {
           AppLogger.appLogD(tag: "Session:error", message: e.toString());
         }
       } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        AppLogger.appLogD(tag: "Session", message: "App lost focus...");
-        try {
-          _sharedPref.setTokenIsRefreshed("false");
-          _sharedPref.getAppIsActivated().then((value) {
-            if (value == "true") {
-              CommonUtils.getXRouteAndPopAll(widget: focusTimeoutRoute);
-            }
-          });
-        } catch (e) {
-          AppLogger.appLogI(tag: "Session:error", message: e.toString());
+        var focusstate = await _sharedPref.getIsListeningToFocusState();
+        debugPrint("focus state --- $focusstate");
+        if (focusstate) {
+          AppLogger.appLogD(tag: "Session", message: "App lost focus...");
+          try {
+            _sharedPref.setTokenIsRefreshed("false");
+            _sharedPref.getAppIsActivated().then((value) {
+              if (value == "true") {
+                CommonUtils.getXRouteAndPopAll(widget: focusTimeoutRoute);
+              }
+            });
+          } catch (e) {
+            AppLogger.appLogI(tag: "Session:error", message: e.toString());
+          }
         }
       }
     });

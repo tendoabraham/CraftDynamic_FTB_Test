@@ -5,6 +5,7 @@ class BioMetricUtil {
 
   static Future<bool> biometricAuthenticate() async {
     await _sharedPref.getBio();
+    await _sharedPref.setIsListeningToFocusState(false);
     final LocalAuthentication auth = LocalAuthentication();
     try {
       final bool didAuthenticate = await auth.authenticate(
@@ -19,6 +20,8 @@ class BioMetricUtil {
         ],
         options: const AuthenticationOptions(biometricOnly: true),
       );
+      AppLogger.appLogD(
+          tag: "biometric authentication results", message: didAuthenticate);
       return didAuthenticate;
     } catch (e) {
       AppLogger.appLogE(tag: "BIOMETRIC ERROR", message: e.toString());
