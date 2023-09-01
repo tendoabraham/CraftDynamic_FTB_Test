@@ -18,7 +18,8 @@ class BioMetricUtil {
             cancelButton: 'No thanks',
           ),
         ],
-        options: const AuthenticationOptions(biometricOnly: true),
+        options:
+            const AuthenticationOptions(biometricOnly: true, stickyAuth: true),
       );
       AppLogger.appLogD(
           tag: "biometric authentication results", message: didAuthenticate);
