@@ -918,8 +918,12 @@ class _DynamicPhonePickerFormWidgetState
       inputDecoration: InputDecoration(labelText: formItem?.controlText),
       validator: (value) {
         var input = value?.replaceAll(" ", "");
+        var leadingDigits = formItem?.leadingDigits ?? [];
         if (input?.length != 9) {
           return "Invalid mobile";
+        } else if (leadingDigits.isNotEmpty &&
+            (!leadingDigits.contains(value?[0]))) {
+          return "Mobile must start with $leadingDigits";
         } else if (input == "") {
           return "Enter your mobile";
         } else {
@@ -928,8 +932,12 @@ class _DynamicPhonePickerFormWidgetState
                 inputNumber.phoneNumber?.replaceAll("+", "")
           });
         }
+
         return null;
       },
+      countries: (formItem?.countries?.isNotEmpty ?? false)
+          ? formItem?.countries
+          : null,
     );
   }
 }
