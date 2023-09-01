@@ -78,7 +78,15 @@ class VerticalModule extends StatelessWidget {
                   SizedBox(
                     height: double.parse(menuProperties?.spaceBetween ?? "12"),
                   ),
-                  Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
+                  Flexible(
+                      child: MenuItemTitle(
+                    title: moduleItem.moduleName,
+                    textSize: menuProperties?.textSize,
+                    fontWeight:
+                        menuProperties?.fontWeight?.toLowerCase() == "normal"
+                            ? FontWeight.normal
+                            : FontWeight.bold,
+                  ))
                 ],
               ),
             )));
@@ -136,7 +144,15 @@ class HorizontalModule extends StatelessWidget {
                   SizedBox(
                     width: double.parse(menuProperties?.spaceBetween ?? "12"),
                   ),
-                  Flexible(child: MenuItemTitle(title: moduleItem.moduleName))
+                  Flexible(
+                      child: MenuItemTitle(
+                    title: moduleItem.moduleName,
+                    textSize: menuProperties?.textSize,
+                    fontWeight:
+                        menuProperties?.fontWeight?.toLowerCase() == "normal"
+                            ? FontWeight.normal
+                            : FontWeight.bold,
+                  ))
                 ],
               ),
             )));

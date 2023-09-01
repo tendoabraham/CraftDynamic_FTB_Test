@@ -37,12 +37,18 @@ class MenuItemImage extends StatelessWidget {
 
 class MenuItemTitle extends StatelessWidget {
   final String title;
+  double? textSize;
+  FontWeight? fontWeight;
 
-  const MenuItemTitle({super.key, required this.title});
+  MenuItemTitle(
+      {super.key, required this.title, this.textSize, this.fontWeight});
 
   @override
   Widget build(BuildContext context) => Text(
         title,
+        style: TextStyle(
+            fontSize: textSize ?? 14,
+            fontWeight: fontWeight ?? FontWeight.normal),
         overflow: TextOverflow.fade,
         textAlign: TextAlign.center,
         softWrap: true,

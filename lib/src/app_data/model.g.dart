@@ -85,20 +85,21 @@ class MenuPropertiesAdapter extends TypeAdapter<MenuProperties> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MenuProperties(
-      iconSize: fields[0] as double?,
-      padding: fields[1] as double?,
-      elevation: fields[2] as double?,
-      backgroundColor: fields[3] as String?,
-      spaceBetween: fields[4] as String?,
-      alignment: fields[5] as String?,
-      axisDirection: fields[6] as String?,
-    );
+        iconSize: fields[0] as double?,
+        padding: fields[1] as double?,
+        elevation: fields[2] as double?,
+        backgroundColor: fields[3] as String?,
+        spaceBetween: fields[4] as String?,
+        alignment: fields[5] as String?,
+        axisDirection: fields[6] as String?,
+        textSize: fields[7] as double?,
+        fontWeight: fields[8] as String?);
   }
 
   @override
   void write(BinaryWriter writer, MenuProperties obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.iconSize)
       ..writeByte(1)
@@ -112,7 +113,11 @@ class MenuPropertiesAdapter extends TypeAdapter<MenuProperties> {
       ..writeByte(5)
       ..write(obj.alignment)
       ..writeByte(6)
-      ..write(obj.axisDirection);
+      ..write(obj.axisDirection)
+      ..writeByte(7)
+      ..write(obj.textSize)
+      ..writeByte(8)
+      ..write(obj.fontWeight);
   }
 
   @override

@@ -33,6 +33,10 @@ class MenuProperties {
   String? alignment;
   @HiveField(6)
   String? axisDirection;
+  @HiveField(7)
+  double? textSize;
+  @HiveField(8)
+  String? fontWeight;
 
   MenuProperties(
       {this.iconSize,
@@ -41,7 +45,9 @@ class MenuProperties {
       this.backgroundColor,
       this.spaceBetween,
       this.alignment,
-      this.axisDirection});
+      this.axisDirection,
+      this.textSize,
+      this.fontWeight});
 
   MenuProperties.fromJson(Map<String, dynamic> json)
       : iconSize = json["IconSize"],
@@ -50,7 +56,9 @@ class MenuProperties {
         backgroundColor = json["BackgroundColor"],
         spaceBetween = json["SpaceBetween"],
         alignment = json["Alignment"],
-        axisDirection = json["AxisDirection"];
+        axisDirection = json["AxisDirection"],
+        textSize = json["TextSize"],
+        fontWeight = json["FontWeight"];
 }
 
 @HiveType(typeId: 18)
@@ -107,24 +115,25 @@ class ModuleItem {
   @HiveField(16)
   BlockSpacing? blockSpacing;
 
-  ModuleItem(
-      {required this.parentModule,
-      required this.moduleUrl,
-      required this.moduleId,
-      required this.moduleName,
-      this.moduleCategory,
-      required this.merchantID,
-      this.isMainMenu,
-      this.isDisabled,
-      this.isHidden,
-      this.moduleUrl2,
-      this.displayOrder,
-      this.blockAspectRatio,
-      this.isDBCall,
-      this.header,
-      this.menuBorder,
-      this.menuProperties,
-      this.blockSpacing});
+  ModuleItem({
+    required this.parentModule,
+    required this.moduleUrl,
+    required this.moduleId,
+    required this.moduleName,
+    this.moduleCategory,
+    required this.merchantID,
+    this.isMainMenu,
+    this.isDisabled,
+    this.isHidden,
+    this.moduleUrl2,
+    this.displayOrder,
+    this.blockAspectRatio,
+    this.isDBCall,
+    this.header,
+    this.menuBorder,
+    this.menuProperties,
+    this.blockSpacing,
+  });
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
