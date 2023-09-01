@@ -247,7 +247,7 @@ class FormItem {
       this.formID,
       this.route,
       this.merchantID,
-      this.hasInitialValue = true,
+      this.hasInitialValue,
       this.countries,
       this.leadingDigits,
       this.maxLength});
@@ -279,8 +279,8 @@ class FormItem {
         route = json["ROUTE"],
         merchantID = json["MerchantID"],
         hasInitialValue = json["HasInitialValue"],
-        countries = json["Countries"],
-        leadingDigits = json["LeadingDigits"],
+        countries = json["Countries"] as List<String>?,
+        leadingDigits = json["LeadingDigits"] as List<String>?,
         maxLength = json["MaxLength"];
 }
 
