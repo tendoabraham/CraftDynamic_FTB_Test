@@ -284,14 +284,17 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         formID: fields[23] as String?,
         route: fields[24] as String?,
         merchantID: fields[25] as String?,
-        hasInitialValue: fields[26] as bool?)
+        hasInitialValue: fields[26] as bool?,
+        countries: fields[27] as List<String>?,
+        leadingDigits: fields[28] as List<String>?,
+        maxLength: fields[29] as int?)
       ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(30)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -345,7 +348,13 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(25)
       ..write(obj.merchantID)
       ..writeByte(26)
-      ..write(obj.hasInitialValue);
+      ..write(obj.hasInitialValue)
+      ..writeByte(27)
+      ..write(obj.countries)
+      ..writeByte(28)
+      ..write(obj.leadingDigits)
+      ..writeByte(29)
+      ..write(obj.maxLength);
   }
 
   @override

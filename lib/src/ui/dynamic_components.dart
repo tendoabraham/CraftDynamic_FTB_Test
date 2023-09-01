@@ -904,6 +904,7 @@ class _DynamicPhonePickerFormWidgetState
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
 
     return InternationalPhoneNumberInput(
+      maxLength: formItem?.maxLength ?? 11,
       onInputChanged: (PhoneNumber number) {
         inputNumber = number;
       },
