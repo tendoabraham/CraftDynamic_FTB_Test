@@ -279,8 +279,10 @@ class FormItem {
         route = json["ROUTE"],
         merchantID = json["MerchantID"],
         hasInitialValue = json["HasInitialValue"],
-        countries = json["Countries"]?.cast<String>().toList(),
-        leadingDigits = json["LeadingDigits"]?.cast<String>().toList(),
+        countries =
+            jsonDecode(json["Countries"] ?? "[]")?.cast<String>().toList(),
+        leadingDigits =
+            jsonDecode(json["LeadingDigits"] ?? "[]")?.cast<String>().toList(),
         maxLength = json["MaxLength"];
 }
 
