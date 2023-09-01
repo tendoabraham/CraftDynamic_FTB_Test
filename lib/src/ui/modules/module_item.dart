@@ -83,9 +83,9 @@ class VerticalModule extends StatelessWidget {
                     title: moduleItem.moduleName,
                     textSize: menuProperties?.textSize,
                     fontWeight:
-                        menuProperties?.fontWeight?.toLowerCase() == "normal"
-                            ? FontWeight.normal
-                            : FontWeight.bold,
+                        menuProperties?.fontWeight?.toLowerCase() == "bold"
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                   ))
                 ],
               ),
@@ -149,9 +149,9 @@ class HorizontalModule extends StatelessWidget {
                     title: moduleItem.moduleName,
                     textSize: menuProperties?.textSize,
                     fontWeight:
-                        menuProperties?.fontWeight?.toLowerCase() == "normal"
-                            ? FontWeight.normal
-                            : FontWeight.bold,
+                        menuProperties?.fontWeight?.toLowerCase() == "bold"
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                   ))
                 ],
               ),
