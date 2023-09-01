@@ -23,8 +23,15 @@ class BioMetricUtil {
       AppLogger.appLogD(
           tag: "biometric authentication results", message: didAuthenticate);
       return didAuthenticate;
-    } catch (e) {
+    } on PlatformException catch (e) {
       AppLogger.appLogE(tag: "BIOMETRIC ERROR", message: e.toString());
+
+      if (e.code == auth_error.notEnrolled) {
+        CommonUtils.showToast("Biometrics not supported by device");
+      } else if (e.code == auth_error.lockedOut ||
+          e.code == auth_error.permanentlyLockedOut) {
+        CommonUtils.showToast("Try fingerprint again after some time");
+      }
     }
     return false;
   }
