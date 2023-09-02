@@ -53,7 +53,7 @@ class AndroidTextFormField implements ITextFormField {
       keyboardType: properties.textInputType,
       obscureText: properties.isObscured,
       maxLength: properties.maxLength,
-      maxLines: properties.isObscured ? null : properties.maxLines,
+      maxLines: properties.isObscured ? properties.maxLines : null,
       decoration: properties.inputDecoration,
       style: properties.textStyle,
       validator: validator,
