@@ -292,14 +292,15 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         hasInitialValue: fields[26] as bool?,
         countries: fields[27] as List<String>?,
         leadingDigits: fields[28] as List<String>?,
-        maxLength: fields[29] as int?)
+        maxLength: fields[29] as int?,
+        maxLines: fields[30] as int?)
       ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(30)
+      ..writeByte(31)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -359,7 +360,9 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(28)
       ..write(obj.leadingDigits)
       ..writeByte(29)
-      ..write(obj.maxLength);
+      ..write(obj.maxLength)
+      ..writeByte(30)
+      ..write(obj.maxLines);
   }
 
   @override

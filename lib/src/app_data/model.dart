@@ -293,6 +293,8 @@ class TextFormFieldProperties {
   String initialValue;
   Function(String?)? onChange;
   TextStyle? textStyle;
+  int? maxLength;
+  int? maxLines;
 
   TextFormFieldProperties(
       {this.autofocus = false,
@@ -305,7 +307,9 @@ class TextFormFieldProperties {
       required this.textInputType,
       this.inputDecoration,
       this.boxDecoration,
-      this.textStyle});
+      this.textStyle,
+      this.maxLength,
+      this.maxLines});
 }
 
 class DynamicData {

@@ -182,6 +182,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           isObscured: isObscured ? state.obscureText : false,
           controller: controller,
           textInputType: inputType,
+          maxLength: formItem?.maxLength,
+          maxLines: formItem?.maxLines,
           inputDecoration: InputDecoration(
               // border: const OutlineInputBorder(),
               labelText: formItem?.controlText,

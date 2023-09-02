@@ -220,6 +220,8 @@ class FormItem {
   List<String>? leadingDigits;
   @HiveField(29)
   int? maxLength;
+  @HiveField(30)
+  int? maxLines;
 
   FormItem(
       {required this.controlType,
@@ -250,7 +252,8 @@ class FormItem {
       this.hasInitialValue,
       this.countries,
       this.leadingDigits,
-      this.maxLength});
+      this.maxLength,
+      this.maxLines});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -283,7 +286,8 @@ class FormItem {
             jsonDecode(json["Countries"] ?? "[]")?.cast<String>().toList(),
         leadingDigits =
             jsonDecode(json["LeadingDigits"] ?? "[]")?.cast<String>().toList(),
-        maxLength = json["MaxLength"];
+        maxLength = json["MaxLength"],
+        maxLines = json["MaxLines"];
 }
 
 @HiveType(typeId: 3)
