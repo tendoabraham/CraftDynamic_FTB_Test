@@ -47,13 +47,13 @@ class AndroidTextFormField implements ITextFormField {
   Widget getPlatformTextField(
       TextFormFieldProperties properties, String? Function(String?) validator) {
     return TextFormField(
-      maxLength: properties.maxLength,
-      maxLines: properties.maxLines,
       autofocus: properties.autofocus,
       enabled: properties.isEnabled,
       controller: properties.controller,
       keyboardType: properties.textInputType,
       obscureText: properties.isObscured,
+      maxLength: properties.maxLength,
+      maxLines: properties.isObscured ? null : properties.maxLines,
       decoration: properties.inputDecoration,
       style: properties.textStyle,
       validator: validator,
