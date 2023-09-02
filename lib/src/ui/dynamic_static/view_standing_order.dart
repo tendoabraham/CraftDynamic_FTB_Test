@@ -281,7 +281,7 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
       } else {
         AlertUtil.showAlertDialog(
           context,
-          value?.message ?? "Unable to delete standing Order",
+          value?.message ?? "Unable to hide standing Order",
         );
       }
     });
@@ -289,8 +289,8 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
 
   _confirmDeleteAction(BuildContext context, StandingOrder standingOrder) {
     return AlertUtil.showAlertDialog(context,
-        "Confirm deletion of Standing order for debit account ${standingOrder.debitAccount} with amount ${standingOrder.amount}",
-        isConfirm: true, title: "Confirm", confirmButtonText: "Delete");
+        "Confirm hide of Standing order for debit account ${standingOrder.debitAccount} with amount ${standingOrder.amount}",
+        isConfirm: true, title: "Confirm", confirmButtonText: "Hide");
   }
 }
 
