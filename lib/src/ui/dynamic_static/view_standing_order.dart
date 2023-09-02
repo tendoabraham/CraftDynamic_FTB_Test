@@ -247,7 +247,7 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
                                     width: 4,
                                   ),
                                   const Text(
-                                    "Delete",
+                                    "Hide",
                                     style: TextStyle(
                                         color: Colors.red, fontSize: 18),
                                   )
