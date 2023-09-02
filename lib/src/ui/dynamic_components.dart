@@ -494,8 +494,8 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                   });
                 },
                 validator: (value) {
-                  if ((formItem?.isMandatory ?? false) &&
-                      value.toString().isEmpty) {
+                  String? input = value.toString();
+                  if ((formItem?.isMandatory ?? false) && input == "null") {
                     return 'Input required*';
                   }
                   Provider.of<PluginState>(context, listen: false)
@@ -640,8 +640,8 @@ class _DropDownState extends State<DropDown> {
                           }
                       }),
                   validator: (value) {
-                    if ((formItem?.isMandatory ?? false) &&
-                        value.toString().isEmpty) {
+                    String? input = value.toString();
+                    if ((formItem?.isMandatory ?? false) && input == "null") {
                       return 'Input required*';
                     }
                     Provider.of<PluginState>(context, listen: false)
