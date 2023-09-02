@@ -478,7 +478,8 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                 );
               }).toList();
               dropdownPicks.toSet().toList();
-              if (dropdownPicks.isNotEmpty) {
+              if (dropdownPicks.isNotEmpty &&
+                  (formItem?.hasInitialValue ?? true)) {
                 addInitialValueToLinkedField(context, dropdownItems.first);
               }
               child = DropdownButtonFormField(
@@ -599,7 +600,8 @@ class _DropDownState extends State<DropDown> {
                   );
                 }).toList();
                 dropdownPicks.toSet().toList();
-                if (dropdownPicks.isNotEmpty) {
+                if (dropdownPicks.isNotEmpty &&
+                    (formItem?.hasInitialValue ?? true)) {
                   addInitialValueToLinkedField(
                       context, _currentValue ?? "", dropdownItems);
                 }
