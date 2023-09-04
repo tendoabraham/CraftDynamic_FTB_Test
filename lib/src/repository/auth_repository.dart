@@ -87,9 +87,16 @@ class AuthRepository {
       encryptedPin: CryptLib.encryptField(pin),
     );
     if (activationResponse.status == StatusCode.success.statusCode) {
-      if (await _sharedPref.getExternalBankIDType()) {
+      bool isUsingExternalBankID = useExternalBankID.value;
+
+      AppLogger.appLogD(
+          tag: "AUTH REPO",
+          message: "use external bank id $isUsingExternalBankID");
+      if (isUsingExternalBankID) {
         var bankID = activationResponse.message;
         if (bankID != null && bankID.isNotEmpty) {
+          AppLogger.appLogD(
+              tag: "AUTH REPO", message: "setting new bank id as $bankID");
           await _sharedPref.setBankID(bankID);
         }
       }

@@ -210,3 +210,5 @@ RxList<Map<String, dynamic>> currentLinkedValue = <Map<String, dynamic>>[].obs;
 var isDeletingStandingOrder = false.obs;
 
 var isGettingToken = false.obs;
+
+var useExternalBankID = false.obs;

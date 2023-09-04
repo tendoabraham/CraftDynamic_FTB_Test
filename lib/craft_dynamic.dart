@@ -12,6 +12,7 @@ import 'package:craft_dynamic/src/ui/platform_components/platform_button.dart';
 import 'package:craft_dynamic/src/util/config_util.dart';
 import 'package:craft_dynamic/src/util/location_util.dart';
 import 'package:craft_dynamic/src/util/permissions_util.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart' hide Key;

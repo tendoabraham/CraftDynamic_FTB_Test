@@ -44,7 +44,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     await HiveUtil.initializeHive();
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
-    _sharedPref.setIsExternalBankIDType(widget.useExternalBankID);
+    useExternalBankID.value = widget.useExternalBankID;
 
     await getAppLaunchCount();
     if (!kIsWeb) {
