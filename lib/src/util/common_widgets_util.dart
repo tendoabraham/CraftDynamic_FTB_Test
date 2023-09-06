@@ -34,6 +34,38 @@ class LoadUtil extends StatelessWidget {
       );
 }
 
+class CircularLoadUtil extends StatelessWidget {
+  List<Color> colors;
+
+  CircularLoadUtil({super.key, this.colors = const []});
+
+  @override
+  Widget build(BuildContext context) => SpinKitCircle(
+        size: 54,
+        itemBuilder: (BuildContext context, int index) {
+          Color? isEvenColor, isOddColor;
+          bool useCustomColor = false;
+          if (colors.length >= 2) {
+            isEvenColor = colors[0];
+            isOddColor = colors[1];
+            useCustomColor = true;
+          }
+
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              color: index.isEven
+                  ? useCustomColor
+                      ? isEvenColor
+                      : APIService.appSecondaryColor
+                  : useCustomColor
+                      ? isOddColor
+                      : APIService.appPrimaryColor,
+            ),
+          );
+        },
+      );
+}
+
 class ThreeLoadUtil extends StatelessWidget {
   List<Color> colors;
   double? size;

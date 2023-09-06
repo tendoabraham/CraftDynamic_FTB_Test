@@ -200,6 +200,15 @@ class CommonSharedPref {
     return false;
   }
 
+  addFirebaseToken(String? token) async {
+    await storage.write(key: "firebasetoken", value: token);
+  }
+
+  Future<String?> getFirebaseToken() async {
+    var firebaseToken = await storage.read(key: "firebasetoken");
+    return firebaseToken;
+  }
+
   clearPrefs() async {
     await storage.deleteAll();
   }

@@ -1,4 +1,4 @@
-import 'package:permission_handler/permission_handler.dart';
+part of craft_dynamic;
 
 class PermissionUtil {
   static checkRequiredPermissions() async {

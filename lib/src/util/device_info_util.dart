@@ -5,13 +5,6 @@ class DeviceInfo {
     if (kIsWeb) {
       return "123";
     }
-
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidDeviceInfo = await deviceInfoPlugin.androidInfo;
-      var data = androidDeviceInfo.data;
-      debugPrint("data---->${androidDeviceInfo.id}");
-    }
     return await UniqueIdentifier.serial;
   }
 

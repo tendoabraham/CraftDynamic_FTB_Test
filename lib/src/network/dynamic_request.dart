@@ -79,7 +79,11 @@ class DynamicFormRequest {
     }
 
     if (actionControl != null) {
-      actionType = ActionType.values.byName(actionControl.actionType);
+      try {
+        actionType = ActionType.values.byName(actionControl.actionType);
+      } catch (e) {
+        AppLogger.appLogD(tag: "GET ACTION TYPE ERROR", message: e);
+      }
     }
 
     if (actionType == ActionType.VALIDATE) {
