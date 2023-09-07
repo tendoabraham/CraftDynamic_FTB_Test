@@ -34,7 +34,7 @@ class SessionRepository {
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
         AppLogger.appLogD(tag: "Session", message: "App inactivity...");
         try {
-          _sharedPref.getAppIsActivated().then((value) {
+          _sharedPref.getAppActivationStatus().then((value) {
             if (value == "true") {
               CommonUtils.getXRouteAndPopAll(widget: inactivityTimeoutRoute);
             }
@@ -49,7 +49,7 @@ class SessionRepository {
           AppLogger.appLogD(tag: "Session", message: "App lost focus...");
           try {
             _sharedPref.setTokenIsRefreshed("false");
-            _sharedPref.getAppIsActivated().then((value) {
+            _sharedPref.getAppActivationStatus().then((value) {
               if (value == "true") {
                 CommonUtils.getXRouteAndPopAll(widget: focusTimeoutRoute);
               }
