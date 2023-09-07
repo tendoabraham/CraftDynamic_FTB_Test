@@ -94,6 +94,9 @@ class DynamicPostCall {
               break;
             }
           } else if (postDynamic.tappedButton || postDynamic.isList) {
+            AppLogger.appLogD(
+                tag: "DYNAMIC POSTCALL",
+                message: "now opening a list page--->");
             CommonUtils.navigateToRoute(
                 context: postDynamic.context,
                 widget: ListDataScreen(
