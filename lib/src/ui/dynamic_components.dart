@@ -1305,8 +1305,7 @@ class _TextLinkState extends State<TextLink> {
             (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
           Widget child = TextButton(
               onPressed: () {
-                CommonUtils.openUrl(
-                    Uri.parse("https:${formItem?.controlValue}"));
+                CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
               },
               child: Text(formItem?.controlText ?? "Link"));
           if (snapshot.hasData) {
@@ -1315,7 +1314,7 @@ class _TextLinkState extends State<TextLink> {
                 child: TextButton(
                     onPressed: () {
                       CommonUtils.openUrl(
-                          Uri.parse("https:${snapshot.data?.otherText}"));
+                          Uri.parse(snapshot.data?.otherText ?? ""));
                     },
                     child: Text(formItem?.controlText ?? "Link")));
           }
