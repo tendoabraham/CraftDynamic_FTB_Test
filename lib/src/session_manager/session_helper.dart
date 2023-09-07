@@ -35,7 +35,7 @@ class SessionRepository {
         AppLogger.appLogD(tag: "Session", message: "App inactivity...");
         try {
           _sharedPref.getAppActivationStatus().then((value) {
-            if (value == "true") {
+            if (value) {
               CommonUtils.getXRouteAndPopAll(widget: inactivityTimeoutRoute);
             }
           });
