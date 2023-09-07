@@ -262,7 +262,7 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
       StandingOrder standingOrder, ModuleItem moduleItem, context) async {
     DynamicInput.formInputValues.clear();
     DynamicInput.formInputValues
-        .addAll({"INFOFIELD3": standingOrder.standingOrderID});
+        .addAll({"INFOFIELD1": standingOrder.standingOrderID});
     DynamicInput.formInputValues
         .addAll({RequestParam.MerchantID.name: moduleItem.merchantID});
     DynamicInput.formInputValues
