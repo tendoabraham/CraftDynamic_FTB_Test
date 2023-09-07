@@ -4,7 +4,7 @@ abstract class IDropDownAdapter {
   factory IDropDownAdapter(FormItem formItem, ModuleItem moduleItem) {
     switch (EnumFormatter.getControlFormat(formItem.controlFormat!)) {
       case ControlFormat.SELECTBANKACCOUNT:
-        return _BankAccountDropDown(dataSourceID: formItem.dataSourceId);
+        return _BankAccountDropDown(formItem: formItem);
 
       case ControlFormat.SELECTBENEFICIARY:
         return _BeneficiaryDropDown(merchantID: moduleItem.merchantID);
@@ -31,9 +31,9 @@ class _UserCodeDropDown implements IDropDownAdapter {
 }
 
 class _BankAccountDropDown implements IDropDownAdapter {
-  _BankAccountDropDown({this.dataSourceID});
+  _BankAccountDropDown({required this.formItem});
 
-  String? dataSourceID;
+  final FormItem formItem;
   final _bankAccountRepository = BankAccountRepository();
 
   @override
@@ -42,8 +42,11 @@ class _BankAccountDropDown implements IDropDownAdapter {
     return bankAccounts?.fold<Map<String, dynamic>>(
         {},
         (acc, curr) => acc
-          ..[curr.bankAccountId] =
-              curr.aliasName.isEmpty ? curr.bankAccountId : curr.aliasName);
+          ..[curr.bankAccountId] = curr.aliasName.isEmpty
+              ? curr.bankAccountId
+              : formItem.controlId == ControlID.CLEARBANKACCOUNTID.name
+                  ? curr.bankAccountId
+                  : curr.aliasName);
   }
 }
 

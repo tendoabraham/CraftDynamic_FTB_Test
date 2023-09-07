@@ -65,6 +65,7 @@ enum ControlID {
   TOACCOUNTID,
   FROMACCOUNTID,
   SELECTTYPE,
+  CLEARBANKACCOUNTID
 }
 
 enum ActionType {
