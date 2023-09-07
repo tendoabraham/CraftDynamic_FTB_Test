@@ -50,7 +50,7 @@ class SessionRepository {
           try {
             _sharedPref.setTokenIsRefreshed("false");
             _sharedPref.getAppActivationStatus().then((value) {
-              if (value == "true") {
+              if (value) {
                 CommonUtils.getXRouteAndPopAll(widget: focusTimeoutRoute);
               }
             });
