@@ -115,7 +115,7 @@ class DynamicPostCall {
                 moduleItem: module,
               ));
             } catch (e) {
-              debugPrint("Unable to route---------->$e");
+              AppLogger.appLogD(tag: "Unable to route---------->", message: e);
             }
           });
         }

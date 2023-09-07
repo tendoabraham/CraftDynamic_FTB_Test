@@ -5,6 +5,9 @@ class ProfileRepository {
   final _sharedPref = CommonSharedPref();
   final _services = APIService();
 
+  Future<bool> checkAppActivationStatus() =>
+      _sharedPref.getAppActivationStatus();
+
   Future<List<BankAccount>> getUserBankAccounts() async =>
       await _bankRepository.getAllBankAccounts() ?? [];
 

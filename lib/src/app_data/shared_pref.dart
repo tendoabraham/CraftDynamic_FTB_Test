@@ -46,8 +46,12 @@ class CommonSharedPref {
     }
   }
 
-  getAppIsActivated() async {
-    return await storage.read(key: "appactivated");
+  Future<bool> getAppActivationStatus() async {
+    var isActivated = await storage.read(key: "appactivated");
+    if (isActivated == "true") {
+      return true;
+    }
+    return false;
   }
 
   getAppIdleTimeout() async {
