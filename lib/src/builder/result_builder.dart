@@ -82,6 +82,7 @@ class PostDynamicDBCall implements IPostDynamicCheck {
       ..listType = listType
       ..isList = dynamicResponse.dynamicList?.isNotEmpty ?? false
       ..controlID = controlID
+      ..receiptDetails = dynamicResponse.receiptDetails
       ..tappedButton = tappedButton;
     return builder;
   }
