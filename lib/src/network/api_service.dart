@@ -329,6 +329,7 @@ class APIService {
 
     // requestObj["AppNotificationID"] = Constants.appNotificationID;
     requestObj["MobileNumber"] = await _sharedPref.getCustomerMobile();
+    requestObj["AppNotificationID"] = await _sharedPref.getFirebaseToken();
     requestObj["Login"] = {"LoginType": "PIN"};
     requestObj["EncryptedFields"] = {"PIN": "$encryptedPin"};
 
