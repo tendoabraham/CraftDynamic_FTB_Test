@@ -187,6 +187,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         break;
       case StatusCode.setsecurityquestions:
         break;
+      case StatusCode.logout:
+        break;
     }
     return "packages/craft_dynamic/assets/lottie/information.json";
   }
@@ -196,7 +198,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                 widget.moduleItem?.moduleId == ModuleId.PIN.name ||
             widget.moduleItem?.moduleId == ModuleId.LANGUAGEPREFERENCE.name ||
             widget.postDynamic.status == StatusCode.changeBankType.statusCode ||
-            widget.moduleItem?.moduleId == ModuleId.FORGOTPIN.name
+            widget.moduleItem?.moduleId == ModuleId.FORGOTPIN.name ||
+            widget.postDynamic.status == StatusCode.logout.statusCode
         ? logout()
         : closePage();
   }

@@ -450,12 +450,8 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
             if (dropdownItems.isEmpty) {
               child = DropdownButtonFormField2(
                 value: _currentValue,
-                decoration: InputDecoration(
-                    prefixIcon: ThreeLoadUtil(
-                  size: 24,
-                )),
                 hint: Text(
-                  formItem?.controlText ?? "",
+                  snapshot.data?.message ?? formItem?.controlText ?? "",
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 ),

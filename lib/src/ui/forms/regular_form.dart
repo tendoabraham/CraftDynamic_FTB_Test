@@ -28,6 +28,7 @@ class RegularFormWidget extends StatefulWidget {
 
 class _RegularFormWidgetState extends State<RegularFormWidget> {
   final _formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
   List<FormItem> formItems = [];
   FormItem? recentList;
 
@@ -75,33 +76,36 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
             ),
             body: SizedBox(
                 height: double.infinity,
-                child: SingleChildScrollView(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Form(
-                        key: _formKey,
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(
-                                left: 18, right: 18, top: 8),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: formItems.length,
-                            itemBuilder: (context, index) {
-                              return BaseFormComponent(
-                                  formItem: formItems[index],
-                                  moduleItem: widget.moduleItem,
-                                  formItems: formItems,
-                                  formKey: _formKey,
-                                  child: IFormWidget(formItems[index],
-                                          jsonText: widget.jsonDisplay,
-                                          formFields: widget.formFields)
-                                      .render());
-                            }))
-                  ],
-                )))));
+                child: Scrollbar(
+                    thickness: 6,
+                    controller: _scrollController,
+                    child: SingleChildScrollView(
+                        child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Form(
+                            key: _formKey,
+                            child: ListView.builder(
+                                padding: const EdgeInsets.only(
+                                    left: 18, right: 18, top: 8),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: formItems.length,
+                                itemBuilder: (context, index) {
+                                  return BaseFormComponent(
+                                      formItem: formItems[index],
+                                      moduleItem: widget.moduleItem,
+                                      formItems: formItems,
+                                      formKey: _formKey,
+                                      child: IFormWidget(formItems[index],
+                                              jsonText: widget.jsonDisplay,
+                                              formFields: widget.formFields)
+                                          .render());
+                                }))
+                      ],
+                    ))))));
   }
 }

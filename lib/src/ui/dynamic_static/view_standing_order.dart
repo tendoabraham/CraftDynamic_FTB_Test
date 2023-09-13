@@ -276,7 +276,7 @@ class _StandingOrderItemState extends State<StandingOrderItem> {
         .then((value) {
       isDeletingStandingOrder.value = false;
       if (value?.status == StatusCode.success.statusCode) {
-        CommonUtils.showToast("Standing order deleted successfully");
+        CommonUtils.showToast("Standing order hidden successfully");
         widget.refreshParent();
       } else {
         AlertUtil.showAlertDialog(

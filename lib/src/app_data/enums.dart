@@ -28,7 +28,7 @@ enum ViewType {
   HORIZONTALTEXT,
   DYNAMICDROPDOWN,
   CAROUSELVIEW,
-  TEXTLINK
+  TEXTLINK,
 }
 
 enum ControlFormat {
@@ -46,7 +46,8 @@ enum ControlFormat {
   OPENFORM,
   NEXT,
   TEXT,
-  RADIOGROUPS
+  RADIOGROUPS,
+  SHOWDIALOG
 }
 
 enum DynamicDataType { Modules, ActionControls, FormControls }
@@ -170,6 +171,7 @@ enum StatusCode {
   changePin("101"),
   deviceMismatch("102"),
   setsecurityquestions("106"),
+  logout("111"),
   unknown("XXXX");
 
   const StatusCode(this.statusCode);

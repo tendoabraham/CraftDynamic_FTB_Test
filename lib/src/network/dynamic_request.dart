@@ -92,8 +92,27 @@ class DynamicFormRequest {
       setDeleteForm(context, true);
     }
 
+    if (formItem?.controlFormat == ControlFormat.SHOWDIALOG.name) {
+      var form = await _formsRepository
+          .getFormsByModuleId(actionControl?.confirmationModuleID ?? "");
+      var title = form?.first.controlValue ?? "";
+      var result = await AlertUtil.showAlertDialog(
+          context, form?.first.controlText ?? "",
+          isInfoAlert: true,
+          isConfirm: true,
+          title: title.isNotEmpty ? title : "Confirm",
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Proceed");
+      if (!result) {
+        Provider.of<PluginState>(context, listen: false).setRequestState(false);
+        return dynamicResponse;
+      }
+    }
+
     confirmationModuleID = actionControl?.confirmationModuleID;
-    if (confirmationModuleID != null && confirmationModuleID != "") {
+    if (confirmationModuleID != null &&
+        confirmationModuleID != "" &&
+        formItem?.controlFormat != ControlFormat.SHOWDIALOG.name) {
       List<FormItem> form = await _formsRepository
               .getFormsByModuleId(confirmationModuleID ?? "") ??
           [];
