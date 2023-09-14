@@ -88,7 +88,6 @@ class AuthRepository {
     );
     if (activationResponse.status == StatusCode.success.statusCode) {
       bool isUsingExternalBankID = useExternalBankID.value;
-      _sharedPref.addCustomerMobile(mobileNumber);
 
       AppLogger.appLogD(
           tag: "AUTH REPO",
@@ -103,6 +102,8 @@ class AuthRepository {
       }
     } else if (activationResponse.status ==
         StatusCode.setsecurityquestions.statusCode) {
+      _sharedPref.addCustomerMobile(mobileNumber);
+
       _moduleRepository
           .getModuleById(ModuleId.SECRETQUESTIONS.name)
           .then((module) {
