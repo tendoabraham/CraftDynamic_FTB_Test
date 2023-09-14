@@ -88,6 +88,7 @@ class AuthRepository {
     );
     if (activationResponse.status == StatusCode.success.statusCode) {
       bool isUsingExternalBankID = useExternalBankID.value;
+      _sharedPref.addCustomerMobile(mobileNumber);
 
       AppLogger.appLogD(
           tag: "AUTH REPO",

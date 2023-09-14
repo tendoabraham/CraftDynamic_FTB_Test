@@ -81,6 +81,10 @@ class CommonSharedPref {
   getUserAccountInfo(UserAccountData key) async =>
       await storage.read(key: key.name);
 
+  addCustomerMobile(String customermobile) async {
+    return await storage.write(key: "customerMobile", value: customermobile);
+  }
+
   getCustomerMobile() async {
     return await storage.read(key: "customerMobile");
   }

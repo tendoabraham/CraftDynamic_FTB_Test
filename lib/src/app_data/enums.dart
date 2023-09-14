@@ -47,7 +47,8 @@ enum ControlFormat {
   NEXT,
   TEXT,
   RADIOGROUPS,
-  SHOWDIALOG
+  SHOWDIALOG,
+  OWNNUMBER
 }
 
 enum DynamicDataType { Modules, ActionControls, FormControls }

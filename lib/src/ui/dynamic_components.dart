@@ -248,6 +248,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 }
 
 class HiddenWidget implements IFormWidget {
+  final _sharedPref = CommonSharedPref();
   List<dynamic>? formFields;
   FormItem? formItem;
 
@@ -257,25 +258,37 @@ class HiddenWidget implements IFormWidget {
   Widget render() {
     return Builder(builder: (context) {
       String controlValue = "";
-
-      if (formFields != null) {
-        formFields?.forEach((formField) {
-          if (formField[FormFieldProp.ControlID.name] == formItem?.controlId) {
-            controlValue = formField[FormFieldProp.ControlValue.name];
-            if (controlValue.isNotEmpty) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Provider.of<PluginState>(context, listen: false).addFormInput(
-                    {"${formItem?.serviceParamId}": controlValue});
-              });
+      if (formItem?.controlFormat == ControlFormat.OWNNUMBER.name) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _sharedPref.getCustomerMobile().then((value) {
+            if (value != null && value.toString().isNotEmpty) {
+              Provider.of<PluginState>(context, listen: false)
+                  .addFormInput({"${formItem?.serviceParamId}": value});
             }
-          }
+          });
         });
       } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Provider.of<PluginState>(context, listen: false)
-              .addFormInput({formItem?.serviceParamId: formItem?.controlValue});
-        });
+        if (formFields != null) {
+          formFields?.forEach((formField) {
+            if (formField[FormFieldProp.ControlID.name] ==
+                formItem?.controlId) {
+              controlValue = formField[FormFieldProp.ControlValue.name];
+              if (controlValue.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Provider.of<PluginState>(context, listen: false).addFormInput(
+                      {"${formItem?.serviceParamId}": controlValue});
+                });
+              }
+            }
+          });
+        } else {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Provider.of<PluginState>(context, listen: false).addFormInput(
+                {formItem?.serviceParamId: formItem?.controlValue});
+          });
+        }
       }
+
       return const Visibility(
         visible: false,
         child: SizedBox(),
