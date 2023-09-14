@@ -9,6 +9,13 @@ class OTPForm {
 
     Get.bottomSheet(
         Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              opacity: .1,
+              image: AssetImage(
+                'assets/launcher/launcher.png',
+              ),
+            )),
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 4),
             child: Column(children: [
