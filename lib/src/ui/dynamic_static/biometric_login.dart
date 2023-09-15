@@ -188,6 +188,9 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   isBiometricEnabled.value = !isBiometricEnabled.value;
                   Navigator.pop(context);
                   _pinController.clear();
+                  CommonUtils.showToast(isBiometricEnabled.value
+                      ? "Biometrics login enabled successfully"
+                      : "Biometrics login disabled successfully");
                 } else {
                   CommonUtils.showToast(value.message);
                 }
