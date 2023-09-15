@@ -26,7 +26,8 @@ class AuthRepository {
         var message =
             "Login with fingerprint/face unlock not enabled, please login and enable it in \"Biometrics Login\" menu";
         if (context != null) {
-          AlertUtil.showAlertDialog(context, message);
+          AlertUtil.showAlertDialog(context, message,
+              isInfoAlert: true, title: "Info");
         } else {
           CommonUtils.showToast(message);
         }
