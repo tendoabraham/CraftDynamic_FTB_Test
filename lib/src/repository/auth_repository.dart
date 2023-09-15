@@ -7,7 +7,7 @@ class AuthRepository {
   final _services = APIService();
 
   Future<bool> biometricLogin(TextEditingController pinController,
-      {isButtonAction = false}) async {
+      {isButtonAction = false, context}) async {
     String bioEnabled = await _sharedPref.getBio();
     if (bioEnabled == "true") {
       if (await BioMetricUtil.biometricAuthenticate()) {
@@ -23,7 +23,13 @@ class AuthRepository {
       }
     } else {
       if (isButtonAction) {
-        CommonUtils.showToast("Biometrics not enabled");
+        var message =
+            "Login with fingerprint/face unlock not enabled, please login and enable it in \"Biometrics Login\" menu";
+        if (context != null) {
+          AlertUtil.showAlertDialog(context, message);
+        } else {
+          CommonUtils.showToast(message);
+        }
       }
     }
     return false;
