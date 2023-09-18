@@ -222,6 +222,8 @@ class FormItem {
   int? maxLength;
   @HiveField(30)
   int? maxLines;
+  @HiveField(31)
+  bool? isTransactional;
 
   FormItem(
       {required this.controlType,
@@ -253,7 +255,8 @@ class FormItem {
       this.countries,
       this.leadingDigits,
       this.maxLength,
-      this.maxLines});
+      this.maxLines,
+      this.isTransactional});
 
   FormItem.fromJson(Map<String, dynamic> json)
       : controlType = json['ControlType'],
@@ -287,7 +290,8 @@ class FormItem {
         leadingDigits =
             jsonDecode(json["LeadingDigits"] ?? "[]")?.cast<String>().toList(),
         maxLength = json["MaxLength"],
-        maxLines = json["MaxLines"];
+        maxLines = json["MaxLines"],
+        isTransactional = json["ISTRANSACTIONAL"];
 }
 
 @HiveType(typeId: 3)
@@ -487,14 +491,17 @@ class BankAccount {
   bool groupAccount;
   @HiveField(6)
   bool defaultAccount;
+  @HiveField(7)
+  bool? isTransactional;
 
   BankAccount(
       {required this.bankAccountId,
+      required this.groupAccount,
+      required this.defaultAccount,
       this.aliasName = "",
       this.currencyID = "",
       this.accountType = "",
-      required this.groupAccount,
-      required this.defaultAccount});
+      this.isTransactional});
 
   BankAccount.fromJson(Map<String, dynamic> json)
       : bankAccountId = json["BankAccountID"],
@@ -502,7 +509,8 @@ class BankAccount {
         currencyID = json["CurrencyID"],
         accountType = json["AccountType"],
         groupAccount = json["GroupAccount"],
-        defaultAccount = json["DefaultAccount"];
+        defaultAccount = json["DefaultAccount"],
+        isTransactional = json["ISTRANSACTIONAL"];
 }
 
 @HiveType(typeId: 11)

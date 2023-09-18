@@ -293,14 +293,15 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
         countries: fields[27] as List<String>?,
         leadingDigits: fields[28] as List<String>?,
         maxLength: fields[29] as int?,
-        maxLines: fields[30] as int?)
+        maxLines: fields[30] as int?,
+        isTransactional: fields[31] as bool?)
       ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, FormItem obj) {
     writer
-      ..writeByte(31)
+      ..writeByte(32)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -362,7 +363,9 @@ class FormItemAdapter extends TypeAdapter<FormItem> {
       ..writeByte(29)
       ..write(obj.maxLength)
       ..writeByte(30)
-      ..write(obj.maxLines);
+      ..write(obj.maxLines)
+      ..writeByte(31)
+      ..write(obj.isTransactional);
   }
 
   @override
@@ -715,13 +718,14 @@ class BankAccountAdapter extends TypeAdapter<BankAccount> {
       accountType: fields[4] as String,
       groupAccount: fields[5] as bool,
       defaultAccount: fields[6] as bool,
+      isTransactional: fields[7] as bool,
     )..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, BankAccount obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -735,7 +739,9 @@ class BankAccountAdapter extends TypeAdapter<BankAccount> {
       ..writeByte(5)
       ..write(obj.groupAccount)
       ..writeByte(6)
-      ..write(obj.defaultAccount);
+      ..write(obj.defaultAccount)
+      ..writeByte(7)
+      ..write(obj.isTransactional);
   }
 
   @override
