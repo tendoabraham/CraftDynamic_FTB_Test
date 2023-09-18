@@ -718,7 +718,7 @@ class BankAccountAdapter extends TypeAdapter<BankAccount> {
       accountType: fields[4] as String,
       groupAccount: fields[5] as bool,
       defaultAccount: fields[6] as bool,
-      isTransactional: fields[7] as bool,
+      isTransactional: fields[7] as bool?,
     )..no = fields[0] as int?;
   }
 
