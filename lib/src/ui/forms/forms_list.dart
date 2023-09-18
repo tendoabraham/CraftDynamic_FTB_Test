@@ -39,6 +39,7 @@ class FormsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Provider.of<PluginState>(context, listen: false).deleteFormInput) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        currentDynamicRequest.value = {};
         Provider.of<PluginState>(context, listen: false).clearDynamicInput();
         Provider.of<PluginState>(context, listen: false)
             .screenDropDowns

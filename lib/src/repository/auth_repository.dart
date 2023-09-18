@@ -44,7 +44,8 @@ class AuthRepository {
 
     ActivationResponse activationResponse =
         await _services.login(CryptLib.encryptField(pin));
-    if (activationResponse.status == StatusCode.success.statusCode) {
+    if (activationResponse.status == StatusCode.success.statusCode ||
+        activationResponse.status == StatusCode.otp.statusCode) {
       await _sharedPref.setIsListeningToFocusState(true);
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;

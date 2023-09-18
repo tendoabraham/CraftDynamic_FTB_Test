@@ -212,3 +212,5 @@ var isDeletingStandingOrder = false.obs;
 var isGettingToken = false.obs;
 
 var useExternalBankID = false.obs;
+
+var currentDynamicRequest = {}.obs;

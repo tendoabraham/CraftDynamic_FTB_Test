@@ -307,9 +307,10 @@ class APIService {
     DynamicResponse? dynamicResponse;
     final route = await _sharedPref
         .getRoute(webHeader?.toLowerCase() ?? "other".toLowerCase());
-    var res = await performDioRequest(
-        await dioRequestBodySetUp(formID, objectMap: requestObj),
-        route: route);
+    var request = await dioRequestBodySetUp(formID, objectMap: requestObj);
+    currentDynamicRequest.value = jsonDecode(request);
+
+    var res = await performDioRequest(request, route: route);
 
     try {
       decrypted = jsonDecode(res ?? "{}") ?? "{}";
