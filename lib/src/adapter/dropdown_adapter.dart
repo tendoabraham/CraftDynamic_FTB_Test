@@ -39,6 +39,13 @@ class _BankAccountDropDown implements IDropDownAdapter {
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
     var bankAccounts = await _bankAccountRepository.getAllBankAccounts();
+    var accountType = formItem.actionId ?? "";
+
+    if (accountType.isNotEmpty) {
+      bankAccounts
+          ?.removeWhere((account) => account.accountType != accountType);
+    }
+
     return bankAccounts?.fold<Map<String, dynamic>>(
         {},
         (acc, curr) => acc
