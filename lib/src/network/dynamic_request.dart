@@ -16,8 +16,7 @@ class DynamicFormRequest {
   final _services = APIService();
   final _sharedPref = CommonSharedPref();
   String? confirmationModuleID;
-  DynamicResponse? dynamicResponse =
-      DynamicResponse(status: StatusCode.unknown.statusCode);
+  PreCallData? preCallData;
 
   Future<DynamicResponse?> dynamicRequest(
     ModuleItem? moduleItem, {
@@ -29,6 +28,10 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
+    AppLogger.appLogD(
+        tag: "DYNAMIC REQUEST", message: "Starting a dynamic request...");
+    DynamicResponse? dynamicResponse =
+        DynamicResponse(status: StatusCode.unknown.statusCode);
     try {
       formvalues.addAll(dataObj);
       encryptedvalues.addAll(encryptedField);
@@ -131,6 +134,7 @@ class DynamicFormRequest {
         } catch (e) {
           AppLogger.appLogE(tag: "error", message: e.toString());
         }
+
         return dynamicResponse;
       }
     }
@@ -150,24 +154,29 @@ class DynamicFormRequest {
         webHeader: actionControl?.webHeader,
         formID: actionType.name);
 
-    if (dynamicResponse?.status == StatusCode.unknown.name) {
+    preCallData = PreCallData(
+        formID: actionType.name,
+        webheader: actionControl?.webHeader,
+        requestObject: requestObj);
+
+    if (dynamicResponse.status == StatusCode.unknown.name) {
       Provider.of<PluginState>(context, listen: false).setRequestState(false);
     }
 
     var dynamicData = DynamicData(
         actionType: actionType,
-        dynamicResponse:
-            dynamicResponse ?? DynamicResponse(status: StatusCode.unknown.name),
+        dynamicResponse: dynamicResponse,
         moduleItem: moduleItem,
         controlID: formItem?.controlId ?? "",
         isList: isList,
         listType: listType,
-        tappedButton: tappedButton);
+        tappedButton: tappedButton,
+        preCallData: preCallData);
 
-    dynamicResponse?.dynamicData = dynamicData;
+    dynamicResponse.dynamicData = dynamicData;
 
     if (moduleItem?.moduleId == StatusCode.unknown.name &&
-        dynamicResponse?.status == StatusCode.success.statusCode) {
+        dynamicResponse.status == StatusCode.success.statusCode) {
       _sharedPref.setBio(false);
     }
 

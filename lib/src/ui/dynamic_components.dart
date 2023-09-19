@@ -386,6 +386,9 @@ class _DynamicButtonState extends State<DynamicButton> {
                 tappedButton: true)
             .then((value) {
           if (value?.status != StatusCode.unknown.statusCode) {
+            AppLogger.appLogD(
+                tag: "DYNAMIC BUTTON POST CALL",
+                message: "Current status is --->${value?.message}");
             DynamicPostCall.processDynamicResponse(
                 value!.dynamicData!, context, formItem!.controlId!,
                 moduleItem: moduleItem);
@@ -624,7 +627,7 @@ class _DropDownState extends State<DropDown> {
                       state.currentSelections?[ControlID.BANKACCOUNTID.name]) {
                     _currentValue = formItem?.hasInitialValue ?? true
                         ? dropdownPicks.isNotEmpty
-                            ? dropdownPicks[0].value
+                            ? "${dropdownPicks[0].value}"
                             : null
                         : null;
                   }

@@ -312,22 +312,33 @@ class TextFormFieldProperties {
       this.maxLines});
 }
 
+class PreCallData {
+  String? formID;
+  String? webheader;
+  Map<String, dynamic>? requestObject;
+
+  PreCallData({this.formID, this.webheader, this.requestObject});
+}
+
 class DynamicData {
+  String? controlID;
+  bool? isList, tappedButton;
+  ListType? listType;
   ActionType actionType;
   DynamicResponse dynamicResponse;
   ModuleItem? moduleItem;
-  String? controlID;
-  ListType? listType;
-  bool? isList, tappedButton;
+  PreCallData? preCallData;
 
-  DynamicData(
-      {required this.actionType,
-      required this.dynamicResponse,
-      this.moduleItem,
-      this.controlID,
-      this.isList,
-      this.listType,
-      this.tappedButton});
+  DynamicData({
+    this.controlID,
+    this.tappedButton,
+    this.isList,
+    this.listType,
+    required this.actionType,
+    required this.dynamicResponse,
+    this.moduleItem,
+    this.preCallData,
+  });
 }
 
 class MenuScreenProperties {

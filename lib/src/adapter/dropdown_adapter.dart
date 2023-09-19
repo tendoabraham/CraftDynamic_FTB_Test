@@ -54,10 +54,10 @@ class _BankAccountDropDown implements IDropDownAdapter {
         {},
         (acc, curr) => acc
           ..[curr.bankAccountId] = curr.aliasName.isEmpty
-              ? curr.bankAccountId
+              ? "${curr.bankAccountId} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}"
               : formItem.controlId == ControlID.CLEARBANKACCOUNTID.name
-                  ? curr.bankAccountId
-                  : curr.aliasName);
+                  ? "${curr.bankAccountId} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}"
+                  : "${curr.aliasName} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}");
   }
 }
 

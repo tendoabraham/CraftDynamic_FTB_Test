@@ -2,6 +2,7 @@ part of craft_dynamic;
 
 final _userAccountRepository = UserAccountRepository();
 final _initRepository = InitRepository();
+final _profileRepository = ProfileRepository();
 
 class AuthRepository {
   final _services = APIService();
@@ -51,6 +52,7 @@ class AuthRepository {
       String? currentLanguageIDSetting = activationResponse.languageID;
       var newdataversion = activationResponse.staticDataVersion;
       // await _sharedPref.addStaticDataVersion(newdataversion ?? 0);
+      await _profileRepository.getAllAccountBalancesAndSaveInAppState();
 
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&

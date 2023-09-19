@@ -214,3 +214,7 @@ var isGettingToken = false.obs;
 var useExternalBankID = false.obs;
 
 var currentDynamicRequest = {}.obs;
+
+var showAccountBalanceInDropdowns = true.obs;
+
+var accountsAndBalances = {}.obs;

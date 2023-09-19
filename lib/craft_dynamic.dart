@@ -4,6 +4,7 @@ library craft_dynamic;
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
 import 'dart:collection';

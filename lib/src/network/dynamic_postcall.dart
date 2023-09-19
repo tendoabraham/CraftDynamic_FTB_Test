@@ -11,8 +11,10 @@ import 'package:provider/provider.dart';
 
 class DynamicPostCall {
   static final _moduleRepo = ModuleRepository();
+  static final _profileRepo = ProfileRepository();
 
   static showReceipt({required context, required postDynamic, moduleName}) {
+    _profileRepo.getAllAccountBalancesAndSaveInAppState();
     Future.delayed(const Duration(milliseconds: 500), () {
       CommonUtils.getxNavigate(
           widget: TransactionReceipt(
@@ -32,13 +34,11 @@ class DynamicPostCall {
     });
   }
 
-  static showOTPForm(
-      PostDynamic postDynamic, ModuleItem moduleItem, context) async {
-    final formsRepository = FormsRepository();
-    List<FormItem> formItems =
-        await formsRepository.getFormsByModuleId(postDynamic.formID ?? "") ??
-            [];
-    OTPForm.showModalBottomDialog(context, formItems, moduleItem, []);
+  static showOTPForm(PostDynamic postDynamic, ModuleItem moduleItem, context,
+      PreCallData? preCallData) async {
+    AppLogger.appLogD(tag: "OTP DIALOG", message: "Opening otp dialog....");
+    var result =
+        await OTPForm.confirmOTPTransaction(context, moduleItem, preCallData);
   }
 
   static processDynamicResponse(
@@ -145,7 +145,8 @@ class DynamicPostCall {
         break;
       case otp:
         {
-          showOTPForm(postDynamic, moduleItem, context);
+          showOTPForm(
+              postDynamic, moduleItem, context, dynamicData?.preCallData);
         }
         break;
       case changeLanguage:

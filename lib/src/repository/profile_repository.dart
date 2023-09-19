@@ -24,6 +24,24 @@ class ProfileRepository {
         "Not available";
   }
 
+  getAllAccountBalancesAndSaveInAppState() async {
+    if (showAccountBalanceInDropdowns.value) {
+      var accounts = await _bankRepository.getAllBankAccounts() ?? [];
+      for (var account in accounts) {
+        var accountBalance = await checkAccountBalance(account.bankAccountId);
+        if (accountBalance != null &&
+            accountBalance.status == StatusCode.success.statusCode) {
+          accountsAndBalances.addAll(
+              {account.bankAccountId: getActualBalanceText(accountBalance)});
+        }
+      }
+      return;
+    } else {
+      accountsAndBalances.clear();
+      return;
+    }
+  }
+
   Future<DynamicResponse?> checkMiniStatement(String bankAccountID,
       {merchantID = "MINISTATEMENT"}) {
     return _services.checkMiniStatement(

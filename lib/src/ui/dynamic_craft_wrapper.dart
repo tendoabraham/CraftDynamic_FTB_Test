@@ -9,6 +9,7 @@ class DynamicCraftWrapper extends StatefulWidget {
   List<LocalizationsDelegate>? localizationDelegates;
   bool localizationIsEnabled;
   bool useExternalBankID;
+  bool showAccountBalanceInDropdowns;
 
   DynamicCraftWrapper(
       {super.key,
@@ -19,7 +20,8 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTheme,
       this.localizationDelegates,
       this.useExternalBankID = false,
-      this.localizationIsEnabled = false});
+      this.localizationIsEnabled = false,
+      this.showAccountBalanceInDropdowns = true});
 
   @override
   State<DynamicCraftWrapper> createState() => _DynamicCraftWrapperState();
@@ -30,6 +32,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _initRepository = InitRepository();
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
+  final _profileRepository = ProfileRepository();
 
   var _appTimeout = 100000;
 
@@ -45,6 +48,10 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
     useExternalBankID.value = widget.useExternalBankID;
+
+    if (!widget.showAccountBalanceInDropdowns) {
+      showAccountBalanceInDropdowns.value = false;
+    }
 
     await getAppLaunchCount();
     if (!kIsWeb) {
@@ -69,6 +76,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   getAppData() async {
     await _initRepository.getAppToken();
     await _initRepository.getAppUIData();
+    await _profileRepository.getAllAccountBalancesAndSaveInAppState();
     showLoadingScreen.value = false;
     var timeout = await _sharedPref.getAppIdleTimeout();
     setState(() {
