@@ -25,6 +25,7 @@ class ProfileRepository {
   }
 
   getAllAccountBalancesAndSaveInAppState() async {
+    accountsAndBalances.clear();
     if (showAccountBalanceInDropdowns.value) {
       var accounts = await _bankRepository.getAllBankAccounts() ?? [];
       for (var account in accounts) {
