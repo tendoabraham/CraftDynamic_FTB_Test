@@ -136,10 +136,14 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                               ));
                                         }),
                                     const SizedBox(
-                                      height: 44,
+                                      height: 12,
                                     ),
-                                    Container(
-                                        child: Row(
+                                    Text(
+                                        "Thank you for using ${APIService.appLabel}"),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -184,7 +188,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                       TextStyle(fontSize: 12))
                                             ])),
                                       ],
-                                    )),
+                                    ),
                                     const SizedBox(
                                       height: 24,
                                     ),
