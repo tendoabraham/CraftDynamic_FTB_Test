@@ -139,7 +139,12 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                       height: 12,
                                     ),
                                     Text(
-                                        "Thank you for using ${APIService.appLabel}"),
+                                      "Thank you for using ${APIService.appLabel}",
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      textAlign: TextAlign.center,
+                                    ),
                                     const SizedBox(
                                       height: 30,
                                     ),
