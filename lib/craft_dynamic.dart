@@ -4,7 +4,6 @@ library craft_dynamic;
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
 import 'dart:collection';
@@ -12,6 +11,7 @@ import 'package:craft_dynamic/src/builder/request_builder.dart';
 import 'package:craft_dynamic/src/ui/platform_components/platform_button.dart';
 import 'package:craft_dynamic/src/util/config_util.dart';
 import 'package:craft_dynamic/src/util/location_util.dart';
+import 'package:craft_dynamic/src/util/string_util.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart' hide Key;

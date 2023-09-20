@@ -49,15 +49,17 @@ class _BankAccountDropDown implements IDropDownAdapter {
         bankAccounts?.removeWhere((account) => account.isTransactional == true);
       }
     }
-
-    return bankAccounts?.fold<Map<String, dynamic>>(
-        {},
-        (acc, curr) => acc
-          ..[curr.bankAccountId] = curr.aliasName.isEmpty
-              ? "${curr.bankAccountId} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}"
-              : formItem.controlId == ControlID.CLEARBANKACCOUNTID.name
-                  ? "${curr.bankAccountId} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}"
-                  : "${curr.aliasName} ${accountsAndBalances.isNotEmpty ? "(${accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable"})" : ""}");
+    return bankAccounts?.fold<Map<String, dynamic>>({}, (acc, curr) {
+      String balance = accountsAndBalances.isNotEmpty
+          ? "(${StringUtil.formatNumberWithThousandsSeparator(accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable")})"
+          : "";
+      return acc
+        ..[curr.bankAccountId] = curr.aliasName.isEmpty
+            ? "${curr.bankAccountId} $balance"
+            : formItem.controlId == ControlID.CLEARBANKACCOUNTID.name
+                ? "${curr.bankAccountId} $balance"
+                : "${curr.aliasName} $balance";
+    });
   }
 }
 
