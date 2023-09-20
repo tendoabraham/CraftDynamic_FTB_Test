@@ -21,7 +21,7 @@ class DynamicCraftWrapper extends StatefulWidget {
       this.localizationDelegates,
       this.useExternalBankID = false,
       this.localizationIsEnabled = false,
-      this.showAccountBalanceInDropdowns = true});
+      this.showAccountBalanceInDropdowns = false});
 
   @override
   State<DynamicCraftWrapper> createState() => _DynamicCraftWrapperState();
