@@ -82,8 +82,9 @@ class ListWidget extends StatelessWidget {
                                                                 FontWeight.bold,
                                                             color: WidgetUtil
                                                                 .getTextColor(
-                                                                    value,
-                                                                    key)),
+                                                                    value
+                                                                        .toString(),
+                                                                    key.toString())),
                                                         textAlign:
                                                             TextAlign.right,
                                                       ))
