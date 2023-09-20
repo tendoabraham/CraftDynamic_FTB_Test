@@ -76,7 +76,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   getAppData() async {
     await _initRepository.getAppToken();
     await _initRepository.getAppUIData();
-    await _profileRepository.getAllAccountBalancesAndSaveInAppState();
     showLoadingScreen.value = false;
     var timeout = await _sharedPref.getAppIdleTimeout();
     setState(() {
