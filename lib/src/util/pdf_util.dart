@@ -26,7 +26,7 @@ class PDFUtil {
         font: PdfStandardFont(PdfFontFamily.timesRoman, 28,
             style: PdfFontStyle.bold),
         brush: PdfSolidBrush(PdfColor(255, 255, 255)),
-        text: ' ${APIService.appLabel} Mobile Banking',
+        text: ' ${APIService.appLabel}',
         fields: <PdfAutomaticField>[]);
 
     compositefields.draw(header.graphics,
