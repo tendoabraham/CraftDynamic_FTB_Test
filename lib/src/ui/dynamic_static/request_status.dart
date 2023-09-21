@@ -56,7 +56,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
   }
 
   _checkAddBenefiary() async {
-    if (widget.moduleItem?.moduleId == ModuleId.ADDBENEFICIARY.name) {
+    var beneficiaries = widget.postDynamic.beneficiaries ?? [];
+    if (beneficiaries.isNotEmpty) {
       var beneficiaries = widget.postDynamic.beneficiaries;
       if (beneficiaries != null && beneficiaries.isNotEmpty) {
         LocalDataUtil.refreshBeneficiaries(beneficiaries);

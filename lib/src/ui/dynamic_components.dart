@@ -376,7 +376,7 @@ class _DynamicButtonState extends State<DynamicButton> {
       } else {
         Provider.of<PluginState>(context, listen: false).setRequestState(true);
         _dynamicRequest
-            .dynamicRequest(moduleItem!,
+            .dynamicRequest(moduleItem,
                 formItem: formItem,
                 dataObj: Provider.of<PluginState>(context, listen: false)
                     .formInputValues,

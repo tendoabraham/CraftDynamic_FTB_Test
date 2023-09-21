@@ -40,15 +40,14 @@ class _BankAccountDropDown implements IDropDownAdapter {
   Future<Map<String, dynamic>?>? getDropDownItems() async {
     var bankAccounts = await _bankAccountRepository.getAllBankAccounts();
     bool? isTransactional = formItem.isTransactional;
+    AppLogger.appLogD(
+        tag: "Is transactional ${formItem.controlText}",
+        message: isTransactional);
 
-    if (isTransactional != null) {
-      if (isTransactional) {
-        bankAccounts
-            ?.removeWhere((account) => account.isTransactional == false);
-      } else {
-        bankAccounts?.removeWhere((account) => account.isTransactional == true);
-      }
+    if (isTransactional != null && isTransactional) {
+      bankAccounts?.removeWhere((account) => account.isTransactional == false);
     }
+
     return bankAccounts?.fold<Map<String, dynamic>>({}, (acc, curr) {
       String balance = accountsAndBalances.isNotEmpty
           ? "(${StringUtil.formatNumberWithThousandsSeparator(accountsAndBalances[curr.bankAccountId] ?? "Balance unavailable")})"

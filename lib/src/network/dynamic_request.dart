@@ -18,16 +18,16 @@ class DynamicFormRequest {
   String? confirmationModuleID;
   PreCallData? preCallData;
 
-  Future<DynamicResponse?> dynamicRequest(
-    ModuleItem? moduleItem, {
-    FormItem? formItem,
-    dataObj,
-    encryptedField,
-    isList = false,
-    context,
-    listType = ListType.TransactionList,
-    tappedButton = false,
-  }) async {
+  Future<DynamicResponse?> dynamicRequest(ModuleItem? moduleItem,
+      {FormItem? formItem,
+      dataObj,
+      encryptedField,
+      isList = false,
+      context,
+      listType = ListType.TransactionList,
+      tappedButton = false,
+      ActionType action = ActionType.DBCALL,
+      url}) async {
     AppLogger.appLogD(
         tag: "DYNAMIC REQUEST", message: "Starting a dynamic request...");
     DynamicResponse? dynamicResponse =
@@ -49,7 +49,7 @@ class DynamicFormRequest {
       return dynamicResponse;
     }
 
-    ActionType actionType = ActionType.DBCALL;
+    ActionType actionType = action;
     if (listType == ListType.ViewOrderList ||
         listType == ListType.BeneficiaryList) {
       requestObj["EncryptedFields"] = {};
@@ -149,14 +149,16 @@ class DynamicFormRequest {
         encryptedFields:
             encryptedvalues); // Get a request map from this interface
 
+    lastWebHeaderUsed.value = actionControl?.webHeader ?? "other";
+
     dynamicResponse = await _services.dynamicRequest(
         requestObj: requestObj,
-        webHeader: actionControl?.webHeader,
+        webHeader: url ?? actionControl?.webHeader,
         formID: actionType.name);
 
     preCallData = PreCallData(
         formID: actionType.name,
-        webheader: actionControl?.webHeader,
+        webheader: url ?? actionControl?.webHeader,
         requestObject: requestObj);
 
     if (dynamicResponse.status == StatusCode.unknown.name) {

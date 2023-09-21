@@ -34,16 +34,16 @@ class DynamicPostCall {
     });
   }
 
-  static showOTPForm(PostDynamic postDynamic, ModuleItem moduleItem, context,
-      PreCallData? preCallData) async {
+  static showOTPForm(PostDynamic postDynamic, ModuleItem moduleItem,
+      FormItem? formItem, context, PreCallData? preCallData) async {
     AppLogger.appLogD(tag: "OTP DIALOG", message: "Opening otp dialog....");
-    var result =
-        await OTPForm.confirmOTPTransaction(context, moduleItem, preCallData);
+    var result = await OTPForm.confirmOTPTransaction(
+        context, moduleItem, formItem, preCallData);
   }
 
   static processDynamicResponse(
       DynamicData? dynamicData, BuildContext context, String? controlID,
-      {moduleItem}) {
+      {moduleItem, formItem}) {
     try {
       Provider.of<PluginState>(context, listen: false)
           .setScanValidationLoading(false);
@@ -118,7 +118,7 @@ class DynamicPostCall {
                 moduleItem: module,
               ));
             } catch (e) {
-              AppLogger.appLogD(tag: "Unable to route---------->", message: e);
+              AppLogger.appLogD(tag: "Unable to route...", message: e);
             }
           });
         }
@@ -126,7 +126,7 @@ class DynamicPostCall {
       case failure:
         {
           AlertUtil.showAlertDialog(
-              context, postDynamic.message ?? "Unable to complete your request",
+              context, postDynamic.message ?? "Please Try Again Later!",
               title: "Error");
         }
         break;
@@ -145,8 +145,8 @@ class DynamicPostCall {
         break;
       case otp:
         {
-          showOTPForm(
-              postDynamic, moduleItem, context, dynamicData?.preCallData);
+          showOTPForm(postDynamic, moduleItem, formItem, context,
+              dynamicData?.preCallData);
         }
         break;
       case changeLanguage:

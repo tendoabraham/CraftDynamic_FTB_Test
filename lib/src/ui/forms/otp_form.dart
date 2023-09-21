@@ -1,18 +1,21 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
+import 'package:craft_dynamic/src/network/dynamic_request.dart';
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:vibration/vibration.dart';
 
 class OTPForm {
-  static confirmOTPTransaction(
-      context, ModuleItem moduleItem, PreCallData? preCallData) {
+  static confirmOTPTransaction(context, ModuleItem moduleItem,
+      FormItem? formItem, PreCallData? preCallData) {
     return showModalBottomSheet<void>(
       showDragHandle: true,
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) => ModalBottomSheet(
         moduleItem: moduleItem,
+        formItem: formItem,
         preCallData: preCallData,
       ),
     );
@@ -20,9 +23,11 @@ class OTPForm {
 }
 
 class ModalBottomSheet extends StatefulWidget {
-  ModalBottomSheet({super.key, required this.moduleItem, this.preCallData});
+  ModalBottomSheet(
+      {super.key, required this.moduleItem, this.formItem, this.preCallData});
 
   final ModuleItem moduleItem;
+  FormItem? formItem;
   PreCallData? preCallData;
 
   @override
@@ -31,13 +36,14 @@ class ModalBottomSheet extends StatefulWidget {
 
 class _ModalBottomSheetState extends State<ModalBottomSheet> {
   static final formKey = GlobalKey<FormState>();
-  static final _services = APIService();
+  static final _dynamicRequest = DynamicFormRequest();
   static final otpController = TextEditingController();
   static bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    isLoading = false;
     otpController.clear();
   }
 
@@ -128,24 +134,26 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
             var obj = preCallData.requestObject;
             obj?["EncryptedFields"]
                 .addAll({"TrxOTP": CryptLib.encryptField(otpController.text)});
-            _services
-                .dynamicRequest(
-                    formID: preCallData.formID,
-                    requestObj: obj,
-                    webHeader: preCallData.webheader)
+            await _dynamicRequest
+                .dynamicRequest(widget.moduleItem,
+                    formItem: widget.formItem,
+                    dataObj: obj?["PayBill"],
+                    encryptedField: obj?["EncryptedFields"],
+                    context: context,
+                    tappedButton: true,
+                    action: ActionType.PAYBILL,
+                    url: lastWebHeaderUsed.value)
                 .then((value) {
-              setState(() {
-                otpController.clear();
-                isLoading = false;
-              });
-              if (value.status == StatusCode.otp.statusCode) {
-                CommonUtils.showToast("Verification failed!");
-                return;
-              } else {
-                DynamicPostCall.processDynamicResponse(
-                    value.dynamicData, context, null,
-                    moduleItem: moduleItem);
+              DynamicPostCall.processDynamicResponse(
+                  value?.dynamicData, context, widget.formItem?.controlId,
+                  moduleItem: widget.moduleItem);
+              if (value?.status != StatusCode.failure.statusCode) {
+                Navigator.of(context).pop();
               }
+            });
+            setState(() {
+              otpController.clear();
+              isLoading = false;
             });
           }
         } else {

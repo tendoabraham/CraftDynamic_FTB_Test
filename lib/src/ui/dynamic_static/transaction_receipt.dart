@@ -201,8 +201,18 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                         width: 150,
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
+                                              int? noOfTimesToPop =
+                                                  postDynamic.backstack;
+                                              if (noOfTimesToPop != null) {
+                                                for (int i = 0;
+                                                    i <= noOfTimesToPop;
+                                                    i++) {
+                                                  Navigator.of(context).pop();
+                                                }
+                                              } else {
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                              }
                                             },
                                             child: const Text("Done"))),
                                     const SizedBox(

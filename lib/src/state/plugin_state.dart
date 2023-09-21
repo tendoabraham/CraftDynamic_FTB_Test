@@ -213,7 +213,7 @@ var isGettingToken = false.obs;
 
 var useExternalBankID = false.obs;
 
-var currentDynamicRequest = {}.obs;
+var lastWebHeaderUsed = "other".obs;
 
 var showAccountBalanceInDropdowns = true.obs;
 

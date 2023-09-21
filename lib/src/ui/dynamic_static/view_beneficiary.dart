@@ -77,7 +77,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                         child: Row(
                                           children: [
                                             const Text(
-                                              "Alias",
+                                              "Alias name",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -96,7 +96,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                         child: Row(
                                           children: [
                                             const Text(
-                                              "Id",
+                                              "Account ID",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),

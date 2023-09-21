@@ -308,7 +308,6 @@ class APIService {
     final route = await _sharedPref
         .getRoute(webHeader?.toLowerCase() ?? "other".toLowerCase());
     var request = await dioRequestBodySetUp(formID, objectMap: requestObj);
-    currentDynamicRequest.value = jsonDecode(request);
 
     var res = await performDioRequest(request, route: route);
 
@@ -318,6 +317,7 @@ class APIService {
       dynamicResponse = DynamicResponse.fromJson(decrypted);
     } catch (e) {
       AppLogger.appLogE(tag: "DECODE:ERROR", message: e.toString());
+      return DynamicResponse(status: "XXXX");
     }
     return dynamicResponse ?? DynamicResponse(status: "XXXX");
   }

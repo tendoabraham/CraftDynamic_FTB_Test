@@ -132,7 +132,9 @@ class PostDynamicPayBill implements IPostDynamicCheck {
       ..list = dynamicResponse.dynamicList
       ..formFields = dynamicResponse.formFields
       ..notifyText = dynamicResponse.notifyText
+      ..beneficiaries = dynamicResponse.beneficiaries
       ..nextFormSequence = dynamicResponse.nextFormSequence
+      ..backstack = dynamicResponse.backstack
       ..receiptDetails = dynamicResponse.receiptDetails
       ..isList = dynamicResponse.dynamicList?.isNotEmpty ?? false
       ..listType = listType;

@@ -47,7 +47,7 @@ class DynamicResponse {
   String status = "";
   DynamicData? dynamicData;
   String? message, formID, notifyText, languageID, otherText;
-  int? nextFormSequence;
+  int? nextFormSequence, backstack;
   List<dynamic>? dynamicList,
       notifications,
       resultsData,
@@ -67,6 +67,7 @@ class DynamicResponse {
       this.formID,
       this.display,
       this.nextFormSequence,
+      this.backstack,
       this.dynamicList,
       this.notifications,
       this.resultsData,
@@ -85,6 +86,7 @@ class DynamicResponse {
     formID = json['FormID'];
     display = json["Display"];
     nextFormSequence = json["NextFormSequence"];
+    backstack = json["BackStack"];
     if (json["Notifications"] != null) {
       notifyText = json["Notifications"][0]["NotifyText"];
     }
@@ -227,7 +229,7 @@ class UIResponse {
 }
 
 class PostDynamicBuilder {
-  int? nextFormSequence;
+  int? nextFormSequence, backstack;
   ModuleItem? moduleItem;
   List<dynamic>? list,
       jsonDisplay,
@@ -246,7 +248,7 @@ class PostDynamicBuilder {
 class PostDynamic {
   BuildContext? context;
   ModuleItem? moduleItem;
-  int? nextFormSequence;
+  int? nextFormSequence, backstack;
   List<dynamic>? list,
       jsonDisplay,
       formFields,
@@ -269,6 +271,7 @@ class PostDynamic {
         isList = builder.isList,
         tappedButton = builder.tappedButton,
         nextFormSequence = builder.nextFormSequence,
+        backstack = builder.backstack,
         list = builder.list,
         jsonDisplay = builder.jsonDisplay,
         formFields = builder.formFields,
