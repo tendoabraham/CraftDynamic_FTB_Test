@@ -126,7 +126,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               isLoading = true;
             });
             var obj = preCallData.requestObject;
-            obj?["PayBill"].addAll({"TRXOTP": otpController.text});
+            obj?["EncryptedFields"]
+                .addAll({"TrxOTP": CryptLib.encryptField(otpController.text)});
             _services
                 .dynamicRequest(
                     formID: preCallData.formID,
