@@ -131,8 +131,11 @@ class _TabWidgetState extends State<TabWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          Provider.of<PluginState>(context, listen: false)
-              .setRequestState(false);
+          if (Provider.of<PluginState>(context, listen: false)
+              .loadingNetworkData) {
+            CommonUtils.showToast("Please wait...");
+            return false;
+          }
           return true;
         },
         child: DefaultTabController(

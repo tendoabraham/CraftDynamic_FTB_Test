@@ -47,33 +47,42 @@ class _RadioWidgetState extends State<RadioWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          actions: recentList != null
-              ? [
-                  IconButton(
-                      onPressed: () {
-                        CommonUtils.navigateToRoute(
-                            context: context,
-                            widget: ListDataScreen(
-                                widget: DynamicListWidget(
-                                        moduleItem: widget.moduleItem,
-                                        formItem: recentList)
-                                    .render(),
-                                title: widget.moduleItem.moduleName));
-                      },
-                      icon: const Icon(
-                        Icons.view_list,
-                        color: Colors.white,
-                      ))
-                ]
-              : null,
-          title: Text(widget.moduleItem.moduleName),
-        ),
-        body: RadioWidgetList(
-          formItems: radioFormControls,
-          moduleItem: widget.moduleItem,
-        ));
+    return WillPopScope(
+        onWillPop: () async {
+          if (Provider.of<PluginState>(context, listen: false)
+              .loadingNetworkData) {
+            CommonUtils.showToast("Please wait...");
+            return false;
+          }
+          return true;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              actions: recentList != null
+                  ? [
+                      IconButton(
+                          onPressed: () {
+                            CommonUtils.navigateToRoute(
+                                context: context,
+                                widget: ListDataScreen(
+                                    widget: DynamicListWidget(
+                                            moduleItem: widget.moduleItem,
+                                            formItem: recentList)
+                                        .render(),
+                                    title: widget.moduleItem.moduleName));
+                          },
+                          icon: const Icon(
+                            Icons.view_list,
+                            color: Colors.white,
+                          ))
+                    ]
+                  : null,
+              title: Text(widget.moduleItem.moduleName),
+            ),
+            body: RadioWidgetList(
+              formItems: radioFormControls,
+              moduleItem: widget.moduleItem,
+            )));
   }
 
   @override

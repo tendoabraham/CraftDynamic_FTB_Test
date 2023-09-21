@@ -46,6 +46,11 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
 
     return WillPopScope(
         onWillPop: () async {
+          if (Provider.of<PluginState>(context, listen: false)
+              .loadingNetworkData) {
+            CommonUtils.showToast("Please wait...");
+            return false;
+          }
           Provider.of<PluginState>(context, listen: false)
               .setRequestState(false);
           return true;

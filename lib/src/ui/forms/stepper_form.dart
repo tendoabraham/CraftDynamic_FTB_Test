@@ -60,53 +60,63 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
   @override
   Widget build(BuildContext context) {
     getSteps();
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 2,
-          title: Text(widget.moduleItem.moduleName),
-        ),
-        body: Stepper(
-            currentStep: _index,
-            controlsBuilder: (BuildContext context, ControlsDetails details) {
-              return _index == stepperLength
-                  ? const SizedBox()
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        OutlinedButton(
-                            onPressed: details.onStepContinue,
-                            child: const Text("NEXT")),
-                        OutlinedButton(
-                            onPressed: details.onStepCancel,
-                            child: const Text("CANCEL")),
-                      ],
-                    );
-            },
-            onStepCancel: () {
-              if (_index > 0) {
-                setState(() {
-                  _index -= 1;
-                });
-              }
-            },
-            onStepContinue: () {
-              if (_index < stepperLength) {
-                final validator = formKeys[_index].currentState?.validate();
-                if (validator!) {
+    return WillPopScope(
+        onWillPop: () async {
+          if (Provider.of<PluginState>(context, listen: false)
+              .loadingNetworkData) {
+            CommonUtils.showToast("Please wait...");
+            return false;
+          }
+          return true;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 2,
+              title: Text(widget.moduleItem.moduleName),
+            ),
+            body: Stepper(
+                currentStep: _index,
+                controlsBuilder:
+                    (BuildContext context, ControlsDetails details) {
+                  return _index == stepperLength
+                      ? const SizedBox()
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            OutlinedButton(
+                                onPressed: details.onStepContinue,
+                                child: const Text("NEXT")),
+                            OutlinedButton(
+                                onPressed: details.onStepCancel,
+                                child: const Text("CANCEL")),
+                          ],
+                        );
+                },
+                onStepCancel: () {
+                  if (_index > 0) {
+                    setState(() {
+                      _index -= 1;
+                    });
+                  }
+                },
+                onStepContinue: () {
+                  if (_index < stepperLength) {
+                    final validator = formKeys[_index].currentState?.validate();
+                    if (validator!) {
+                      setState(() {
+                        _index += 1;
+                      });
+                    } else {
+                      Vibration.vibrate();
+                    }
+                  }
+                },
+                onStepTapped: (int index) {
                   setState(() {
-                    _index += 1;
+                    _index = index;
                   });
-                } else {
-                  Vibration.vibrate();
-                }
-              }
-            },
-            onStepTapped: (int index) {
-              setState(() {
-                _index = index;
-              });
-            },
-            steps: steps));
+                },
+                steps: steps)));
   }
 
   bool getIsActive(int currentIndex, int index) {
