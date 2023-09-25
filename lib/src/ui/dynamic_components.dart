@@ -403,17 +403,17 @@ class _DynamicButtonState extends State<DynamicButton> {
   getModule(String moduleID) => _moduleRepository.getModuleById(moduleID);
 }
 
-class DynamicDropDown extends StatefulWidget implements IFormWidget {
-  const DynamicDropDown({super.key});
+class ImageDynamicDropDown extends StatefulWidget implements IFormWidget {
+  const ImageDynamicDropDown({super.key});
 
   @override
-  State<DynamicDropDown> createState() => _DynamicDropDownState();
+  State<ImageDynamicDropDown> createState() => _ImageDynamicDropDownState();
 
   @override
-  Widget render() => const DynamicDropDown();
+  Widget render() => const ImageDynamicDropDown();
 }
 
-class _DynamicDropDownState extends State<DynamicDropDown> {
+class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
   final _apiService = APIService();
   FormItem? formItem;
   ModuleItem? moduleItem;
@@ -546,6 +546,151 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
   }
 }
 
+class DynamicDropDown extends StatefulWidget implements IFormWidget {
+  const DynamicDropDown({super.key});
+
+  @override
+  State<DynamicDropDown> createState() => _DynamicDropDownState();
+
+  @override
+  Widget render() => const DynamicDropDown();
+}
+
+class _DynamicDropDownState extends State<DynamicDropDown> {
+  final _apiService = APIService();
+  FormItem? formItem;
+  ModuleItem? moduleItem;
+  String? _currentValue;
+  Map<String, dynamic> extraFieldMap = {};
+  List<dynamic> dropdownItems = [];
+
+  Future<DynamicResponse?> getDropDownData(
+          String actionID, ModuleItem moduleItem,
+          {formID = "DBCALL", route = "other", merchantID}) async =>
+      _apiService.getDynamicDropDownValues(
+          actionID, moduleItem, formID, route, merchantID);
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
+    return FutureBuilder<DynamicResponse?>(
+        future: getDropDownData(formItem?.actionId ?? "", moduleItem!,
+            formID: formItem?.formID,
+            route: formItem?.route,
+            merchantID: formItem?.merchantID),
+        builder:
+            (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+          Widget child = DropdownButtonFormField2(
+            value: _currentValue,
+            decoration: InputDecoration(
+                prefixIcon: ThreeLoadUtil(
+              size: 24,
+            )),
+            hint: Text(
+              formItem?.controlText ?? "",
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            isExpanded: true,
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+            items: const [],
+          );
+          if (snapshot.hasData) {
+            dropdownItems = snapshot.data?.dynamicList ?? [];
+            AppLogger.appLogD(tag: "dropdown data-->", message: dropdownItems);
+
+            if (dropdownItems.isEmpty) {
+              child = DropdownButtonFormField2(
+                value: _currentValue,
+                hint: Text(
+                  snapshot.data?.message ?? formItem?.controlText ?? "",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                isExpanded: true,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                items: const [],
+              );
+            } else {
+              _currentValue = formItem?.hasInitialValue ?? true
+                  ? dropdownItems.first[formItem?.controlId]
+                  : null;
+              var dropdownPicks = dropdownItems.asMap().entries.map((item) {
+                return DropdownMenuItem(
+                  value:
+                      item.value[formItem?.controlId] ?? formItem?.controlText,
+                  child: Text(
+                    item.value[formItem?.controlId] ?? formItem?.controlText,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                );
+              }).toList();
+              dropdownPicks.toSet().toList();
+              if (dropdownPicks.isNotEmpty &&
+                  (formItem?.hasInitialValue ?? true)) {
+                addInitialValueToLinkedField(context, dropdownItems.first);
+              }
+              child = DropdownButtonFormField(
+                value: _currentValue,
+                decoration: InputDecoration(labelText: formItem?.controlText),
+                isExpanded: true,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+                onChanged: (value) {
+                  Provider.of<PluginState>(context, listen: false)
+                      .addDynamicDropDownData({
+                    formItem?.rowID.toString() ?? "": getValueFromList(value)
+                  });
+                },
+                validator: (value) {
+                  String? input = value.toString();
+                  if ((formItem?.isMandatory ?? false) && input == "null") {
+                    return 'Input required*';
+                  }
+                  Provider.of<PluginState>(context, listen: false)
+                      .addFormInput({
+                    "${formItem?.serviceParamId}":
+                        getValueFromList(value)[formItem?.controlId ?? ""]
+                  });
+                  return null;
+                },
+                items: dropdownPicks,
+              );
+            }
+          }
+
+          return child;
+        });
+  }
+
+  getValueFromList(value) => dropdownItems
+      .firstWhereOrNull((element) => element[formItem?.controlId] == value);
+
+  void addInitialValueToLinkedField(BuildContext context, var initialValue) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        if (Provider.of<PluginState>(context, listen: false)
+            .dynamicDropDownData
+            .isEmpty) {
+          Provider.of<PluginState>(context, listen: false)
+              .addDynamicDropDownData(
+                  {formItem?.rowID.toString() ?? "": initialValue});
+        }
+      } catch (e) {
+        AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
+      }
+    });
+  }
+}
+
 class DropDown extends StatefulWidget implements IFormWidget {
   const DropDown({super.key});
 
@@ -593,6 +738,8 @@ class _DropDownState extends State<DropDown> {
             if (snapshot.hasData) {
               var data = snapshot.data ?? {};
               var dropdownItems = data;
+              AppLogger.appLogD(
+                  tag: "dropdown data-->", message: dropdownItems);
               if (!isToAccountField(formItem?.controlId ?? "")) {
                 _currentValue = formItem?.hasInitialValue ?? true
                     ? dropdownItems.isNotEmpty

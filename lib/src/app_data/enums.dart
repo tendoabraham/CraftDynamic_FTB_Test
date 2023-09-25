@@ -29,6 +29,7 @@ enum ViewType {
   DYNAMICDROPDOWN,
   CAROUSELVIEW,
   TEXTLINK,
+  IMAGEDYNAMICDROPDOWN
 }
 
 enum ControlFormat {

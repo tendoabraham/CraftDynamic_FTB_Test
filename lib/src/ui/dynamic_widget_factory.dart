@@ -24,6 +24,9 @@ abstract class IFormWidget {
       case ViewType.DYNAMICDROPDOWN:
         return const DynamicDropDown();
 
+      case ViewType.IMAGEDYNAMICDROPDOWN:
+        return const ImageDynamicDropDown();
+
       case ViewType.LABEL:
         return DynamicLabelWidget();
 
