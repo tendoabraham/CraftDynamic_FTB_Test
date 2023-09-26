@@ -103,6 +103,7 @@ class DynamicPostCall {
                     title: moduleItem!.moduleName,
                     widget: ListWidget(
                       dynamicList: postDynamic.list,
+                      summary: postDynamic.summary,
                       scrollable: true,
                       controlID: postDynamic.controlID,
                     )));

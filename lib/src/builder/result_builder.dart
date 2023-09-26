@@ -78,6 +78,7 @@ class PostDynamicDBCall implements IPostDynamicCheck {
       ..notifyText = dynamicResponse.notifyText
       ..nextFormSequence = dynamicResponse.nextFormSequence
       ..beneficiaries = dynamicResponse.beneficiaries
+      ..summary = dynamicResponse.summary
       ..moduleItem = moduleItem
       ..listType = listType
       ..isList = dynamicResponse.dynamicList?.isNotEmpty ?? false
@@ -110,6 +111,7 @@ class PostDynamicValidate implements IPostDynamicCheck {
       ..notifyText = dynamicResponse.notifyText
       ..opensDynamicRoute = true
       ..nextFormSequence = dynamicResponse.nextFormSequence
+      ..summary = dynamicResponse.summary
       ..list = dynamicResponse.dynamicList;
     return builder;
   }
@@ -136,6 +138,7 @@ class PostDynamicPayBill implements IPostDynamicCheck {
       ..nextFormSequence = dynamicResponse.nextFormSequence
       ..backstack = dynamicResponse.backstack
       ..receiptDetails = dynamicResponse.receiptDetails
+      ..summary = dynamicResponse.summary
       ..isList = dynamicResponse.dynamicList?.isNotEmpty ?? false
       ..listType = listType;
     return builder;

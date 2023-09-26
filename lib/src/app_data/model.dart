@@ -56,7 +56,8 @@ class DynamicResponse {
       receiptDetails,
       accountStatement,
       beneficiaries,
-      standingOrderList;
+      standingOrderList,
+      summary;
 
   DynamicResponse(
       {required this.status,
@@ -76,7 +77,8 @@ class DynamicResponse {
       this.receiptDetails,
       this.accountStatement,
       this.beneficiaries,
-      this.standingOrderList});
+      this.standingOrderList,
+      this.summary});
 
   DynamicResponse.fromJson(Map<String, dynamic> json) {
     status = json["Status"];
@@ -97,6 +99,7 @@ class DynamicResponse {
     accountStatement = json["AccountStatement"];
     standingOrderList = json[""];
     beneficiaries = json["Beneficiary"];
+    summary = json["Summary"];
   }
 }
 
@@ -236,7 +239,8 @@ class PostDynamicBuilder {
       formFields,
       notifications,
       receiptDetails,
-      beneficiaries;
+      beneficiaries,
+      summary;
   String? status, message, formID, controlID, notifyText, languageID;
   ListType? listType;
   bool returnsWidget = false,
@@ -254,7 +258,8 @@ class PostDynamic {
       formFields,
       notifications,
       receiptDetails,
-      beneficiaries;
+      beneficiaries,
+      summary;
   String? actionID, status, message, formID, controlID, notifyText, languageID;
   ListType? listType;
   bool isList, returnsWidget, opensDynamicRoute, tappedButton;
@@ -283,7 +288,8 @@ class PostDynamic {
         receiptDetails = builder.receiptDetails,
         beneficiaries = builder.beneficiaries,
         opensDynamicRoute = builder.opensDynamicRoute,
-        languageID = builder.languageID;
+        languageID = builder.languageID,
+        summary = builder.summary;
 }
 
 class TextFormFieldProperties {

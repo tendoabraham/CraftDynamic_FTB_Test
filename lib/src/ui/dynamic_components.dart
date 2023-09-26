@@ -1157,6 +1157,7 @@ class DynamicListWidget implements IFormWidget {
 
                   child = ListWidget(
                     dynamicList: dynamicResponse?.dynamicList,
+                    summary: dynamicResponse?.summary,
                     scrollable: false,
                     controlID: formItem?.controlId,
                     moduleItem: moduleItem,
