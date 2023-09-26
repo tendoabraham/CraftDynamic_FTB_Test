@@ -45,7 +45,7 @@ class ListWidget extends StatelessWidget {
 
     return dynamicList != null && dynamicList!.isNotEmpty
         ? Column(children: [
-            summary != null && summary != []
+            summaryItems.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
