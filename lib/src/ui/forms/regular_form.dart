@@ -51,6 +51,10 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
             CommonUtils.showToast("Please wait...");
             return false;
           }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Provider.of<PluginState>(context, listen: false)
+                .clearDynamicDropDown();
+          });
           Provider.of<PluginState>(context, listen: false)
               .setRequestState(false);
           return true;
@@ -112,11 +116,5 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
                                 }))
                       ],
                     ))))));
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-    Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
   }
 }

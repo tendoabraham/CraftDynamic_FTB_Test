@@ -120,6 +120,7 @@ class PluginState extends ChangeNotifier {
 
   clearDynamicDropDown() {
     _dynamicDropDownData.clear();
+    notifyListeners();
   }
 }
 

@@ -430,9 +430,6 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
-    });
   }
 
   @override
