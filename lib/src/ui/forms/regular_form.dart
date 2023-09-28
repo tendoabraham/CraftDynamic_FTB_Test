@@ -113,4 +113,10 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
                       ],
                     ))))));
   }
+
+  @override
+  dispose() {
+    super.dispose();
+    Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
+  }
 }
