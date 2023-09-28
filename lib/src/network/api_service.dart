@@ -319,7 +319,7 @@ class APIService {
       AppLogger.appLogE(tag: "DECODE:ERROR", message: e.toString());
       return DynamicResponse(status: "XXXX");
     }
-    return dynamicResponse ?? DynamicResponse(status: "XXXX");
+    return dynamicResponse;
   }
 
   Future<ActivationResponse> login(String encryptedPin,

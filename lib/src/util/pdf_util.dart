@@ -5,7 +5,7 @@ class PDFUtil {
       {downloadReceipt = true}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
-    final _profileRepo = ProfileRepository();
+    final profileRepo = ProfileRepository();
     final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
 
@@ -22,15 +22,20 @@ class PDFUtil {
           color.blue)), // Replace with your desired background color
     );
 
-    PdfCompositeField compositefields = PdfCompositeField(
-        font: PdfStandardFont(PdfFontFamily.timesRoman, 28,
-            style: PdfFontStyle.bold),
-        brush: PdfSolidBrush(PdfColor(255, 255, 255)),
-        text: ' ${APIService.appLabel}',
-        fields: <PdfAutomaticField>[]);
+    var headerfont =
+        PdfStandardFont(PdfFontFamily.timesRoman, 28, style: PdfFontStyle.bold);
 
-    compositefields.draw(header.graphics,
-        Offset(0, 50 - PdfStandardFont(PdfFontFamily.timesRoman, 11).height));
+    header.graphics.drawString(
+      APIService.appLabel,
+      headerfont,
+      brush: PdfSolidBrush(PdfColor(255, 255, 255)),
+      bounds: Rect.fromLTWH(
+          (header.width - headerfont.measureString(APIService.appLabel).width) /
+              2,
+          (header.height / 2) - 20,
+          0,
+          header.height),
+    );
 
     document.template.top = header;
 
@@ -40,7 +45,7 @@ class PDFUtil {
     format.alignment = PdfTextAlignment.center;
 
     page.graphics.drawString(
-        'Hi ${await _profileRepo.getUserInfo(UserAccountData.FirstName)},',
+        'Hi ${await profileRepo.getUserInfo(UserAccountData.FirstName)},',
         PdfStandardFont(PdfFontFamily.helvetica, 40, style: PdfFontStyle.bold),
         brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
         bounds: Rect.fromLTWH(0, hiTextUpperBound, page.size.width - 100, 0),

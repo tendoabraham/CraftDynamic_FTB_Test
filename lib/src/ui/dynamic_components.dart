@@ -480,14 +480,31 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                   ? dropdownItems.first[formItem?.controlId]
                   : null;
               var dropdownPicks = dropdownItems.asMap().entries.map((item) {
+                Map<String, dynamic> jsonvalue =
+                    jsonDecode(item.value[formItem?.controlId]);
+                var image = jsonvalue["image"];
+                var label = jsonvalue["label"];
+                var value = jsonvalue["value"];
+
                 return DropdownMenuItem(
-                  value:
-                      item.value[formItem?.controlId] ?? formItem?.controlText,
-                  child: Text(
-                    item.value[formItem?.controlId] ?? formItem?.controlText,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                );
+                    value: value ?? formItem?.controlText,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: image ?? formItem?.controlText,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          width: 88,
+                          height: 64,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(label ?? formItem?.controlText)
+                      ],
+                    ));
               }).toList();
               dropdownPicks.toSet().toList();
               if (dropdownPicks.isNotEmpty &&
@@ -496,15 +513,8 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
               }
               child = DropdownButtonFormField(
                 value: _currentValue,
-                decoration: InputDecoration(labelText: formItem?.controlText),
-                isExpanded: true,
-                style: const TextStyle(fontWeight: FontWeight.normal),
-                onChanged: (value) {
-                  Provider.of<PluginState>(context, listen: false)
-                      .addDynamicDropDownData({
-                    formItem?.rowID.toString() ?? "": getValueFromList(value)
-                  });
-                },
+                items: dropdownPicks,
+                onChanged: (value) {},
                 validator: (value) {
                   String? input = value.toString();
                   if ((formItem?.isMandatory ?? false) && input == "null") {
@@ -517,7 +527,6 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                   });
                   return null;
                 },
-                items: dropdownPicks,
               );
             }
           }
