@@ -712,20 +712,21 @@ class BankAccountAdapter extends TypeAdapter<BankAccount> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BankAccount(
-      bankAccountId: fields[1] as String,
-      aliasName: fields[2] as String,
-      currencyID: fields[3] as String,
-      accountType: fields[4] as String,
-      groupAccount: fields[5] as bool,
-      defaultAccount: fields[6] as bool,
-      isTransactional: fields[7] as bool?,
-    )..no = fields[0] as int?;
+        bankAccountId: fields[1] as String,
+        aliasName: fields[2] as String,
+        currencyID: fields[3] as String,
+        accountType: fields[4] as String,
+        groupAccount: fields[5] as bool,
+        defaultAccount: fields[6] as bool,
+        isTransactional: fields[7] as bool?,
+        isDisabled: fields[8] as bool?)
+      ..no = fields[0] as int?;
   }
 
   @override
   void write(BinaryWriter writer, BankAccount obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.no)
       ..writeByte(1)
@@ -741,7 +742,9 @@ class BankAccountAdapter extends TypeAdapter<BankAccount> {
       ..writeByte(6)
       ..write(obj.defaultAccount)
       ..writeByte(7)
-      ..write(obj.isTransactional);
+      ..write(obj.isTransactional)
+      ..writeByte(8)
+      ..write(obj.isDisabled);
   }
 
   @override
