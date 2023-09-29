@@ -492,6 +492,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                       children: [
                         CachedNetworkImage(
                           imageUrl: image ?? formItem?.controlText,
+                          placeholder: (context, url) => PulseLoadUtil(),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           width: 77,
