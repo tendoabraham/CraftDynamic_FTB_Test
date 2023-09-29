@@ -473,15 +473,17 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                 items: const [],
               );
             } else {
+              AppLogger.appLogD(
+                  tag: "dropdown items", message: dropdownItems.first);
               _currentValue = formItem?.hasInitialValue ?? true
-                  ? dropdownItems.first[formItem?.controlId]
+                  ? dropdownItems.first[formItem?.controlId]["Value"]
                   : null;
               var dropdownPicks = dropdownItems.asMap().entries.map((item) {
                 Map<String, dynamic> jsonvalue =
-                    jsonDecode(item.value[formItem?.controlId]);
-                var image = jsonvalue["image"];
-                var label = jsonvalue["label"];
-                var value = jsonvalue["value"];
+                    item.value[formItem?.controlId] ?? {};
+                var image = jsonvalue["ImageUrl"];
+                var label = jsonvalue["Description"];
+                var value = jsonvalue["Value"];
 
                 return DropdownMenuItem(
                     value: value ?? formItem?.controlText,
@@ -492,14 +494,17 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                           imageUrl: image ?? formItem?.controlText,
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
-                          width: 88,
-                          height: 64,
+                          width: 77,
+                          height: 77,
                           fit: BoxFit.contain,
                         ),
                         const SizedBox(
-                          width: 20,
+                          width: 8,
                         ),
-                        Text(label ?? formItem?.controlText)
+                        Text(
+                          label ?? formItem?.controlText,
+                          overflow: TextOverflow.ellipsis,
+                        )
                       ],
                     ));
               }).toList();
@@ -517,11 +522,9 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                   if ((formItem?.isMandatory ?? false) && input == "null") {
                     return 'Input required*';
                   }
+                  debugPrint("value in dropdown is $value");
                   Provider.of<PluginState>(context, listen: false)
-                      .addFormInput({
-                    "${formItem?.serviceParamId}":
-                        getValueFromList(value)[formItem?.controlId ?? ""]
-                  });
+                      .addFormInput({"${formItem?.serviceParamId}": value});
                   return null;
                 },
               );
