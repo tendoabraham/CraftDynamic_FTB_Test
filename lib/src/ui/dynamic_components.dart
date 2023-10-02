@@ -423,12 +423,14 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
 
   Future<DynamicResponse?> getDropDownData(
           String actionID, ModuleItem moduleItem,
-          {formID = "DBCALL", route = "other", merchantID}) async =>
-      _apiService.getDynamicDropDownValues(
-          actionID, moduleItem, formID, route, merchantID);
+          {formID = "DBCALL", route = "other", merchantID}) =>
+      _apiService.getDynamicDropDownValues(actionID, moduleItem,
+          formID ?? "DBCALL", route ?? "other", merchantID);
 
   @override
   initState() {
+    AppLogger.appLogD(
+        tag: "images dropdown", message: "getting images for dropdown");
     super.initState();
   }
 
