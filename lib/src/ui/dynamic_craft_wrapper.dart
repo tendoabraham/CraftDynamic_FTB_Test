@@ -32,7 +32,6 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _initRepository = InitRepository();
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
-  final _profileRepository = ProfileRepository();
 
   var _appTimeout = 100000;
 

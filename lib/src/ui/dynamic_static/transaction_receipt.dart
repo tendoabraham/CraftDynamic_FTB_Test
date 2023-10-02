@@ -203,7 +203,8 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             onPressed: () {
                                               int? noOfTimesToPop =
                                                   postDynamic.backstack;
-                                              if (noOfTimesToPop != null) {
+                                              if (noOfTimesToPop != null &&
+                                                  noOfTimesToPop != 0) {
                                                 for (int i = 0;
                                                     i <= noOfTimesToPop;
                                                     i++) {
