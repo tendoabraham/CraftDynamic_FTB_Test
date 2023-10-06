@@ -43,6 +43,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   }
 
   initializeApp() async {
+    await DeviceInfo.performDeviceSecurityScan();
     await HiveUtil.initializeHive();
     await _connectivityService.initialize();
     _sessionRepository.stopSession();
