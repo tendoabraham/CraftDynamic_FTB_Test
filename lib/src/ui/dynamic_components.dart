@@ -776,8 +776,7 @@ class _DropDownState extends State<DropDown> {
                 dropdownPicks.toSet().toList();
                 if (dropdownPicks.isNotEmpty &&
                     (formItem?.hasInitialValue ?? true)) {
-                  addInitialValueToLinkedField(
-                      context, _currentValue ?? "", dropdownItems);
+                  addInitialValueToLinkedField(context, dropdownItems);
                 }
 
                 if (isToAccountField(formItem?.controlId ?? "")) {
@@ -847,28 +846,15 @@ class _DropDownState extends State<DropDown> {
           ? true
           : false;
 
-  void addInitialValueToLinkedField(BuildContext context, String initialValue,
-      Map<String?, dynamic> mapItems) {
+  void addInitialValueToLinkedField(BuildContext context, var initialValue) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        var selections = Provider.of<DropDownState>(context, listen: false)
-                .currentSelections ??
-            {};
-        var items =
-            Provider.of<PluginState>(context, listen: false).screenDropDowns;
-
-        if (formItem?.controlId == ControlID.BANKACCOUNTID.name &&
-            selections.isEmpty) {
-          Provider.of<DropDownState>(context, listen: false)
-              .setCurrentSelections({formItem?.controlId: _currentValue});
-        }
-        if (!items.containsKey(formItem?.rowID?.toString())) {
+        if (Provider.of<PluginState>(context, listen: false)
+            .dynamicDropDownData
+            .isEmpty) {
           Provider.of<PluginState>(context, listen: false)
-              .addDynamicDropDownData({
-            formItem?.rowID?.toString() ?? "": {
-              formItem?.linkedToControl ?? "": getValueFromList(initialValue)
-            }
-          });
+              .addDynamicDropDownData(
+                  {formItem?.rowID.toString() ?? "": initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
