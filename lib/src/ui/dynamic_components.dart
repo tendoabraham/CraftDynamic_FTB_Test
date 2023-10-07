@@ -164,6 +164,9 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       }
 
       if (formItem?.linkedToRowID != null) {
+        AppLogger.appLogD(
+            tag: "dynamic dropdown data",
+            message: state.dynamicDropDownData[formItem?.linkedToRowID]);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
                 ?[formItem?.controlId] ??
             "";
@@ -802,8 +805,12 @@ class _DropDownState extends State<DropDown> {
                           _currentValue = value.toString();
                         }),
                         Provider.of<PluginState>(context, listen: false)
-                            .addScreenDropDown(
-                                {formItem?.rowID?.toString(): _currentValue}),
+                            .addDynamicDropDownData({
+                          formItem?.rowID?.toString() ?? "": {
+                            formItem?.linkedToControl ?? "":
+                                getValueFromList(value)
+                          }
+                        }),
                         if (isFromAccountField(formItem?.controlId ?? ""))
                           {
                             state.setCurrentSelections(
@@ -827,6 +834,8 @@ class _DropDownState extends State<DropDown> {
           });
     });
   }
+
+  getValueFromList(value) => extraFieldMap[value];
 
   bool isToAccountField(String controlID) =>
       controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
@@ -855,7 +864,11 @@ class _DropDownState extends State<DropDown> {
         }
         if (!items.containsKey(formItem?.rowID?.toString())) {
           Provider.of<PluginState>(context, listen: false)
-              .addScreenDropDown({formItem?.rowID?.toString(): initialValue});
+              .addDynamicDropDownData({
+            formItem?.rowID?.toString() ?? "": {
+              formItem?.linkedToControl ?? "": getValueFromList(initialValue)
+            }
+          });
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
