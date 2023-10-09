@@ -725,10 +725,10 @@ class _DropDownState extends State<DropDown> {
   String? _currentValue;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<DropDownState>(context, listen: false).clearSelections();
+      Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
     });
   }
 
@@ -776,7 +776,8 @@ class _DropDownState extends State<DropDown> {
                 dropdownPicks.toSet().toList();
                 if (dropdownPicks.isNotEmpty &&
                     (formItem?.hasInitialValue ?? true)) {
-                  addInitialValueToLinkedField(context, dropdownItems);
+                  addInitialValueToLinkedField(
+                      context, getFirstSubcodeID(dropdownItems.entries.first));
                 }
 
                 if (isToAccountField(formItem?.controlId ?? "")) {
@@ -834,6 +835,8 @@ class _DropDownState extends State<DropDown> {
     });
   }
 
+  String getFirstSubcodeID(MapEntry entry) => entry.key;
+
   getValueFromList(value) => extraFieldMap[value];
 
   bool isToAccountField(String controlID) =>
@@ -850,11 +853,18 @@ class _DropDownState extends State<DropDown> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         if (Provider.of<PluginState>(context, listen: false)
-            .dynamicDropDownData
-            .isEmpty) {
+                    .dynamicDropDownData[formItem?.rowID?.toString()] ==
+                {} ||
+            Provider.of<PluginState>(context, listen: false)
+                    .dynamicDropDownData[formItem?.rowID?.toString()] ==
+                null) {
+          Map<String, dynamic> map = {};
+          map.addAll({
+            formItem?.linkedToControl ?? "": getValueFromList(initialValue)
+          });
+
           Provider.of<PluginState>(context, listen: false)
-              .addDynamicDropDownData(
-                  {formItem?.rowID.toString() ?? "": initialValue});
+              .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
