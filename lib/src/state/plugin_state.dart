@@ -1,9 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-
-import '../../craft_dynamic.dart';
+part of craft_dynamic;
 
 class PluginState extends ChangeNotifier {
   bool _loadingNetworkData = false;
@@ -173,11 +168,6 @@ class DropDownState extends ChangeNotifier {
   clearSelections() {
     _currentSelections.clear();
   }
-}
-
-// Looking into new state mananagemet
-class PluginBloc extends Cubit {
-  PluginBloc() : super(0);
 }
 
 var currentToken = "".obs;

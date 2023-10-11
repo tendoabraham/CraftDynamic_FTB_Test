@@ -7,8 +7,6 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'package:provider/provider.dart';
 
-import '../../state/plugin_state.dart';
-
 class RadioWidget extends StatefulWidget {
   List<FormItem> formItems;
   String title;

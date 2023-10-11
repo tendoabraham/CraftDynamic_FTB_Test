@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';

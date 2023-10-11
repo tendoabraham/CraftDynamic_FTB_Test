@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../craft_dynamic.dart';
-import '../../state/plugin_state.dart';
 
 class RequestStatusScreen extends StatefulWidget {
   RequestStatusScreen({Key? key, required this.postDynamic, this.moduleItem})

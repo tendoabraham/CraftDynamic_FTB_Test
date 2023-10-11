@@ -1,3 +1,5 @@
+part of craft_dynamic;
+
 class StringUtil {
   static String formatNumberWithThousandsSeparator(String numberString) {
     // Use RegExp to match digits and add a thousands separator

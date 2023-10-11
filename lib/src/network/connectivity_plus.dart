@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/state/plugin_state.dart';
 
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();

@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
