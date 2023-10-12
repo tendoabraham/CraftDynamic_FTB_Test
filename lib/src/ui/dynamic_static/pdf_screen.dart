@@ -31,35 +31,37 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: const Text("Receipt"),
-        actions: <Widget>[
-          widget.downloadReceipt
-              ? IconButton(
-                  icon: const Icon(Icons.download),
-                  onPressed: () async {
-                    saveFile(context, isDownload: widget.downloadReceipt);
-                  },
-                )
-              : const SizedBox(),
-          widget.downloadReceipt
-              ? const SizedBox()
-              : IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: () {
-                    saveFile(context, isDownload: false);
-                  },
-                ),
-        ],
-      ),
-      body: SfPdfViewer.file(
-        File.fromUri(Uri.parse(widget.path ?? "")),
-        key: _pdfViewerKey,
-        pageLayoutMode: PdfPageLayoutMode.single,
-        canShowPageLoadingIndicator: true,
-      ),
-    );
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("Receipt"),
+          actions: <Widget>[
+            widget.downloadReceipt
+                ? IconButton(
+                    icon: const Icon(Icons.download),
+                    onPressed: () async {
+                      saveFile(context, isDownload: widget.downloadReceipt);
+                    },
+                  )
+                : const SizedBox(),
+            widget.downloadReceipt
+                ? const SizedBox()
+                : IconButton(
+                    icon: const Icon(Icons.share),
+                    onPressed: () {
+                      saveFile(context, isDownload: false);
+                    },
+                  ),
+          ],
+        ),
+        body: Container(
+          color: Colors.white,
+          child: SfPdfViewer.file(
+            File.fromUri(Uri.parse(widget.path ?? "")),
+            key: _pdfViewerKey,
+            pageLayoutMode: PdfPageLayoutMode.single,
+            canShowPageLoadingIndicator: true,
+          ),
+        ));
   }
 
   saveFile(BuildContext context, {isDownload = true}) {
