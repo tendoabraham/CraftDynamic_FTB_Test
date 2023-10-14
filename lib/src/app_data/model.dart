@@ -117,7 +117,8 @@ class ActivationResponse {
       phone,
       bankID,
       bankType,
-      languageID;
+      languageID,
+      customerCategory;
   List<dynamic>? accounts,
       frequentAccessedModules,
       beneficiary,
@@ -145,7 +146,8 @@ class ActivationResponse {
       this.frequentAccessedModules,
       this.modulesToHide,
       this.modulesToDisable,
-      this.pendingTransactions});
+      this.pendingTransactions,
+      this.customerCategory});
 
   ActivationResponse.fromJson(Map<String, dynamic> json)
       : status = json["Status"],
@@ -167,7 +169,8 @@ class ActivationResponse {
         modulesToHide = json["ModulesToHide"],
         modulesToDisable = json["ModulesToDisable"],
         pendingTransactions = json["PendingTrxDisplay"],
-        accounts = json["Accounts"];
+        accounts = json["Accounts"],
+        customerCategory = json["CustomerCategory"];
 }
 
 class StaticResponse {

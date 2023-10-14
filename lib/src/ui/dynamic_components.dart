@@ -165,7 +165,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
       if (formItem?.linkedToRowID != null) {
         AppLogger.appLogD(
-            tag: "dynamic dropdown data",
+            tag: "dynamic dropdown data linked to ${formItem?.linkedToRowID}",
             message: state.dynamicDropDownData[formItem?.linkedToRowID]);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
                 ?[formItem?.controlId] ??
@@ -860,6 +860,10 @@ class _DropDownState extends State<DropDown> {
           Map<String, dynamic> map = {};
           map.addAll(
               {formItem?.controlId ?? "": getValueFromList(initialValue)});
+          AppLogger.appLogD(
+              tag: "dropdown link",
+              message:
+                  "adding initial linked value ${formItem?.rowID?.toString()}$map");
 
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
