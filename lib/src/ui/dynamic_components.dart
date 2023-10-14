@@ -807,8 +807,7 @@ class _DropDownState extends State<DropDown> {
                         Provider.of<PluginState>(context, listen: false)
                             .addDynamicDropDownData({
                           formItem?.rowID?.toString() ?? "": {
-                            formItem?.linkedToControl ?? "":
-                                getValueFromList(value)
+                            formItem?.controlId ?? "": getValueFromList(value)
                           }
                         }),
                         if (isFromAccountField(formItem?.controlId ?? ""))
@@ -859,9 +858,8 @@ class _DropDownState extends State<DropDown> {
                     .dynamicDropDownData[formItem?.rowID?.toString()] ==
                 null) {
           Map<String, dynamic> map = {};
-          map.addAll({
-            formItem?.linkedToControl ?? "": getValueFromList(initialValue)
-          });
+          map.addAll(
+              {formItem?.controlId ?? "": getValueFromList(initialValue)});
 
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
