@@ -30,7 +30,6 @@ class _RadioWidgetState extends State<RadioWidget> {
 
   @override
   void initState() {
-    Provider.of<PluginState>(context, listen: false).clearDynamicDropDown();
     radioFormControls = widget.formItems;
     try {
       recentList = radioFormControls.firstWhere(
