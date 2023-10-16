@@ -165,8 +165,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
       if (formItem?.linkedToRowID != null) {
         AppLogger.appLogD(
-            tag: "dynamic dropdown data linked to ${formItem?.linkedToRowID}",
-            message: state.dynamicDropDownData[formItem?.linkedToRowID]);
+            tag: "all dynamic dropdown data ${formItem?.linkedToRowID}",
+            message: state.dynamicDropDownData);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
                 ?[formItem?.controlId] ??
             "";
@@ -1088,6 +1088,8 @@ class _DynamicPhonePickerFormWidgetState
   @override
   Widget build(BuildContext context) {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    AppLogger.appLogD(
+        tag: "phone input::leading digit", message: formItem?.leadingDigits);
 
     return InternationalPhoneNumberInput(
       maxLength: formItem?.maxLength ?? 11,

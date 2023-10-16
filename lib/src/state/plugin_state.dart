@@ -100,7 +100,6 @@ class PluginState extends ChangeNotifier {
   }
 
   addDynamicDropDownData(Map<String, Map<String, dynamic>> data) {
-    _dynamicDropDownData.clear();
     _dynamicDropDownData.addAll(data);
     notifyListeners();
   }
