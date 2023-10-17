@@ -1,3 +1,4 @@
+import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/services.dart';
 
 class NativeBinder {
@@ -7,6 +8,16 @@ class NativeBinder {
     await platform.invokeMethod('getLittleProduct', <String, dynamic>{
       'littleProduct': littleProduct,
     });
+  }
+
+  static Future<bool> checkRootStatus() async {
+    bool status = false;
+    try {
+      status = await platform.invokeMethod('checkRootStatus');
+    } catch (e) {
+      AppLogger.appLogD(tag: "native method root check", message: status);
+    }
+    return status;
   }
 
   // This native method invoke no longer in use

@@ -28,7 +28,7 @@ class DeviceInfo {
     bool jailBroken = false;
     try {
       // jailBroken = await FlutterJailbreakDetection.jailbroken;
-      jailBroken = await SafeDevice.isJailBroken;
+      jailBroken = await NativeBinder.checkRootStatus();
       AppLogger.appLogD(tag: "check device rooted status", message: jailBroken);
     } on PlatformException {
       jailBroken = true;
