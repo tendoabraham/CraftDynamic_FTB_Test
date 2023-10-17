@@ -34,7 +34,6 @@ dependencies:
   url_launcher: ^6.1.7
   uuid: ^3.0.6
   vibration: ^1.7.6
-  flutter_jailbreak_detection: ^1.8.0
   local_session_timeout: ^2.1.1
   get: ^4.6.5
   fluttertoast: any
@@ -68,7 +67,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.3
   pinput: ^3.0.1
-  root: ^2.0.4
+  safe_device: ^1.1.4
 
 
 dev_dependencies:
