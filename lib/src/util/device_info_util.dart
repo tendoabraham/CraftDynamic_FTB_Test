@@ -10,15 +10,15 @@ class DeviceInfo {
 
   static performDeviceSecurityScan() async {
     if (await _checkDeviceRooted()) {
-      Future.delayed(const Duration(seconds: 10), () {
-        Fluttertoast.showToast(
-            msg: "This app cannot work on rooted device!",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+      Fluttertoast.showToast(
+          msg: "This app cannot work on rooted device!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Future.delayed(const Duration(seconds: 5), () {
         exit(0);
       });
     }
@@ -27,7 +27,8 @@ class DeviceInfo {
   static Future<bool> _checkDeviceRooted() async {
     bool jailBroken = false;
     try {
-      jailBroken = await FlutterJailbreakDetection.jailbroken;
+      // jailBroken = await FlutterJailbreakDetection.jailbroken;
+      jailBroken = await Root.isRooted() ?? false;
       AppLogger.appLogD(tag: "check device rooted status", message: jailBroken);
     } on PlatformException {
       jailBroken = true;

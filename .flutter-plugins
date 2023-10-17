@@ -54,6 +54,7 @@ platform_device_id_macos=/home/kagwi/.pub-cache/hosted/pub.dev/platform_device_i
 platform_device_id_web=/home/kagwi/.pub-cache/hosted/pub.dev/platform_device_id_web-1.0.0/
 platform_device_id_windows=/home/kagwi/.pub-cache/hosted/pub.dev/platform_device_id_windows-1.0.0/
 qr_code_scanner=/home/kagwi/.pub-cache/hosted/pub.dev/qr_code_scanner-1.0.1/
+root=/home/kagwi/.pub-cache/hosted/pub.dev/root-2.0.4/
 share_plus=/home/kagwi/.pub-cache/hosted/pub.dev/share_plus-7.1.0/
 shared_preferences=/home/kagwi/.pub-cache/hosted/pub.dev/shared_preferences-2.2.1/
 shared_preferences_android=/home/kagwi/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1/
