@@ -166,6 +166,7 @@ enum LittleProduct {
 enum StatusCode {
   success("000"),
   failure("091"),
+  lowFailure("092"),
   token("099"),
   otp("093"),
   changeLanguage("094"),
@@ -211,6 +212,7 @@ enum MapValue { CREDIT, DEBIT, DEFAULT }
 
 const success = "000";
 const failure = "091";
+const lowFailure = "092";
 const token = "099";
 const otp = "093";
 const changeLanguage = "094";

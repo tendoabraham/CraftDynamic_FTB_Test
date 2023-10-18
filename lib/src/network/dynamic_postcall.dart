@@ -130,6 +130,14 @@ class DynamicPostCall {
               title: "Error");
         }
         break;
+
+      case lowFailure:
+        {
+          AlertUtil.showAlertDialog(
+              context, postDynamic.message ?? "Please Try Again Later!",
+              title: "Info", isInfoAlert: true);
+        }
+        break;
       case token:
         {
           navigateToStatusRoute(
