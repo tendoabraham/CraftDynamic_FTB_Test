@@ -493,7 +493,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                 return DropdownMenuItem(
                     value: value ?? formItem?.controlText,
                     child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 2),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
