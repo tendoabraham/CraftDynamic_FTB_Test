@@ -492,27 +492,29 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
 
                 return DropdownMenuItem(
                     value: value ?? formItem?.controlText,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: image ?? formItem?.controlText,
-                          placeholder: (context, url) => PulseLoadUtil(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          width: 77,
-                          height: 77,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          label ?? formItem?.controlText,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ],
-                    ));
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: image ?? formItem?.controlText,
+                              placeholder: (context, url) => PulseLoadUtil(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              width: 77,
+                              height: 77,
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              label ?? formItem?.controlText,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          ],
+                        )));
               }).toList();
               dropdownPicks.toSet().toList();
               if (dropdownPicks.isNotEmpty &&
