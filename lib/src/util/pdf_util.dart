@@ -4,7 +4,8 @@ class PDFUtil {
   static downloadReceipt(
       {PostDynamic? postDynamic,
       Map<String, dynamic>? receiptdetails,
-      downloadReceipt = true}) async {
+      downloadReceipt = true,
+      isShare}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
     final profileRepo = ProfileRepository();
@@ -138,6 +139,7 @@ class PDFUtil {
       pdfName: receiptname,
       document: document,
       downloadReceipt: downloadReceipt,
+      isShare: isShare,
     ));
   }
 
