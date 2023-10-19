@@ -502,8 +502,8 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                               placeholder: (context, url) => PulseLoadUtil(),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
-                              width: 77,
-                              height: 77,
+                              width: 70,
+                              height: 70,
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(

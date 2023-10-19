@@ -199,13 +199,14 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       menuBorder: fields[14] as MenuBorder?,
       menuProperties: fields[15] as MenuProperties?,
       blockSpacing: fields[16] as BlockSpacing?,
+      moduleDescription: fields[17] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ModuleItem obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.moduleId)
       ..writeByte(1)
@@ -239,7 +240,9 @@ class ModuleItemAdapter extends TypeAdapter<ModuleItem> {
       ..writeByte(15)
       ..write(obj.menuProperties)
       ..writeByte(16)
-      ..write(obj.blockSpacing);
+      ..write(obj.blockSpacing)
+      ..writeByte(17)
+      ..write(obj.moduleDescription);
   }
 
   @override

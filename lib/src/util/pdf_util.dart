@@ -1,8 +1,10 @@
 part of craft_dynamic;
 
 class PDFUtil {
-  static downloadReceipt(PostDynamic postDynamic,
-      {downloadReceipt = true}) async {
+  static downloadReceipt(
+      {PostDynamic? postDynamic,
+      Map<String, dynamic>? receiptdetails,
+      downloadReceipt = true}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
     final profileRepo = ProfileRepository();
@@ -66,19 +68,32 @@ class PDFUtil {
       font: PdfStandardFont(PdfFontFamily.helvetica, 18),
     );
     grid.style = gridStyle;
-
     grid.columns.add(count: 2);
-    postDynamic.receiptDetails?.asMap().forEach((index, item) {
-      PdfGridRow row = grid.rows.add();
-      String title = MapItem.fromJson(postDynamic.receiptDetails?[index]).title;
-      String value = row.cells[1].value =
-          MapItem.fromJson(postDynamic.receiptDetails?[index]).value ?? "****";
-      if (title == "Reference No") {
-        receiptNo = value;
-      }
-      row.cells[0].value = title;
-      row.cells[1].value = value;
-    });
+
+    (postDynamic?.receiptDetails?.isEmpty ?? true)
+        ? receiptdetails?.entries.forEach((item) {
+            PdfGridRow row = grid.rows.add();
+            String title = item.key;
+            String value = row.cells[1].value = item.value ?? "****";
+            if (title == "Reference No") {
+              receiptNo = value;
+            }
+            row.cells[0].value = title;
+            row.cells[1].value = value;
+          })
+        : postDynamic?.receiptDetails?.asMap().forEach((index, item) {
+            PdfGridRow row = grid.rows.add();
+            String title =
+                MapItem.fromJson(postDynamic.receiptDetails?[index]).title;
+            String value = row.cells[1].value =
+                MapItem.fromJson(postDynamic.receiptDetails?[index]).value ??
+                    "****";
+            if (title == "Reference No") {
+              receiptNo = value;
+            }
+            row.cells[0].value = title;
+            row.cells[1].value = value;
+          });
 
     //Watermark image
     ByteData imageBytes = await rootBundle.load('assets/launcher/launcher.png');

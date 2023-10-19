@@ -156,8 +156,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             iconSize: 28,
                                             onPressed: () {
                                               PDFUtil.downloadReceipt(
-                                                postDynamic,
-                                              );
+                                                  postDynamic: postDynamic);
                                             },
                                             icon: const Column(children: [
                                               Icon(
@@ -177,7 +176,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             iconSize: 28,
                                             onPressed: () {
                                               PDFUtil.downloadReceipt(
-                                                  postDynamic,
+                                                  postDynamic: postDynamic,
                                                   downloadReceipt: false);
                                             },
                                             icon: const Column(children: [

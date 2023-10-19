@@ -114,26 +114,28 @@ class ModuleItem {
   MenuProperties? menuProperties;
   @HiveField(16)
   BlockSpacing? blockSpacing;
+  @HiveField(17)
+  String? moduleDescription;
 
-  ModuleItem({
-    required this.parentModule,
-    required this.moduleUrl,
-    required this.moduleId,
-    required this.moduleName,
-    this.moduleCategory,
-    required this.merchantID,
-    this.isMainMenu,
-    this.isDisabled,
-    this.isHidden,
-    this.moduleUrl2,
-    this.displayOrder,
-    this.blockAspectRatio,
-    this.isDBCall,
-    this.header,
-    this.menuBorder,
-    this.menuProperties,
-    this.blockSpacing,
-  });
+  ModuleItem(
+      {required this.parentModule,
+      required this.moduleUrl,
+      required this.moduleId,
+      required this.moduleName,
+      this.moduleCategory,
+      required this.merchantID,
+      this.isMainMenu,
+      this.isDisabled,
+      this.isHidden,
+      this.moduleUrl2,
+      this.displayOrder,
+      this.blockAspectRatio,
+      this.isDBCall,
+      this.header,
+      this.menuBorder,
+      this.menuProperties,
+      this.blockSpacing,
+      this.moduleDescription});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -155,7 +157,8 @@ class ModuleItem {
         menuProperties = MenuProperties.fromJson(
             jsonDecode(json["MenuProperties"] ?? "{}") ?? {}),
         blockSpacing =
-            BlockSpacing.fromJson(jsonDecode(json["BlockSpacing"] ?? "{}"));
+            BlockSpacing.fromJson(jsonDecode(json["BlockSpacing"] ?? "{}")),
+        moduleDescription = json["ModuleDescription"];
 }
 
 @HiveType(typeId: 2)
