@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PDFScreen extends StatefulWidget {
   final String? path;
@@ -61,14 +62,18 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
           ],
         ),
         body: Container(
-          color: Colors.white,
-          child: SfPdfViewer.file(
-            File.fromUri(Uri.parse(widget.path ?? "")),
-            key: _pdfViewerKey,
-            pageLayoutMode: PdfPageLayoutMode.single,
-            canShowPageLoadingIndicator: true,
-          ),
-        ));
+            color: Colors.white,
+            child: PDFView(
+              filePath: widget.path,
+            )
+
+            // SfPdfViewer.file(
+            //   File.fromUri(Uri.parse(widget.path ?? "")),
+            //   key: _pdfViewerKey,
+            //   pageLayoutMode: PdfPageLayoutMode.single,
+            //   canShowPageLoadingIndicator: true,
+            // ),
+            ));
   }
 
   saveFile(BuildContext context, {isDownload = true}) async {
@@ -88,7 +93,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
           if (isDownload) {
             CommonUtils.showActionSnackBar(
               context: context,
-              message: "$receipt saved to Download",
+              message: "$receipt saved to download",
             );
           } else {
             openFile(receiptPath, widget.pdfName ?? "", isDownload: isDownload);

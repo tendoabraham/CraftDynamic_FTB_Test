@@ -112,12 +112,11 @@ class CommonUtils {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(message),
-                const Spacer(),
                 const Icon(
-                  Icons.check,
+                  Icons.download_done,
                   color: Colors.white,
-                )
+                ),
+                Text(message),
               ],
             ),
             behavior: SnackBarBehavior.floating,
