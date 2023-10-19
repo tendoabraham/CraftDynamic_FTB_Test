@@ -16,13 +16,15 @@ class PDFScreen extends StatefulWidget {
   final String? pdfName;
   final PdfDocument document;
   bool downloadReceipt;
+  bool isShare;
 
   PDFScreen(
       {Key? key,
       this.path,
       this.pdfName,
       required this.document,
-      this.downloadReceipt = true})
+      this.downloadReceipt = true,
+      this.isShare = false})
       : super(key: key);
 
   _PDFScreenState createState() => _PDFScreenState();
@@ -43,7 +45,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
         appBar: AppBar(
           title: const Text("Receipt"),
           actions: <Widget>[
-            widget.downloadReceipt
+            widget.downloadReceipt || widget.isShare
                 ? IconButton(
                     icon: const Icon(Icons.download),
                     onPressed: () async {
@@ -51,7 +53,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                     },
                   )
                 : const SizedBox(),
-            widget.downloadReceipt
+            widget.downloadReceipt && widget.isShare
                 ? const SizedBox()
                 : IconButton(
                     icon: const Icon(Icons.share),
