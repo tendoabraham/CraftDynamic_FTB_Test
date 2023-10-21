@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -64,18 +63,14 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
           ],
         ),
         body: Container(
-            color: Colors.white,
-            child: PDFView(
-              filePath: widget.path,
-            )
-
-            // SfPdfViewer.file(
-            //   File.fromUri(Uri.parse(widget.path ?? "")),
-            //   key: _pdfViewerKey,
-            //   pageLayoutMode: PdfPageLayoutMode.single,
-            //   canShowPageLoadingIndicator: true,
-            // ),
-            ));
+          color: Colors.white,
+          child: SfPdfViewer.file(
+            File.fromUri(Uri.parse(widget.path ?? "")),
+            key: _pdfViewerKey,
+            pageLayoutMode: PdfPageLayoutMode.single,
+            canShowPageLoadingIndicator: true,
+          ),
+        ));
   }
 
   saveFile(BuildContext context, {isDownload = true}) async {
