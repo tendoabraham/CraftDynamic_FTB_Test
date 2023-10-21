@@ -153,7 +153,10 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           context: context,
           isObscure: isObscured,
           refreshParent: refreshParent);
-      inputType = textFieldParams['inputType'];
+      inputType = formItem?.controlFormat == ControlFormat.PinNumber.name ||
+              formItem?.controlFormat == ControlFormat.PIN.name
+          ? TextInputType.number
+          : textFieldParams['inputType'];
       var formFieldValue = widget.formFields?.firstWhereOrNull((formField) =>
               formField[FormFieldProp.ControlID.name].toLowerCase() ==
               formItem?.controlId?.toLowerCase()) ??
