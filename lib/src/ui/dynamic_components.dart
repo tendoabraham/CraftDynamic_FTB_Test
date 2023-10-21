@@ -1092,6 +1092,8 @@ class _DynamicPhonePickerFormWidgetState
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
     AppLogger.appLogD(
         tag: "phone input::leading digit", message: formItem?.leadingDigits);
+    AppLogger.appLogD(
+        tag: "phone input::max digits", message: formItem?.maxLength);
 
     return InternationalPhoneNumberInput(
       maxLength: formItem?.maxLength ?? 11,
