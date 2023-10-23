@@ -112,6 +112,7 @@ class PostDynamicValidate implements IPostDynamicCheck {
       ..opensDynamicRoute = true
       ..nextFormSequence = dynamicResponse.nextFormSequence
       ..summary = dynamicResponse.summary
+      ..isList = dynamicResponse.dynamicList?.isNotEmpty ?? false
       ..list = dynamicResponse.dynamicList;
     return builder;
   }
