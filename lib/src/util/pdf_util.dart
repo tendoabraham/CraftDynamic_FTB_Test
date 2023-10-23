@@ -5,7 +5,7 @@ class PDFUtil {
       {PostDynamic? postDynamic,
       Map<String, dynamic>? receiptdetails,
       downloadReceipt = true,
-      isShare}) async {
+      isShare=false}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
     final profileRepo = ProfileRepository();

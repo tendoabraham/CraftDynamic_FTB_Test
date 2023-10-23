@@ -177,7 +177,8 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             onPressed: () {
                                               PDFUtil.downloadReceipt(
                                                   postDynamic: postDynamic,
-                                                  downloadReceipt: false);
+                                                  downloadReceipt: false,
+                                                  isShare: true);
                                             },
                                             icon: const Column(children: [
                                               Icon(
