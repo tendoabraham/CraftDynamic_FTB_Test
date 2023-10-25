@@ -5,61 +5,116 @@ class PDFUtil {
       {PostDynamic? postDynamic,
       Map<String, dynamic>? receiptdetails,
       downloadReceipt = true,
-      isShare=false}) async {
+      isShare = false}) async {
     String receiptNo = "";
     Color color = APIService.appPrimaryColor;
     final profileRepo = ProfileRepository();
     final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
+    PdfPage page = document.pages.add();
+    bool showImageHeader = true;
+
+    double imageWidth = page.size.width;
+    double imageHeight = 150;
+    ByteData headerImageBytes;
+    PdfImage headerImage;
 
     AppLogger.appLogD(tag: "pdf", message: "started creating pdf");
 
-    PdfPage page = document.pages.add();
+    try {
+      //Pick image for receipt header
+      headerImageBytes = await rootBundle.load('assets/receipt_logo.png');
+      List<int> headerImageBitmap = headerImageBytes.buffer.asUint8List();
+
+      headerImage =
+          PdfBitmap.fromBase64String(base64.encode(headerImageBitmap));
+      PdfGraphicsState receiptstate = page.graphics.save();
+
+      // Calculate the scaling factor to fit the image within the rectangle
+      double scaleX = imageWidth / headerImage.width;
+      double scaleY = imageHeight / headerImage.height;
+      double scale =
+          scaleX < scaleY ? scaleX : scaleY; // Use the smaller scaling factor
+
+      // Calculate the new image dimensions
+      imageWidth = headerImage.width * scale;
+      imageHeight = headerImage.height * scale;
+
+      // Calculate the position to center the image within the rectangle
+      double x = (page.size.width - imageWidth) / 2;
+      double y = (150 - imageHeight) / 2;
+
+      page.graphics.drawImage(
+          PdfBitmap.fromBase64String(base64.encode(headerImageBitmap)),
+          Rect.fromLTWH(x, y, imageWidth - 100, imageHeight));
+
+      page.graphics.restore(receiptstate);
+    } catch (e) {
+      AppLogger.appLogD(tag: "pdf_util", message: e);
+      showImageHeader = false;
+    }
 
     PdfPageTemplateElement header = PdfPageTemplateElement(
         Rect.fromLTWH(0, 0, document.pageSettings.size.width, 100));
 
-    header.graphics.drawRectangle(
-      bounds: Rect.fromLTWH(0, 0, header.width, header.height),
-      brush: PdfSolidBrush(PdfColor(color.red, color.green,
-          color.blue)), // Replace with your desired background color
-    );
+    if (!showImageHeader) {
+      header.graphics.drawRectangle(
+        bounds: Rect.fromLTWH(0, 0, header.width, header.height),
+        brush: PdfSolidBrush(PdfColor(color.red, color.green,
+            color.blue)), // Replace with your desired background color
+      );
+    }
 
-    var headerfont =
-        PdfStandardFont(PdfFontFamily.timesRoman, 28, style: PdfFontStyle.bold);
-
-    header.graphics.drawString(
-      APIService.appLabel,
-      headerfont,
-      brush: PdfSolidBrush(PdfColor(255, 255, 255)),
-      bounds: Rect.fromLTWH(
-          (header.width - headerfont.measureString(APIService.appLabel).width) /
-              2,
-          (header.height / 2) - 20,
-          0,
-          header.height),
-    );
+    if (!showImageHeader) {
+      var headerfont = PdfStandardFont(PdfFontFamily.timesRoman, 28,
+          style: PdfFontStyle.bold);
+      header.graphics.drawString(
+        APIService.appLabel,
+        headerfont,
+        brush: PdfSolidBrush(PdfColor(255, 255, 255)),
+        bounds: Rect.fromLTWH(
+            (header.width -
+                    headerfont.measureString(APIService.appLabel).width) /
+                2,
+            (header.height / 2) - 20,
+            0,
+            header.height),
+      );
+    }
 
     document.template.top = header;
-
     double hiTextUpperBound = 60;
     double subTitleUpperBound = hiTextUpperBound + 50;
     PdfStringFormat format = PdfStringFormat();
     format.alignment = PdfTextAlignment.center;
 
-    page.graphics.drawString(
-        'Hi ${await profileRepo.getUserInfo(UserAccountData.FirstName)},',
-        PdfStandardFont(PdfFontFamily.helvetica, 40, style: PdfFontStyle.bold),
-        brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
-        bounds: Rect.fromLTWH(0, hiTextUpperBound, page.size.width - 100, 0),
-        format: format);
+    if (!showImageHeader) {
+      page.graphics.drawString(
+          'Hi ${await profileRepo.getUserInfo(UserAccountData.FirstName)},',
+          PdfStandardFont(PdfFontFamily.helvetica, 40,
+              style: PdfFontStyle.bold),
+          brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
+          bounds: Rect.fromLTWH(0, hiTextUpperBound, page.size.width - 100, 0),
+          format: format);
 
-    page.graphics.drawString('Thank you for using ${APIService.appLabel}',
-        PdfStandardFont(PdfFontFamily.helvetica, 18),
-        brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
-        bounds: Rect.fromLTWH(
-            0, subTitleUpperBound, document.pageSettings.size.width - 100, 0),
-        format: format);
+      page.graphics.drawString('Thank you for using ${APIService.appLabel}',
+          PdfStandardFont(PdfFontFamily.helvetica, 18),
+          brush: PdfSolidBrush(PdfColor(color.red, color.green, color.blue)),
+          bounds: Rect.fromLTWH(
+              0, subTitleUpperBound, document.pageSettings.size.width - 100, 0),
+          format: format);
+    } else {
+      var transType = determineTransType(receiptdetails ?? {});
+      if (transType != null) {
+        page.graphics.drawString(
+            'Transaction $transType - Detail',
+            PdfStandardFont(PdfFontFamily.helvetica, 20,
+                style: PdfFontStyle.bold),
+            bounds:
+                Rect.fromLTWH(0, imageHeight + 10, page.size.width - 100, 0),
+            format: format);
+      }
+    }
 
     PdfGrid grid = PdfGrid();
     var gridStyle = PdfGridStyle(
@@ -97,7 +152,7 @@ class PDFUtil {
           });
 
     //Watermark image
-    ByteData imageBytes = await rootBundle.load('assets/launcher/launcher.png');
+    ByteData imageBytes = await rootBundle.load('assets/launcher.png');
     List<int> imageBitmap = imageBytes.buffer.asUint8List();
 
     PdfGraphicsState state = page.graphics.save();
@@ -109,8 +164,8 @@ class PDFUtil {
     page.graphics.restore(state);
 
     // Set margins for the page
-    double leftMargin = 8; // Adjust the left margin value as desired
-    double rightMargin = 4; // Adjust the right margin value as desired
+    double leftMargin = 0; // Adjust the left margin value as desired
+    double rightMargin = 0; // Adjust the right margin value as desired
     double topMargin = 20 +
         hiTextUpperBound +
         subTitleUpperBound; // Adjust the top margin value as desired
@@ -145,6 +200,12 @@ class PDFUtil {
 
   static saveFile(String path, PdfDocument document) async {
     await File(path).writeAsBytes(await document.save());
+  }
+
+  static String? determineTransType(Map<String, dynamic> details) {
+    if (details.containsKey("TransType")) {
+      return details["TransType"];
+    }
   }
 }
 
