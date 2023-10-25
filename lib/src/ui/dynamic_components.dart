@@ -1111,7 +1111,12 @@ class _DynamicPhonePickerFormWidgetState
       autoValidateMode: AutovalidateMode.disabled,
       initialValue: inputNumber,
       textFieldController: controller,
-      inputDecoration: InputDecoration(labelText: formItem?.controlText),
+      inputDecoration: InputDecoration(
+          labelText: formItem?.controlText,
+          suffixIcon: IconButton(
+              onPressed: pickPhoneContact,
+              icon:
+                  Icon(Icons.contacts, color: Theme.of(context).primaryColor))),
       validator: (value) {
         var input = value?.replaceAll(" ", "");
         var leadingDigits = formItem?.leadingDigits ?? [];
@@ -1135,6 +1140,27 @@ class _DynamicPhonePickerFormWidgetState
           ? formItem?.countries
           : null,
     );
+  }
+
+  pickPhoneContact() async {
+    final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
+    RegionInfo regionInfo = await PhoneNumberUtil.getRegionInfo(
+        phoneNumber: contact.phoneNumber?.number ?? "",
+        isoCode: APIService.countryIsoCode);
+    debugPrint("region +++${regionInfo.formattedPhoneNumber}");
+    setState(() {
+      controller.text = formatPhone(contact.phoneNumber?.number ?? "");
+    });
+  }
+
+  String formatPhone(String phone) {
+    var firstChar = phone[0];
+
+    if (firstChar == "0" || firstChar == "+") {
+      phone = phone.substring(1);
+      if (phone.substring(0, 2) == APIService.countryIsoCode) {}
+    }
+    return phone;
   }
 }
 
