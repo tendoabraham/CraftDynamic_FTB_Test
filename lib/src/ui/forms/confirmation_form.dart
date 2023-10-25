@@ -17,7 +17,7 @@ class ConfirmationForm {
                 image: DecorationImage(
               opacity: .1,
               image: AssetImage(
-                'assets/launcher/launcher.png',
+                'assets/launcher.png',
               ),
             )),
             child: Column(
