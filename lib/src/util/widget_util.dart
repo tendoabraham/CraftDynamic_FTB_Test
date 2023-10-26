@@ -17,6 +17,7 @@ class WidgetUtil {
     } catch (e) {
       AppLogger.appLogE(tag: "control format error", message: e.toString());
     }
+
     switch (controlFormat) {
       case ControlFormat.DATE:
         {
