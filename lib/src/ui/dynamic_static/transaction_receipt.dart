@@ -156,7 +156,9 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             iconSize: 28,
                                             onPressed: () {
                                               PDFUtil.downloadReceipt(
-                                                  postDynamic: postDynamic);
+                                                  receiptdetails:
+                                                      getTransactionDetailsMap(
+                                                          postDynamic));
                                             },
                                             icon: const Column(children: [
                                               Icon(
@@ -176,7 +178,9 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                             iconSize: 28,
                                             onPressed: () {
                                               PDFUtil.downloadReceipt(
-                                                  postDynamic: postDynamic,
+                                                  receiptdetails:
+                                                      getTransactionDetailsMap(
+                                                          postDynamic),
                                                   downloadReceipt: false,
                                                   isShare: true);
                                             },
@@ -222,6 +226,17 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                   ])))))),
           backgroundColor: APIService.appPrimaryColor,
         ));
+  }
+
+  Map<String, dynamic> getTransactionDetailsMap(PostDynamic postDynamic) {
+    Map<String, dynamic> details = {};
+    postDynamic.receiptDetails?.asMap().forEach((index, item) {
+      String title = MapItem.fromJson(postDynamic.receiptDetails?[index]).title;
+      String value =
+          MapItem.fromJson(postDynamic.receiptDetails?[index]).value ?? "****";
+      details.addAll({title: value});
+    });
+    return details;
   }
 
   @override

@@ -2,8 +2,7 @@ part of craft_dynamic;
 
 class PDFUtil {
   static downloadReceipt(
-      {PostDynamic? postDynamic,
-      Map<String, dynamic>? receiptdetails,
+      {Map<String, dynamic>? receiptdetails,
       downloadReceipt = true,
       isShare = false}) async {
     Color color = APIService.appPrimaryColor;
@@ -117,7 +116,7 @@ class PDFUtil {
 
     page.graphics.restore(await drawWaterMark(page));
 
-    String receiptNo = await drawGrid(page, postDynamic, receiptdetails);
+    String receiptNo = await drawGrid(page, receiptdetails);
 
     String receiptname = "Receipt$receiptNo";
     String filePath = "${directory?.path}/$receiptname.pdf";
@@ -147,8 +146,8 @@ class PDFUtil {
     return null;
   }
 
-  static Future<String> drawGrid(PdfPage page, PostDynamic? postDynamic,
-      Map<String, dynamic>? receiptdetails,
+  static Future<String> drawGrid(
+      PdfPage page, Map<String, dynamic>? receiptdetails,
       {double hiTextUpperBound = 60, subTitleUpperBound = 60 + 50}) async {
     PdfGrid grid = PdfGrid();
     var gridStyle = PdfGridStyle(
@@ -167,32 +166,17 @@ class PDFUtil {
         subTitleUpperBound; // Adjust the top margin value as desired
     String receiptNo = ""; // A
 
-    (postDynamic?.receiptDetails?.isEmpty ?? true)
-        ? receiptdetails?.entries.forEach((item) {
-            PdfGridRow row = grid.rows.add();
-            String title = item.key;
-            String value = row.cells[1].value = item.value ?? "****";
-            if (title.toLowerCase() == "reference no" ||
-                title.toLowerCase() == "bankreference") {
-              receiptNo = value;
-            }
-            row.cells[0].value = title;
-            row.cells[1].value = value;
-          })
-        : postDynamic?.receiptDetails?.asMap().forEach((index, item) {
-            PdfGridRow row = grid.rows.add();
-            String title =
-                MapItem.fromJson(postDynamic.receiptDetails?[index]).title;
-            String value = row.cells[1].value =
-                MapItem.fromJson(postDynamic.receiptDetails?[index]).value ??
-                    "****";
-            if (title.toLowerCase() == "reference no" ||
-                title.toLowerCase() == "bankreference") {
-              receiptNo = value;
-            }
-            row.cells[0].value = title;
-            row.cells[1].value = value;
-          });
+    receiptdetails?.entries.forEach((item) {
+      PdfGridRow row = grid.rows.add();
+      String title = item.key;
+      String value = row.cells[1].value = item.value ?? "****";
+      if (title.toLowerCase() == "reference no" ||
+          title.toLowerCase() == "bankreference") {
+        receiptNo = value;
+      }
+      row.cells[0].value = title;
+      row.cells[1].value = value;
+    });
 
     PdfLayoutResult? layoutResult = grid.draw(
       page: page,

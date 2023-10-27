@@ -415,3 +415,14 @@ class StandingOrder {
 
   Map<String, dynamic> toJson() => _$StandingOrderToJson(this);
 }
+
+class ReceiptModel {
+  String title;
+  String? value;
+
+  ReceiptModel({required this.title, required this.value});
+
+  ReceiptModel.fromJson(Map<String, dynamic> json)
+      : title = json["Title"],
+        value = json["Value"];
+}
