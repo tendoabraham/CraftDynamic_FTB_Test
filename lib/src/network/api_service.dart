@@ -71,7 +71,8 @@ class APIService {
         ? currentBankID.value
         : requestConfig?["bankId"];
     bankCustomerID = requestConfig?["bankCustomerID"] ?? "";
-    countryName = requestConfig?["country"] ?? "";
+    countryName =
+        requestConfig?["country"] + "${isTestUrl ? "TEST" : ""}" ?? "";
     countryCode = requestConfig?["countryCode"] ?? "";
     countryIsoCode = requestConfig?["countryIsoCode"] ?? "";
   }

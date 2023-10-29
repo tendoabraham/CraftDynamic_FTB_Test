@@ -1,13 +1,14 @@
 part of craft_dynamic;
 
 class PDFUtil {
+  static final PdfDocument document = PdfDocument();
+  static Color color = APIService.appPrimaryColor;
+  static final profileRepo = ProfileRepository();
+
   static downloadReceipt(
       {Map<String, dynamic>? receiptdetails,
       downloadReceipt = true,
       isShare = false}) async {
-    Color color = APIService.appPrimaryColor;
-    final profileRepo = ProfileRepository();
-    final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
     PdfPage page = document.pages.add();
     bool showImageHeader = true;
