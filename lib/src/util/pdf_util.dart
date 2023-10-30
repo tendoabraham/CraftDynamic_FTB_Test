@@ -1,14 +1,14 @@
 part of craft_dynamic;
 
 class PDFUtil {
-  static final PdfDocument document = PdfDocument();
   static Color color = APIService.appPrimaryColor;
   static final profileRepo = ProfileRepository();
 
-  static downloadReceipt(
+  static Future<int?> downloadReceipt(
       {Map<String, dynamic>? receiptdetails,
       downloadReceipt = true,
       isShare = false}) async {
+    final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
     PdfPage page = document.pages.add();
     bool showImageHeader = true;
@@ -134,6 +134,7 @@ class PDFUtil {
       downloadReceipt: downloadReceipt,
       isShare: isShare,
     ));
+    return 0;
   }
 
   static saveFile(String path, PdfDocument document) async {
@@ -178,7 +179,8 @@ class PDFUtil {
       String title = item.key;
       String value = row.cells[1].value = item.value ?? "****";
       if (title.toLowerCase() == "reference no" ||
-          title.toLowerCase() == "bankreference") {
+          title.toLowerCase() == "bankreference" ||
+          title.toLowerCase() == "reference id") {
         receiptNo = value;
       }
       row.cells[0].value = title;
