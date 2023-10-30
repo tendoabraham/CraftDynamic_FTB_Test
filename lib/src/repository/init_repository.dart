@@ -21,6 +21,7 @@ class InitRepository {
       refreshUIData = true;
     }
     if (refreshUIData || refreshData) {
+      await getAppStaticData();
       await getDynamicControls();
     }
   }
