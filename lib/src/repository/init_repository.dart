@@ -13,7 +13,8 @@ class InitRepository {
 
   // Call this method to get app data
   getAppUIData({bool refreshData = false}) async {
-    var refreshUIData = await getAppStaticData();
+    // var refreshUIData = await getAppStaticData();
+    bool refreshUIData = false;
     var bankID = await _sharedPref.getBankID();
 
     if (bankID != null && bankID != currentBankID.value) {

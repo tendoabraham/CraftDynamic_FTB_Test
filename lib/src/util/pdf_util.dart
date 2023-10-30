@@ -118,7 +118,6 @@ class PDFUtil {
     page.graphics.restore(await drawWaterMark(page));
 
     String receiptNo = await drawGrid(page, receiptdetails);
-
     String receiptname = "Receipt$receiptNo";
     String filePath = "${directory?.path}/$receiptname.pdf";
 
