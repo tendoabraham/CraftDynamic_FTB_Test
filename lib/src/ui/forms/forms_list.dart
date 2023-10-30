@@ -39,6 +39,7 @@ class FormsListWidget extends StatelessWidget {
     if (Provider.of<PluginState>(context, listen: false).deleteFormInput) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Provider.of<PluginState>(context, listen: false).clearDynamicInput();
+        Provider.of<DropDownState>(context, listen: false).clearSelections();
         Provider.of<PluginState>(context, listen: false)
             .screenDropDowns
             .clear();

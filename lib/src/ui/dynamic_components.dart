@@ -725,6 +725,7 @@ class _DropDownState extends State<DropDown> {
   final _userCodeRepository = UserCodeRepository();
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};
+  Map<String, dynamic> relationIDMap = {};
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
@@ -742,6 +743,11 @@ class _DropDownState extends State<DropDown> {
     return Builder(builder: (BuildContext context) {
       formItem = BaseFormInheritedComponent.of(context)?.formItem;
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
+      AppLogger.appLogD(
+          tag: "dynamiccomponents:dropdown linking",
+          message: Provider.of<DropDownState>(context, listen: false)
+              .linkedRelationID);
 
       return FutureBuilder<Map<String, dynamic>?>(
           future: getDropDownValues(formItem!, moduleItem!),
@@ -779,6 +785,8 @@ class _DropDownState extends State<DropDown> {
                   );
                 }).toList();
                 dropdownPicks.toSet().toList();
+                if (formItem?.linkedToRowID != null) {}
+
                 if (dropdownPicks.isNotEmpty &&
                     (formItem?.hasInitialValue ?? true)) {
                   addInitialValueToLinkedField(
@@ -815,6 +823,12 @@ class _DropDownState extends State<DropDown> {
                             formItem?.controlId ?? "": getValueFromList(value)
                           }
                         }),
+                        Provider.of<DropDownState>(context, listen: false)
+                            .addLinkedRelationID({
+                          formItem?.rowID?.toString() ?? "": {
+                            formItem?.controlId ?? "": getRelationIDValue(value)
+                          }
+                        }),
                         if (isFromAccountField(formItem?.controlId ?? ""))
                           {
                             state.setCurrentSelections(
@@ -843,6 +857,8 @@ class _DropDownState extends State<DropDown> {
 
   getValueFromList(value) => extraFieldMap[value];
 
+  getRelationIDValue(value) => relationIDMap[value];
+
   bool isToAccountField(String controlID) =>
       controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
           ? true
@@ -861,10 +877,17 @@ class _DropDownState extends State<DropDown> {
                 {} ||
             Provider.of<PluginState>(context, listen: false)
                     .dynamicDropDownData[formItem?.rowID?.toString()] ==
-                null) {
+                null ||
+            Provider.of<DropDownState>(context, listen: false)
+                    .linkedRelationID ==
+                {}) {
           Map<String, dynamic> map = {};
+          Map<String, dynamic> map2 = {};
+
           map.addAll(
               {formItem?.controlId ?? "": getValueFromList(initialValue)});
+          map2.addAll(
+              {formItem?.controlId ?? "": getRelationIDValue(initialValue)});
           AppLogger.appLogD(
               tag: "dropdown link",
               message:
@@ -872,6 +895,8 @@ class _DropDownState extends State<DropDown> {
 
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
+          Provider.of<DropDownState>(context, listen: false)
+              .addLinkedRelationID({formItem?.rowID?.toString() ?? "": map2});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -887,7 +912,14 @@ class _DropDownState extends State<DropDown> {
         userCodes =
             await _userCodeRepository.getUserCodesById(formItem.dataSourceId);
         extraFieldMap = userCodes.fold<Map<String, dynamic>>(
-            {}, (acc, curr) => acc..[curr.subCodeId] = curr.extraField!);
+            {}, (acc, curr) => acc..[curr.subCodeId] = curr.extraField);
+        relationIDMap = userCodes.fold<Map<String, dynamic>>(
+            {}, (acc, curr) => acc..[curr.subCodeId] = curr.relationId);
+        userCodes.forEach((element) {
+          AppLogger.appLogD(
+              tag: "dynamic_components${formItem.controlId}",
+              message: element.relationId);
+        });
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
       }
