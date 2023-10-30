@@ -16,11 +16,12 @@ class InitRepository {
     // var refreshUIData = await getAppStaticData();
     bool refreshUIData = false;
     var bankID = await _sharedPref.getBankID();
+    int version = await _sharedPref.getStaticDataVersion() ?? 0;
 
     if (bankID != null && bankID != currentBankID.value) {
       refreshUIData = true;
     }
-    if (refreshUIData || refreshData) {
+    if (refreshUIData || refreshData || version == 0) {
       await getAppStaticData();
       await getDynamicControls();
     }
