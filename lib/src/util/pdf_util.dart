@@ -147,6 +147,9 @@ class PDFUtil {
     if (details.containsKey("Transaction Type")) {
       return details["Transaction Type"];
     }
+    if (details.containsKey("TransactionType")) {
+      return details["TransactionType"];
+    }
     return null;
   }
 
