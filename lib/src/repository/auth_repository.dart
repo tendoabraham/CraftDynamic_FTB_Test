@@ -52,7 +52,6 @@ class AuthRepository {
       String? currentLanguageIDSetting = activationResponse.languageID;
       var newdataversion = activationResponse.staticDataVersion;
       // await _sharedPref.addStaticDataVersion(newdataversion ?? 0);
-      await _profileRepository.getAllAccountBalancesAndSaveInAppState();
 
       if (currentLanguage != null &&
           currentLanguageIDSetting != null &&
@@ -64,8 +63,9 @@ class AuthRepository {
 
       if (newdataversion != null && newdataversion > localdataversion ||
           refreshUIData) {
-        await _initRepository.getAppUIData(refreshData: refreshUIData);
+        await _initRepository.getAppUIData(refreshData: true);
       }
+      await _profileRepository.getAllAccountBalancesAndSaveInAppState();
     } else if (activationResponse.status == StatusCode.changePin.statusCode) {
       await _sharedPref.setIsListeningToFocusState(true);
       _moduleRepository.getModuleById(ModuleId.PIN.name).then((module) {

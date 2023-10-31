@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 part of craft_dynamic;
 
+var classname = "dynamic_components";
+
 class DynamicInput {
   static Map<String?, dynamic> formInputValues = {};
   static Map<String?, dynamic> encryptedField = {};
@@ -743,113 +745,129 @@ class _DropDownState extends State<DropDown> {
     return Builder(builder: (BuildContext context) {
       formItem = BaseFormInheritedComponent.of(context)?.formItem;
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
-
-      AppLogger.appLogD(
-          tag: "dynamiccomponents:dropdown linking",
-          message: Provider.of<DropDownState>(context, listen: false)
-              .linkedRelationID);
-
-      return FutureBuilder<Map<String, dynamic>?>(
-          future: getDropDownValues(formItem!, moduleItem!),
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<String, dynamic>?> snapshot) {
-            Widget child = DropdownButtonFormField2(
-              value: _currentValue,
-              hint: Text(
-                formItem!.controlText!,
-              ),
-              isExpanded: true,
-              items: const [],
-            );
-            if (snapshot.hasData) {
-              var data = snapshot.data ?? {};
-              var dropdownItems = data;
-              AppLogger.appLogD(
-                  tag: "dropdown data-->", message: dropdownItems);
-              if (!isToAccountField(formItem?.controlId ?? "")) {
-                _currentValue = formItem?.hasInitialValue ?? true
-                    ? dropdownItems.isNotEmpty
-                        ? dropdownItems.entries.first.key
-                        : null
-                    : null;
-              }
-
-              child = Consumer<DropDownState>(builder: (context, state, child) {
-                var dropdownPicks = dropdownItems.entries.map((item) {
-                  return DropdownMenuItem(
-                    value: item.key,
-                    child: Text(
-                      item.value,
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  );
-                }).toList();
-                dropdownPicks.toSet().toList();
-                if (formItem?.linkedToRowID != null) {}
-
-                if (dropdownPicks.isNotEmpty &&
-                    (formItem?.hasInitialValue ?? true)) {
-                  addInitialValueToLinkedField(
-                      context, getFirstSubcodeID(dropdownItems.entries.first));
+      {
+        return FutureBuilder<Map<String, dynamic>?>(
+            future: getDropDownValues(formItem!, moduleItem!),
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+              Widget child = DropdownButtonFormField2(
+                value: _currentValue,
+                hint: Text(
+                  formItem!.controlText!,
+                ),
+                isExpanded: true,
+                items: const [],
+              );
+              if (snapshot.hasData) {
+                var data = snapshot.data ?? {};
+                var dropdownItems = data;
+                AppLogger.appLogD(
+                    tag: "dropdown data-->", message: dropdownItems);
+                if (!isToAccountField(formItem?.controlId ?? "") &&
+                    !isBillerName(formItem?.controlId ?? "")) {
+                  _currentValue = formItem?.hasInitialValue ?? true
+                      ? dropdownItems.isNotEmpty
+                          ? dropdownItems.entries.first.key
+                          : null
+                      : null;
                 }
 
-                if (isToAccountField(formItem?.controlId ?? "")) {
-                  var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
-                      item.value ==
-                      state.currentSelections?[ControlID.BANKACCOUNTID.name]);
-                  dropdownPicks.remove(dropdowns);
-                  if (_currentValue ==
-                      state.currentSelections?[ControlID.BANKACCOUNTID.name]) {
-                    _currentValue = formItem?.hasInitialValue ?? true
-                        ? dropdownPicks.isNotEmpty
-                            ? "${dropdownPicks[0].value}"
-                            : null
-                        : null;
+                child =
+                    Consumer<DropDownState>(builder: (context, state, child) {
+                  AppLogger.appLogD(
+                      tag: classname,
+                      message:
+                          "==================================================");
+
+                  AppLogger.appLogD(
+                      tag: "$classname:relationid @${formItem?.controlId}",
+                      message:
+                          Provider.of<DropDownState>(context, listen: false)
+                              .currentRelationID);
+
+                  var dropdownPicks = dropdownItems.entries.map((item) {
+                    return DropdownMenuItem(
+                      value: item.key,
+                      child: Text(
+                        item.value,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    );
+                  }).toList();
+                  dropdownPicks.toSet().toList();
+
+                  if (isBillerName(formItem?.controlId ?? "")) {
+                    dropdownPicks.removeWhere(
+                        (item) => item.value != state.currentRelationID);
                   }
-                }
 
-                return DropdownButtonFormField(
-                  value: _currentValue,
-                  decoration: InputDecoration(labelText: formItem?.controlText),
-                  isExpanded: true,
-                  style: const TextStyle(fontWeight: FontWeight.normal),
-                  onChanged: ((value) => {
-                        setState(() {
-                          _currentValue = value.toString();
-                        }),
-                        Provider.of<PluginState>(context, listen: false)
-                            .addDynamicDropDownData({
-                          formItem?.rowID?.toString() ?? "": {
-                            formItem?.controlId ?? "": getValueFromList(value)
-                          }
-                        }),
-                        Provider.of<DropDownState>(context, listen: false)
-                            .addLinkedRelationID({
-                          formItem?.rowID?.toString() ?? "": {
-                            formItem?.controlId ?? "": getRelationIDValue(value)
-                          }
-                        }),
-                        if (isFromAccountField(formItem?.controlId ?? ""))
-                          {
-                            state.setCurrentSelections(
-                                {formItem?.controlId: _currentValue}),
-                          }
-                      }),
-                  validator: (value) {
-                    String? input = value.toString();
-                    if ((formItem?.isMandatory ?? false) && input == "null") {
-                      return 'Input required*';
+                  if (dropdownPicks.isNotEmpty &&
+                      (formItem?.hasInitialValue ?? true)) {
+                    addInitialValueToLinkedField(context,
+                        getFirstSubcodeID(dropdownItems.entries.first));
+                  }
+
+                  if (isToAccountField(formItem?.controlId ?? "") ||
+                      isBillerName(formItem?.controlId ?? "")) {
+                    var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
+                        item.value ==
+                        state.currentSelections?[ControlID.BANKACCOUNTID.name]);
+                    dropdownPicks.remove(dropdowns);
+                    if (_currentValue ==
+                        state
+                            .currentSelections?[ControlID.BANKACCOUNTID.name]) {
+                      _currentValue = formItem?.hasInitialValue ?? true
+                          ? dropdownPicks.isNotEmpty
+                              ? "${dropdownPicks[0].value}"
+                              : null
+                          : null;
                     }
-                    Provider.of<PluginState>(context, listen: false)
-                        .addFormInput({"${formItem?.serviceParamId}": value});
-                    return null;
-                  },
-                  items: dropdownPicks,
-                );
-              });
-            }
-            return child;
-          });
+                  }
+
+                  return DropdownButtonFormField(
+                    value: _currentValue,
+                    decoration:
+                        InputDecoration(labelText: formItem?.controlText),
+                    isExpanded: true,
+                    style: const TextStyle(fontWeight: FontWeight.normal),
+                    onChanged: ((value) => {
+                          setState(() {
+                            _currentValue = value.toString();
+                          }),
+                          Provider.of<PluginState>(context, listen: false)
+                              .addDynamicDropDownData({
+                            formItem?.rowID?.toString() ?? "": {
+                              formItem?.controlId ?? "": getValueFromList(value)
+                            }
+                          }),
+                          if (isBillerType(formItem?.controlId ?? ""))
+                            {
+                              Provider.of<DropDownState>(context, listen: false)
+                                  .addCurrentRelationID(
+                                      getRelationIDValue(value)),
+                            },
+                          if (isFromAccountField(formItem?.controlId ?? ""))
+                            {
+                              state.setCurrentSelections(
+                                  {formItem?.controlId: _currentValue}),
+                            }
+                        }),
+                    validator: (value) {
+                      String? input = value.toString();
+                      if ((formItem?.isMandatory ?? false) && input == "null") {
+                        return 'Input required*';
+                      }
+                      Provider.of<PluginState>(context, listen: false)
+                          .addFormInput({"${formItem?.serviceParamId}": value});
+                      return null;
+                    },
+                    items: dropdownPicks,
+                  );
+                });
+              }
+              return child;
+            });
+      }
     });
   }
 
@@ -861,6 +879,16 @@ class _DropDownState extends State<DropDown> {
 
   bool isToAccountField(String controlID) =>
       controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
+          ? true
+          : false;
+
+  bool isBillerType(String controlID) =>
+      controlID.toLowerCase() == ControlID.BILLERTYPE.name.toLowerCase()
+          ? true
+          : false;
+
+  bool isBillerName(String controlID) =>
+      controlID.toLowerCase() == ControlID.BILLERNAME.name.toLowerCase()
           ? true
           : false;
 
@@ -877,26 +905,18 @@ class _DropDownState extends State<DropDown> {
                 {} ||
             Provider.of<PluginState>(context, listen: false)
                     .dynamicDropDownData[formItem?.rowID?.toString()] ==
-                null ||
-            Provider.of<DropDownState>(context, listen: false)
-                    .linkedRelationID ==
-                {}) {
+                null) {
           Map<String, dynamic> map = {};
-          Map<String, dynamic> map2 = {};
 
           map.addAll(
               {formItem?.controlId ?? "": getValueFromList(initialValue)});
-          map2.addAll(
-              {formItem?.controlId ?? "": getRelationIDValue(initialValue)});
-          AppLogger.appLogD(
-              tag: "dropdown link",
-              message:
-                  "adding initial linked value ${formItem?.rowID?.toString()}$map");
 
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
-          Provider.of<DropDownState>(context, listen: false)
-              .addLinkedRelationID({formItem?.rowID?.toString() ?? "": map2});
+          if (isBillerType(formItem?.controlId ?? "")) {
+            Provider.of<DropDownState>(context, listen: false)
+                .addCurrentRelationID(getRelationIDValue(initialValue));
+          }
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -915,11 +935,6 @@ class _DropDownState extends State<DropDown> {
             {}, (acc, curr) => acc..[curr.subCodeId] = curr.extraField);
         relationIDMap = userCodes.fold<Map<String, dynamic>>(
             {}, (acc, curr) => acc..[curr.subCodeId] = curr.relationId);
-        userCodes.forEach((element) {
-          AppLogger.appLogD(
-              tag: "dynamic_components${formItem.controlId}",
-              message: element.relationId);
-        });
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
       }
