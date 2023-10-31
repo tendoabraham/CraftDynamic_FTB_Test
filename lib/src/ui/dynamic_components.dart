@@ -796,23 +796,18 @@ class _DropDownState extends State<DropDown> {
                   }).toList();
                   dropdownPicks.toSet().toList();
 
-                  if (isBillerName(formItem?.controlId ?? "")) {
-                    dropdownPicks.removeWhere(
-                        (item) => item.value != state.currentRelationID);
-                  }
-
                   if (dropdownPicks.isNotEmpty &&
                       (formItem?.hasInitialValue ?? true)) {
                     addInitialValueToLinkedField(context,
                         getFirstSubcodeID(dropdownItems.entries.first));
                   }
 
-                  if (isToAccountField(formItem?.controlId ?? "") ||
-                      isBillerName(formItem?.controlId ?? "")) {
+                  if (isToAccountField(formItem?.controlId ?? "")) {
                     var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
                         item.value ==
                         state.currentSelections?[ControlID.BANKACCOUNTID.name]);
                     dropdownPicks.remove(dropdowns);
+
                     if (_currentValue ==
                         state
                             .currentSelections?[ControlID.BANKACCOUNTID.name]) {
@@ -823,6 +818,22 @@ class _DropDownState extends State<DropDown> {
                           : null;
                     }
                   }
+
+                  if (isBillerName(formItem?.controlId ?? "")) {
+                    dropdownPicks.removeWhere((item) =>
+                        getRelationIDValue(item.value) !=
+                        state.currentRelationID);
+                    _currentValue = formItem?.hasInitialValue ?? true
+                        ? dropdownPicks.isNotEmpty
+                            ? "${dropdownPicks[0].value}"
+                            : null
+                        : null;
+                  }
+
+                  AppLogger.appLogD(
+                      tag: "$classname@${formItem?.controlId}",
+                      message:
+                          "current relationid is --> ${state.currentRelationID} and current value set is $_currentValue");
 
                   return DropdownButtonFormField(
                     value: _currentValue,
@@ -842,9 +853,8 @@ class _DropDownState extends State<DropDown> {
                           }),
                           if (isBillerType(formItem?.controlId ?? ""))
                             {
-                              Provider.of<DropDownState>(context, listen: false)
-                                  .addCurrentRelationID(
-                                      getRelationIDValue(value)),
+                              state.addCurrentRelationID(
+                                  getRelationIDValue(value)),
                             },
                           if (isFromAccountField(formItem?.controlId ?? ""))
                             {
@@ -1524,6 +1534,7 @@ class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
   @override
   void initState() {
+    AppLogger.appLogD(tag: "$classname all input", message: " ${widget.input}");
     super.initState();
   }
 
@@ -1532,17 +1543,22 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
     var formInput = widget.input[formItem?.controlId];
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(formItem?.controlText ?? ""),
-        Text(
-          formInput ?? "****",
-          style: const TextStyle(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.start,
-        )
-      ],
-    );
+    AppLogger.appLogD(
+        tag: "$classname@${formItem?.controlId}", message: "input $formInput");
+
+    return formInput == null
+        ? const SizedBox()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(formItem?.controlText ?? ""),
+              Text(
+                formInput ?? "****",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              )
+            ],
+          );
   }
 }
 
