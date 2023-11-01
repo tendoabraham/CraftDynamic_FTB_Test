@@ -515,10 +515,11 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                             const SizedBox(
                               width: 8,
                             ),
-                            Text(
+                            Expanded(
+                                child: Text(
                               label ?? formItem?.controlText,
                               overflow: TextOverflow.ellipsis,
-                            )
+                            ))
                           ],
                         )));
               }).toList();
@@ -530,6 +531,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
               child = DropdownButtonFormField(
                 value: _currentValue,
                 items: dropdownPicks,
+                isExpanded: true,
                 onChanged: (value) {},
                 validator: (value) {
                   String? input = value.toString();
