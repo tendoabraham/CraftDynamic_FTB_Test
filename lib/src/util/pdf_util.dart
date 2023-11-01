@@ -179,7 +179,8 @@ class PDFUtil {
       String value = row.cells[1].value = item.value ?? "****";
       if (title.toLowerCase() == "reference no" ||
           title.toLowerCase() == "bankreference" ||
-          title.toLowerCase() == "reference id") {
+          title.toLowerCase() == "reference id" ||
+          title.toLowerCase() == "bank reference") {
         receiptNo = value;
       }
       row.cells[0].value = title;
