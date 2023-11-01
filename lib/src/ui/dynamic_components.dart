@@ -767,21 +767,13 @@ class _DropDownState extends State<DropDown> {
                 var dropdownItems = data;
                 AppLogger.appLogD(
                     tag: "dropdown data-->", message: dropdownItems);
-                if (!isToAccountField(formItem?.controlId ?? "") &&
-                    !isBillerName(formItem?.controlId ?? "")) {
-                  _currentValue = formItem?.hasInitialValue ?? true
-                      ? dropdownItems.isNotEmpty
-                          ? dropdownItems.entries.first.key
-                          : null
-                      : null;
-                }
 
                 child =
                     Consumer<DropDownState>(builder: (context, state, child) {
                   AppLogger.appLogD(
                       tag: classname,
                       message:
-                          "==================================================");
+                          "all selected data ${state.currentDropDownValue}");
 
                   AppLogger.appLogD(
                       tag: "$classname:relationid @${formItem?.controlId}",
@@ -804,6 +796,21 @@ class _DropDownState extends State<DropDown> {
                       (formItem?.hasInitialValue ?? true)) {
                     addInitialValueToLinkedField(context,
                         getFirstSubcodeID(dropdownItems.entries.first));
+                  }
+
+                  if (!isToAccountField(formItem?.controlId ?? "") &&
+                      !isBillerName(formItem?.controlId ?? "")) {
+                    if (isReceivingBranch(formItem?.controlId ?? "")) {
+                      setReceivingBranchInitialValue(
+                          dropdownPicks,
+                          state.currentDropDownValue[
+                              ControlID.BANKACCOUNTID.name]);
+                    }
+                    _currentValue = formItem?.hasInitialValue ?? true
+                        ? dropdownItems.isNotEmpty
+                            ? dropdownItems.entries.first.key
+                            : null
+                        : null;
                   }
 
                   if (isToAccountField(formItem?.controlId ?? "")) {
@@ -855,6 +862,8 @@ class _DropDownState extends State<DropDown> {
                               formItem?.controlId ?? "": getValueFromList(value)
                             }
                           }),
+                          state.addCurrentDropDownValue(
+                              {formItem?.controlId: value}),
                           if (isBillerType(formItem?.controlId ?? ""))
                             {
                               state.addCurrentRelationID(
@@ -891,8 +900,28 @@ class _DropDownState extends State<DropDown> {
 
   getRelationIDValue(value) => relationIDMap[value];
 
+  setReceivingBranchInitialValue(
+      List<DropdownMenuItem<String>> items, String? accountID) async {
+    var acc = await getAccountBranch(accountID ?? "");
+    _currentValue =
+        items.firstWhereOrNull((item) => item.value == acc?.branchID)?.value;
+    AppLogger.appLogD(
+        tag: classname,
+        message: "value on receiving branch set as $_currentValue");
+  }
+
+  Future<BankAccount?> getAccountBranch(String accountID) async {
+    final bankRepo = BankAccountRepository();
+    return bankRepo.getBankAccount(accountID);
+  }
+
   bool isToAccountField(String controlID) =>
       controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
+          ? true
+          : false;
+
+  bool isReceivingBranch(String controlID) =>
+      controlID.toLowerCase() == ControlID.RECEIVINGBRANCH.name.toLowerCase()
           ? true
           : false;
 
@@ -930,6 +959,8 @@ class _DropDownState extends State<DropDown> {
           }
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
+          Provider.of<DropDownState>(context, listen: false)
+              .addCurrentDropDownValue({formItem?.controlId: initialValue});
           if (isBillerType(formItem?.controlId ?? "")) {
             Provider.of<DropDownState>(context, listen: false)
                 .addCurrentRelationID(getRelationIDValue(initialValue));

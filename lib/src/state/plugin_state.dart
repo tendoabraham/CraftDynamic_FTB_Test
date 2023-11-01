@@ -140,8 +140,8 @@ class DropDownState extends ChangeNotifier {
   final Map<String?, dynamic> _currentSelections = {};
   final Map<String?, dynamic> _currentToAccountSelection = {};
   String _currentRelationID = "";
-
   final List<DropdownMenuItem<String>> _toAccountItems = [];
+  final Map<String?, dynamic> _currentDropDownValue = {};
 
   bool get loadingFromAccounts => _loadingFromAccounts;
 
@@ -153,6 +153,8 @@ class DropDownState extends ChangeNotifier {
       _currentToAccountSelection;
 
   String get currentRelationID => _currentRelationID;
+
+  Map<String?, dynamic> get currentDropDownValue => _currentDropDownValue;
 
   setLoadingFromAccounts(bool status) {
     _loadingFromAccounts = status;
@@ -173,9 +175,15 @@ class DropDownState extends ChangeNotifier {
     notifyListeners();
   }
 
+  addCurrentDropDownValue(Map<String?, dynamic> value) {
+    _currentDropDownValue.addAll(value);
+    notifyListeners();
+  }
+
   clearSelections() {
     _currentRelationID = "";
     _currentSelections.clear();
+    _currentDropDownValue.clear();
   }
 }
 

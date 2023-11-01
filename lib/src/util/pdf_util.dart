@@ -6,7 +6,9 @@ class PDFUtil {
 
   static Future<int?> downloadReceipt(
       {Map<String, dynamic>? receiptdetails,
+      List<dynamic>? transactionlist,
       downloadReceipt = true,
+      drawMultipleGrids = false,
       isShare = false}) async {
     final PdfDocument document = PdfDocument();
     final directory = await getExternalStorageDirectory();
@@ -17,8 +19,11 @@ class PDFUtil {
     double imageHeight = 150;
     ByteData headerImageBytes;
     PdfImage headerImage;
+    String receiptNo = "";
 
     AppLogger.appLogD(tag: "pdf", message: "started creating pdf");
+
+    if (transactionlist != null && drawMultipleGrids) {}
 
     try {
       //Pick image for receipt header
@@ -102,6 +107,35 @@ class PDFUtil {
           bounds: Rect.fromLTWH(
               0, subTitleUpperBound, document.pageSettings.size.width - 100, 0),
           format: format);
+    }
+
+    if (transactionlist != null && drawMultipleGrids) {
+      var transType = determineTransType(transactionlist.first ?? {});
+
+      page.graphics.drawString(
+          'Transaction $transType - Detail',
+          PdfStandardFont(PdfFontFamily.helvetica, 20,
+              style: PdfFontStyle.bold),
+          bounds: Rect.fromLTWH(0, imageHeight + 10, page.size.width - 100, 0),
+          format: format);
+      page.graphics.restore(await drawWaterMark(page));
+      await drawGrid(page, transactionlist.first);
+      transactionlist.removeAt(0);
+      for (var item in transactionlist) {
+        var page = document.pages.add();
+        var transType = determineTransType(item ?? {});
+
+        page.graphics.drawString(
+            'Transaction $transType - Detail',
+            PdfStandardFont(PdfFontFamily.helvetica, 20,
+                style: PdfFontStyle.bold),
+            bounds: Rect.fromLTWH(0, 0, page.size.width - 100, 0),
+            format: format);
+        page.graphics.restore(await drawWaterMark(page));
+        await drawGrid(page, item, removeTopMargin: true);
+      }
+      receiptNo =
+          DateFormat('hh:mm:ss').format(DateTime.now()).replaceAll(":", "");
     } else {
       var transType = determineTransType(receiptdetails ?? {});
       if (transType != null) {
@@ -113,11 +147,10 @@ class PDFUtil {
                 Rect.fromLTWH(0, imageHeight + 10, page.size.width - 100, 0),
             format: format);
       }
+      page.graphics.restore(await drawWaterMark(page));
+      receiptNo = await drawGrid(page, receiptdetails);
     }
 
-    page.graphics.restore(await drawWaterMark(page));
-
-    String receiptNo = await drawGrid(page, receiptdetails);
     String receiptname = "Receipt$receiptNo";
     String filePath = "${directory?.path}/$receiptname.pdf";
 
@@ -155,7 +188,9 @@ class PDFUtil {
 
   static Future<String> drawGrid(
       PdfPage page, Map<String, dynamic>? receiptdetails,
-      {double hiTextUpperBound = 60, subTitleUpperBound = 60 + 50}) async {
+      {double hiTextUpperBound = 60,
+      subTitleUpperBound = 60 + 50,
+      removeTopMargin = false}) async {
     PdfGrid grid = PdfGrid();
     var gridStyle = PdfGridStyle(
       cellPadding: PdfPaddings(left: 20, right: 20, top: 8, bottom: 8),
@@ -168,9 +203,11 @@ class PDFUtil {
     // Set margins for the page
     double leftMargin = 0; // Adjust the left margin value as desired
     double rightMargin = 0; // Adjust the right margin value as desired
-    double topMargin = 20 +
-        hiTextUpperBound +
-        subTitleUpperBound; // Adjust the top margin value as desired
+    double topMargin = removeTopMargin
+        ? 60
+        : 20 +
+            hiTextUpperBound +
+            subTitleUpperBound; // Adjust the top margin value as desired
     String receiptNo = ""; // A
 
     receiptdetails?.entries.forEach((item) {

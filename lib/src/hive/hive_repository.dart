@@ -280,6 +280,12 @@ class BankAccountRepository {
     var accounts = box.values.toList();
     return accounts;
   }
+
+  Future<BankAccount?> getBankAccount(String accountID) async {
+    var box = await openBox();
+    return box.values
+        .firstWhereOrNull((account) => account.bankAccountId == accountID);
+  }
 }
 
 class FrequentAccessedModuleRepository {
