@@ -728,6 +728,7 @@ class _DropDownState extends State<DropDown> {
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};
   Map<String, dynamic> relationIDMap = {};
+
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
@@ -920,7 +921,10 @@ class _DropDownState extends State<DropDown> {
 
           map.addAll(
               {formItem?.controlId ?? "": getValueFromList(initialValue)});
-
+          if (isFromAccountField(formItem?.controlId ?? "")) {
+            Provider.of<DropDownState>(context, listen: false)
+                .setCurrentSelections({formItem?.controlId: _currentValue});
+          }
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData({formItem?.rowID?.toString() ?? "": map});
           if (isBillerType(formItem?.controlId ?? "")) {
