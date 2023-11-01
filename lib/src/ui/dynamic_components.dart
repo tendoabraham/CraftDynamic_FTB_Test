@@ -1553,17 +1553,19 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
 
     return formInput == null
         ? const SizedBox()
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(formItem?.controlText ?? ""),
-              Text(
-                formInput ?? "****",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              )
-            ],
-          );
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 9),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(formItem?.controlText ?? ""),
+                Text(
+                  formInput ?? "****",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                )
+              ],
+            ));
   }
 }
 
