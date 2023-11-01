@@ -48,7 +48,8 @@ class BaseFormComponent extends StatelessWidget {
                 formItem.controlType == ViewType.SELECTEDTEXT.name ||
                 formItem.controlType == ViewType.FORM.name ||
                 formItem.controlType == ViewType.IMAGE.name ||
-                formItem.controlType == ViewType.TEXTVIEW.name
+                formItem.controlType == ViewType.TEXTVIEW.name ||
+                formItem.controlType == ViewType.HORIZONTALTEXT.name
             ? const SizedBox()
             : const SizedBox(
                 height: 18,
