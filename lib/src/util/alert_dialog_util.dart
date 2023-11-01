@@ -8,7 +8,7 @@ class AlertUtil {
       formFields,
       title,
       confirmButtonText = "Ok",
-      cancelButtonText = "cancel"}) {
+      cancelButtonText = "Cancel"}) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,

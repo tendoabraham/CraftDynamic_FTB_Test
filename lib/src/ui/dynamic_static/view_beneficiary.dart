@@ -111,7 +111,9 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                     onPressed: () {
                                       AlertUtil.showAlertDialog(context,
                                               "Confirm action to delete ${beneficiary.merchantName}",
-                                              isConfirm: true, title: "Delete")
+                                              isConfirm: true,
+                                              title: "Delete",
+                                              confirmButtonText: "Delete")
                                           .then((value) {
                                         if (value) {
                                           deleteBeneficiary(
