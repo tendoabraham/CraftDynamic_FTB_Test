@@ -1570,16 +1570,33 @@ class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
 }
 
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
+  String customerName = "";
+  final _profile = ProfileRepository();
+
   @override
   void initState() {
     AppLogger.appLogD(tag: "$classname all input", message: " ${widget.input}");
     super.initState();
   }
 
+  Future<String?> getCustomerName() async {
+    return await _profile.getUserInfo(UserAccountData.FirstName) +
+        " " +
+        await _profile.getUserInfo(UserAccountData.FirstName);
+  }
+
   @override
   Widget build(BuildContext context) {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
     var formInput = widget.input[formItem?.controlId];
+
+    if (formItem?.controlId == ControlID.FROMNAME.name) {
+      getCustomerName().then((value) {
+        setState(() {
+          formInput = value;
+        });
+      });
+    }
 
     AppLogger.appLogD(
         tag: "$classname@${formItem?.controlId}", message: "input $formInput");
