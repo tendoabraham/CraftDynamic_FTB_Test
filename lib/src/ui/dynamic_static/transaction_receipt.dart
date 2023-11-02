@@ -112,25 +112,31 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                                       .receiptDetails?[index])
                                               .value ??
                                           "****";
-                                      return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(title),
-                                              Flexible(
-                                                  child: Text(
-                                                value.isEmpty ? "****" : value,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                softWrap: true,
-                                                textAlign: TextAlign.end,
-                                              ))
-                                            ],
-                                          ));
+                                      return value.isEmpty
+                                          ? const SizedBox()
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(title),
+                                                  Flexible(
+                                                      child: Text(
+                                                    value.isEmpty
+                                                        ? "****"
+                                                        : value,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    softWrap: true,
+                                                    textAlign: TextAlign.end,
+                                                  ))
+                                                ],
+                                              ));
                                     }),
                                 const SizedBox(
                                   height: 12,
