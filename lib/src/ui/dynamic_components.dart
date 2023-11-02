@@ -1577,12 +1577,18 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
   void initState() {
     AppLogger.appLogD(tag: "$classname all input", message: " ${widget.input}");
     super.initState();
+    setCustomerName();
+  }
+
+  setCustomerName() async {
+    customerName = await getCustomerName() ?? "";
+    setState(() {});
   }
 
   Future<String?> getCustomerName() async {
     return await _profile.getUserInfo(UserAccountData.FirstName) +
         " " +
-        await _profile.getUserInfo(UserAccountData.FirstName);
+        await _profile.getUserInfo(UserAccountData.LastName);
   }
 
   @override
@@ -1591,11 +1597,7 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
     var formInput = widget.input[formItem?.controlId];
 
     if (formItem?.controlId == ControlID.FROMNAME.name) {
-      getCustomerName().then((value) {
-        setState(() {
-          formInput = value;
-        });
-      });
+      formInput = customerName;
     }
 
     AppLogger.appLogD(
