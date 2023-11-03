@@ -800,12 +800,12 @@ class _DropDownState extends State<DropDown> {
 
                   if (!isToAccountField(formItem?.controlId ?? "") &&
                       !isBillerName(formItem?.controlId ?? "")) {
-                    if (isReceivingBranch(formItem?.controlId ?? "")) {
-                      setReceivingBranchInitialValue(
-                          dropdownPicks,
-                          state.currentDropDownValue[
-                              ControlID.BANKACCOUNTID.name]);
-                    }
+                    // if (isReceivingBranch(formItem?.controlId ?? "")) {
+                    //   setReceivingBranchInitialValue(
+                    //       dropdownPicks,
+                    //       state.currentDropDownValue[
+                    //           ControlID.BANKACCOUNTID.name]);
+                    // }
                     _currentValue = formItem?.hasInitialValue ?? true
                         ? dropdownItems.isNotEmpty
                             ? dropdownItems.entries.first.key
@@ -1239,23 +1239,14 @@ class _DynamicPhonePickerFormWidgetState
 
   pickPhoneContact() async {
     final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
-    RegionInfo regionInfo = await PhoneNumberUtil.getRegionInfo(
-        phoneNumber: contact.phoneNumber?.number ?? "",
-        isoCode: APIService.countryIsoCode);
-    debugPrint("region +++${regionInfo.formattedPhoneNumber}");
     setState(() {
-      controller.text = formatPhone(contact.phoneNumber?.number ?? "");
+      controller.text = formatPhone(contact.phoneNumber?.number ?? "")
+          .replaceAll(RegExp(r'^0'), '');
     });
   }
 
   String formatPhone(String phone) {
-    var firstChar = phone[0];
-
-    if (firstChar == "0" || firstChar == "+") {
-      phone = phone.substring(1);
-      if (phone.substring(0, 2) == APIService.countryIsoCode) {}
-    }
-    return phone;
+    return phone.replaceAll(RegExp(r'\+\d{1,3}'), '');
   }
 }
 

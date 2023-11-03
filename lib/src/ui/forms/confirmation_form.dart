@@ -26,7 +26,7 @@ class ConfirmationForm {
                   children: [
                     const Text(
                       "Confirm Transaction",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 20),
                     ),
                     const Spacer(),
                     TextButton(
@@ -62,7 +62,7 @@ class ConfirmationForm {
                     width: 300,
                     child: WidgetFactory.buildButton(context, () {
                       Navigator.of(context).pop(0);
-                    }, "Confirm Transaction".toUpperCase())),
+                    }, "Continue".toUpperCase())),
                 const SizedBox(
                   height: 44,
                 )
