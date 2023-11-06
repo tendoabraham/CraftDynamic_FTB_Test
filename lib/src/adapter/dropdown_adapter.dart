@@ -25,6 +25,9 @@ class _UserCodeDropDown implements IDropDownAdapter {
   @override
   Future<Map<String, dynamic>?>? getDropDownItems() async {
     var userCodes = await _userCodeRepository.getUserCodesById(dataSourceID);
+    AppLogger.appLogD(
+        tag: "dropdown adapter::datasourceid @$dataSourceID",
+        message: userCodes);
     return userCodes.fold<Map<String, dynamic>>(
         {}, (acc, curr) => acc..[curr.subCodeId] = curr.description!);
   }

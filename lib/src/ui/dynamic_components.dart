@@ -773,7 +773,7 @@ class _DropDownState extends State<DropDown> {
                   AppLogger.appLogD(
                       tag: classname,
                       message:
-                          "all selected data ${state.currentDropDownValue}");
+                          "all values @${formItem?.controlId} --------> $data");
 
                   AppLogger.appLogD(
                       tag: "$classname:relationid @${formItem?.controlId}",
@@ -800,12 +800,6 @@ class _DropDownState extends State<DropDown> {
 
                   if (!isToAccountField(formItem?.controlId ?? "") &&
                       !isBillerName(formItem?.controlId ?? "")) {
-                    // if (isReceivingBranch(formItem?.controlId ?? "")) {
-                    //   setReceivingBranchInitialValue(
-                    //       dropdownPicks,
-                    //       state.currentDropDownValue[
-                    //           ControlID.BANKACCOUNTID.name]);
-                    // }
                     _currentValue = formItem?.hasInitialValue ?? true
                         ? dropdownItems.isNotEmpty
                             ? dropdownItems.entries.first.key
@@ -831,9 +825,6 @@ class _DropDownState extends State<DropDown> {
                   }
 
                   if (isBillerName(formItem?.controlId ?? "")) {
-                    dropdownPicks.removeWhere((item) =>
-                        getRelationIDValue(item.value) !=
-                        state.currentRelationID);
                     _currentValue = formItem?.hasInitialValue ?? true
                         ? dropdownPicks.isNotEmpty
                             ? "${dropdownPicks[0].value}"
@@ -900,16 +891,6 @@ class _DropDownState extends State<DropDown> {
 
   getRelationIDValue(value) => relationIDMap[value];
 
-  setReceivingBranchInitialValue(
-      List<DropdownMenuItem<String>> items, String? accountID) async {
-    var acc = await getAccountBranch(accountID ?? "");
-    _currentValue =
-        items.firstWhereOrNull((item) => item.value == acc?.branchID)?.value;
-    AppLogger.appLogD(
-        tag: classname,
-        message: "value on receiving branch set as $_currentValue");
-  }
-
   Future<BankAccount?> getAccountBranch(String accountID) async {
     final bankRepo = BankAccountRepository();
     return bankRepo.getBankAccount(accountID);
@@ -917,11 +898,6 @@ class _DropDownState extends State<DropDown> {
 
   bool isToAccountField(String controlID) =>
       controlID.toLowerCase() == ControlID.TOACCOUNTID.name.toLowerCase()
-          ? true
-          : false;
-
-  bool isReceivingBranch(String controlID) =>
-      controlID.toLowerCase() == ControlID.RECEIVINGBRANCH.name.toLowerCase()
           ? true
           : false;
 
