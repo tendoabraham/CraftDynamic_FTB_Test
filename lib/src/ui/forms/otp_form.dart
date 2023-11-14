@@ -55,7 +55,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               image: DecorationImage(
             opacity: .1,
             image: AssetImage(
-              'assets/launcher/launcher.png',
+              'assets/launcher.png',
             ),
           )),
           padding:
@@ -133,6 +133,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
             var obj = preCallData.requestObject;
             obj?["EncryptedFields"]
                 .addAll({"TrxOTP": CryptLib.encryptField(otpController.text)});
+            lastWebHeaderUsed.value = "account";
+
             await _dynamicRequest
                 .dynamicRequest(widget.moduleItem,
                     formItem: widget.formItem,

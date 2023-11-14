@@ -3,6 +3,8 @@
 part of craft_dynamic;
 
 class CryptLib {
+  static int count = 0;
+
   static Map<String, dynamic> generateKeyIV() {
     final key = Key.fromSecureRandom(8);
     final iv = IV.fromSecureRandom(8);
@@ -25,15 +27,16 @@ class CryptLib {
     }
   }
 
-  static Future<String> oldDecrypt(String response) async {
+  static Future<String> oldDecrypt(String response, {key, value}) async {
     return utf8.decode(base64.decode(CryptLib.decrypt(
         base64.normalize(response),
-        CryptLib.toSHA256(currentKey.value, 32),
-        currentIv.value)));
+        CryptLib.toSHA256(key ?? currentKey.value, 32),
+        value ?? currentIv.value,
+        response: response)));
   }
 
-  static String decrypt(
-      String ciphertext, String decryptKey, String decryptIv) {
+  static String decrypt(String ciphertext, String decryptKey, String decryptIv,
+      {response}) {
     String decrypted = "";
     try {
       final key = encryptcrpto.Key.fromUtf8(decryptKey);
@@ -45,8 +48,12 @@ class CryptLib {
           encryptcrpto.Encrypted.from64(ciphertext);
       decrypted = encrypter.decrypt(enBase64, iv: iv);
     } catch (e) {
+      count++;
       AppLogger.appLogE(
           tag: "DECRYPT ERROR", message: "Unable to decrypt data:::$e");
+      if (count <= 1) {
+        oldDecrypt(response, key: previousKey.value, value: previousIv.value);
+      }
     }
     return decrypted;
   }
