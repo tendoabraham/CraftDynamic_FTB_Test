@@ -202,7 +202,8 @@ class ModuleUtil {
       Map<String?, dynamic> dataObject = {};
       dataObject.addAll({"MerchantID": moduleItem.merchantID});
       _dynamicRequest
-          .dynamicRequest(moduleItem, dataObj: dataObject)
+          .dynamicRequest(moduleItem,
+              dataObj: dataObject, action: ActionType.PAYBILL)
           .then((value) {
         Navigator.of(context).pop();
         DynamicPostCall.processDynamicResponse(
