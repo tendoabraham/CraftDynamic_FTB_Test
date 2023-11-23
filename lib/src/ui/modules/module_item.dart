@@ -173,6 +173,8 @@ class ModuleUtil {
       return;
     }
     if (moduleItem.isDBCall ?? false) {
+      AppLogger.appLogD(tag: "module_item", message: "making a db call..");
+
       CommonUtils.navigateToRoute(
           context: context,
           widget: const GlobalLoader(),
@@ -191,6 +193,8 @@ class ModuleUtil {
     }
 
     if (moduleItem.isBankCall ?? false) {
+      AppLogger.appLogD(tag: "module_item", message: "making a bank call..");
+
       CommonUtils.navigateToRoute(
           context: context,
           widget: const GlobalLoader(),
