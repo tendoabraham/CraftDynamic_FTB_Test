@@ -203,7 +203,9 @@ class ModuleUtil {
       dataObject.addAll({"MerchantID": moduleItem.merchantID});
       _dynamicRequest
           .dynamicRequest(moduleItem,
-              dataObj: dataObject, action: ActionType.PAYBILL)
+              dataObj: dataObject,
+              action: ActionType.PAYBILL,
+              url: RouteUrl.account.name)
           .then((value) {
         Navigator.of(context).pop();
         DynamicPostCall.processDynamicResponse(
