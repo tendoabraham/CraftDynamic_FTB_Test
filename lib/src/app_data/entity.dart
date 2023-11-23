@@ -116,6 +116,8 @@ class ModuleItem {
   BlockSpacing? blockSpacing;
   @HiveField(17)
   String? moduleDescription;
+  @HiveField(18)
+  bool? isBankCall;
 
   ModuleItem(
       {required this.parentModule,
@@ -135,7 +137,8 @@ class ModuleItem {
       this.menuBorder,
       this.menuProperties,
       this.blockSpacing,
-      this.moduleDescription});
+      this.moduleDescription,
+      this.isBankCall});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -150,6 +153,7 @@ class ModuleItem {
         isHidden = json["IsHidden"],
         displayOrder = json['DisplayOrder'],
         isDBCall = json["ISDBCALL"],
+        isBankCall = json["ISBANKCALL"],
         header = json["DBCALLHEADER"],
         blockAspectRatio = double.parse(json["BlockAspectRatio"] ?? "1"),
         menuBorder =

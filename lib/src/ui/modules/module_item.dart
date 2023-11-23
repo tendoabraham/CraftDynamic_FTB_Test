@@ -190,6 +190,24 @@ class ModuleUtil {
       return;
     }
 
+    if (moduleItem.isBankCall ?? false) {
+      CommonUtils.navigateToRoute(
+          context: context,
+          widget: const GlobalLoader(),
+          isTransparentScreen: true);
+      Map<String?, dynamic> dataObject = {};
+      dataObject.addAll({"MerchantID": moduleItem.merchantID});
+      _dynamicRequest
+          .dynamicRequest(moduleItem, dataObj: dataObject)
+          .then((value) {
+        Navigator.of(context).pop();
+        DynamicPostCall.processDynamicResponse(
+            value!.dynamicData!, context, null,
+            moduleItem: moduleItem);
+      });
+      return;
+    }
+
     switch (EnumFormatter.getModuleId(moduleItem.moduleId)) {
       case ModuleId.FINGERPRINT:
         {
