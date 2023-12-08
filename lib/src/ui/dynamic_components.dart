@@ -174,7 +174,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
             tag: "all dynamic dropdown data ${formItem?.linkedToRowID}",
             message: state.dynamicDropDownData);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
-                ?[formItem?.controlId] ??
+                ?[formItem?.linkedToRowID] ??
             "";
       }
 
