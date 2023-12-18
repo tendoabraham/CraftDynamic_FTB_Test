@@ -148,52 +148,75 @@ class ListWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Card(
-                            child: InkWell(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 4.0),
-                                  child: Column(
-                                    children: mapItem
-                                        .map((key, value) => MapEntry(
-                                            key,
-                                            Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "$key:",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium,
-                                                    ),
-                                                    Flexible(
-                                                        child: Text(
-                                                      value.toString(),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: WidgetUtil
-                                                              .getTextColor(
-                                                                  value
-                                                                      .toString(),
-                                                                  key.toString())),
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                    ))
-                                                  ],
-                                                ))))
-                                        .values
-                                        .toList(),
-                                  ),
-                                ))),
+                            child: Column(children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 4.0),
+                            child: Column(
+                              children: mapItem
+                                  .map((key, value) => MapEntry(
+                                      key,
+                                      Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "$key:",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium,
+                                              ),
+                                              Flexible(
+                                                  child: Text(
+                                                value.toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        WidgetUtil.getTextColor(
+                                                            value.toString(),
+                                                            key.toString())),
+                                                textAlign: TextAlign.right,
+                                              ))
+                                            ],
+                                          ))))
+                                  .values
+                                  .toList(),
+                            ),
+                          ),
+                          Center(
+                              child: SizedBox(
+                                  width: 200,
+                                  child: OutlinedButton(
+                                      onPressed: () {
+                                        PDFUtil.downloadReceipt(
+                                            receiptdetails: mapItem
+                                                as Map<String, dynamic>);
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "See Receipt",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        ],
+                                      ))))
+                        ])),
                         const SizedBox(
                           height: 12,
                         )
