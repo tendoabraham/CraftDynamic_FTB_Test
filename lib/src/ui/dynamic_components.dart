@@ -791,11 +791,11 @@ class _DropDownState extends State<DropDown> {
                   }).toList();
                   dropdownPicks.toSet().toList();
 
-                  if (dropdownPicks.isNotEmpty &&
-                      (formItem?.hasInitialValue ?? true)) {
-                    addInitialValueToLinkedField(context,
-                        getFirstSubcodeID(dropdownItems.entries.first));
-                  }
+                  // if (dropdownPicks.isNotEmpty &&
+                  //     (formItem?.hasInitialValue ?? true)) {
+                  //   addInitialValueToLinkedField(context,
+                  //       getFirstSubcodeID(dropdownItems.entries.first));
+                  // }
 
                   if (!isToAccountField(formItem?.controlId ?? "") &&
                       !isBillerName(formItem?.controlId ?? "")) {
