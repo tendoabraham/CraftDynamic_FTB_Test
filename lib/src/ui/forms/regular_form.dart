@@ -77,7 +77,6 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
                           },
                           icon: const Icon(
                             Icons.view_list,
-                            color: Colors.white,
                           ))
                     ]
                   : null,
