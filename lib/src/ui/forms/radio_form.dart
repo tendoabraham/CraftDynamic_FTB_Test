@@ -71,7 +71,6 @@ class _RadioWidgetState extends State<RadioWidget> {
                           },
                           icon: const Icon(
                             Icons.view_list,
-                            color: Colors.white,
                           ))
                     ]
                   : null,

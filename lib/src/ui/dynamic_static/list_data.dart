@@ -16,7 +16,6 @@ class ListDataScreen extends StatelessWidget {
           }),
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.white,
           ),
         ),
         title: Text(title),

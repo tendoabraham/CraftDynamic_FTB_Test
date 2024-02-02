@@ -167,7 +167,6 @@ class _TabWidgetState extends State<TabWidget> {
                               },
                               icon: const Icon(
                                 Icons.view_list,
-                                color: Colors.white,
                               ))
                         ]
                       : null,
