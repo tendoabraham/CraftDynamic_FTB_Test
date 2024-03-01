@@ -730,6 +730,7 @@ class _DropDownState extends State<DropDown> {
   List<UserCode> userCodes = [];
   Map<String, dynamic> extraFieldMap = {};
   Map<String, dynamic> relationIDMap = {};
+  Map<String, dynamic> dropdownItems = {};
 
   FormItem? formItem;
   ModuleItem? moduleItem;
@@ -748,11 +749,14 @@ class _DropDownState extends State<DropDown> {
     return Builder(builder: (BuildContext context) {
       formItem = BaseFormInheritedComponent.of(context)?.formItem;
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
       {
         return FutureBuilder<Map<String, dynamic>?>(
             future: getDropDownValues(formItem!, moduleItem!),
             builder: (BuildContext context,
                 AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+              AppLogger.appLogD(
+                  tag: "dropdown", message: "getting dropdown data...");
               Widget child = DropdownButtonFormField2(
                 value: _currentValue,
                 hint: Text(
@@ -761,14 +765,23 @@ class _DropDownState extends State<DropDown> {
                 isExpanded: true,
                 items: const [],
               );
-              if (snapshot.hasData) {
+              AppLogger.appLogD(
+                  tag: "dropdown",
+                  message: "snapshot has data...v${snapshot.data}");
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                AppLogger.appLogD(
+                    tag: "dropdown", message: "snapshot has data...");
                 var data = snapshot.data ?? {};
-                var dropdownItems = data;
+                dropdownItems = data;
                 AppLogger.appLogD(
                     tag: "dropdown data-->", message: dropdownItems);
 
                 child =
                     Consumer<DropDownState>(builder: (context, state, child) {
+                  // dropdownItems = removeAllLoanAccounts(
+                  //     dropdownItems, state.currentRepaymentAccounts);
+
                   AppLogger.appLogD(
                       tag: classname,
                       message:
@@ -791,14 +804,15 @@ class _DropDownState extends State<DropDown> {
                   }).toList();
                   dropdownPicks.toSet().toList();
 
-                  // if (dropdownPicks.isNotEmpty &&
-                  //     (formItem?.hasInitialValue ?? true)) {
-                  //   addInitialValueToLinkedField(context,
-                  //       getFirstSubcodeID(dropdownItems.entries.first));
-                  // }
+                  if (dropdownPicks.isNotEmpty &&
+                      (formItem?.hasInitialValue ?? true)) {
+                    addInitialValueToLinkedField(context,
+                        getFirstSubcodeID(dropdownItems.entries.first));
+                  }
 
                   if (!isToAccountField(formItem?.controlId ?? "") &&
-                      !isBillerName(formItem?.controlId ?? "")) {
+                      !isBillerName(formItem?.controlId ?? "") &&
+                      (_currentValue?.isEmpty ?? true)) {
                     _currentValue = formItem?.hasInitialValue ?? true
                         ? dropdownItems.isNotEmpty
                             ? dropdownItems.entries.first.key
@@ -843,6 +857,9 @@ class _DropDownState extends State<DropDown> {
                     isExpanded: true,
                     style: const TextStyle(fontWeight: FontWeight.normal),
                     onChanged: ((value) => {
+                          AppLogger.appLogD(
+                              tag: 'dropdown component event elected',
+                              message: value),
                           setState(() {
                             _currentValue = value.toString();
                           }),
@@ -866,10 +883,20 @@ class _DropDownState extends State<DropDown> {
                             }
                         }),
                     validator: (value) {
+                      AppLogger.appLogD(
+                          tag: 'dropdown component validator value-->',
+                          message: value);
                       String? input = value.toString();
                       if ((formItem?.isMandatory ?? false) && input == "null") {
                         return 'Input required*';
                       }
+
+                      dropdownSelection.addAll({
+                        formItem?.serviceParamId:
+                            getValueFromKey(value.toString())
+                      });
+
+                      addDateFrequencyToState(value.toString());
                       Provider.of<PluginState>(context, listen: false)
                           .addFormInput({"${formItem?.serviceParamId}": value});
                       return null;
@@ -883,6 +910,20 @@ class _DropDownState extends State<DropDown> {
       }
     });
   }
+
+  addDateFrequencyToState(String frequency) {
+    if (formItem?.controlId == ControlID.FREQUENCY.name) {
+      try {
+        selectedDateFrequency.value = int.parse(frequency);
+      } catch (e) {
+        AppLogger.appLogD(tag: "dynamic_components", message: e);
+      }
+    }
+  }
+
+  String? getValueFromKey(String? value) =>
+      dropdownItems.keys.firstWhereIndexedOrNull(
+          (index, element) => dropdownItems[element] == value);
 
   String getFirstSubcodeID(MapEntry entry) => entry.key;
 
@@ -915,14 +956,37 @@ class _DropDownState extends State<DropDown> {
           ? true
           : false;
 
+  Map<String, dynamic> removeAllLoanAccounts(Map<String, dynamic> dropdownItems,
+      Map<String?, dynamic> allLoanAccounts) {
+    Map<String, dynamic> items = dropdownItems;
+    if (isFromAccountField(formItem?.controlId ?? "")) {
+      AppLogger.appLogD(
+          tag: "dynamic_components",
+          message: "removing all loan accounts from From Account Dropdown");
+
+      try {
+        if (items.isNotEmpty) {
+          var loanAccounts = allLoanAccounts.entries.toList();
+
+          for (var account in loanAccounts) {
+            items.removeWhere((key, value) => key == account.value);
+          }
+        }
+      } catch (e) {
+        AppLogger.appLogD(tag: "dynamic_components", message: e);
+      }
+    }
+    return items;
+  }
+
   void addInitialValueToLinkedField(BuildContext context, var initialValue) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         if (Provider.of<PluginState>(context, listen: false)
                     .dynamicDropDownData[formItem?.rowID?.toString()] ==
                 {} ||
-            Provider.of<PluginState>(context, listen: false)
-                    .dynamicDropDownData[formItem?.rowID?.toString()] ==
+            Provider.of<DropDownState>(context, listen: false)
+                    .currentDropDownValue[formItem?.controlId?.toString()] ==
                 null) {
           Map<String, dynamic> map = {};
 

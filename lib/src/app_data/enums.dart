@@ -72,7 +72,8 @@ enum ControlID {
   BILLERNAME,
   BILLERTYPE,
   RECEIVINGBRANCH,
-  FROMNAME
+  FROMNAME,
+  FREQUENCY
 }
 
 enum ActionType {
