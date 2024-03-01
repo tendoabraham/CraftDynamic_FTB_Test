@@ -120,6 +120,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   bool isObscured = false;
   IconButton? suffixIcon;
   FormItem? formItem;
+  ModuleItem? moduleItem;
   String? initialValue;
   String linkedToControlText = "";
 
@@ -135,6 +136,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
   }
 
   updateControllerText(String value) {
@@ -143,7 +145,9 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    bool isEnabled = formItem?.isEnabled ?? false;
+    bool isEnabled = formItem?.isEnabled ?? true;
+    AppLogger.appLogD(
+        tag: "textformfield", message: "controlid-->${formItem?.controlId}");
 
     return Consumer<PluginState>(builder: (context, state, child) {
       isObscured = formItem?.controlFormat == ControlFormat.PinNumber.name ||
@@ -155,7 +159,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           formItem!.controlFormat!,
           context: context,
           isObscure: isObscured,
-          refreshParent: refreshParent);
+          refreshParent: refreshParent,
+          isTodayInitialDate: moduleItem?.moduleId == "STANDINGORDERADD");
       inputType = formItem?.controlFormat == ControlFormat.PinNumber.name ||
               formItem?.controlFormat == ControlFormat.PIN.name
           ? TextInputType.number
@@ -166,7 +171,9 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           "";
 
       if (formFieldValue.isNotEmpty) {
-        controller.text = formFieldValue[FormFieldProp.ControlValue.name] ?? "";
+        controller.text = controller.text.isEmpty
+            ? formFieldValue[FormFieldProp.ControlValue.name]
+            : controller.text;
       }
 
       if (formItem?.linkedToRowID != null) {
@@ -174,7 +181,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
             tag: "all dynamic dropdown data ${formItem?.linkedToRowID}",
             message: state.dynamicDropDownData);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
-                ?[formItem?.linkedToRowID] ??
+                ?[formItem?.controlId] ??
             "";
       }
 
@@ -183,11 +190,11 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       }
 
       var properties = TextFormFieldProperties(
-          isEnabled: formFieldValue.isNotEmpty ||
-                  linkedToControlText.isNotEmpty ||
-                  isEnabled
-              ? false
-              : true,
+          isEnabled:
+              (formFieldValue.isNotEmpty || linkedToControlText.isNotEmpty) &&
+                      isEnabled == true
+                  ? false
+                  : true,
           isObscured: isObscured ? state.obscureText : false,
           controller: controller,
           textInputType: inputType,
@@ -203,7 +210,12 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
                   : null),
           isAmount: formItem?.controlFormat == ControlFormat.Amount.name);
 
-      return WidgetFactory.buildTextField(context, properties, validator);
+      return WidgetFactory.buildTextField(
+          context,
+          properties,
+          formItem?.controlFormat?.toUpperCase() == ControlFormat.EMAIL.name
+              ? validateEmail
+              : validator);
     });
   }
 
@@ -211,6 +223,11 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
     var formattedValue = value.toString().replaceAll(',', '');
     if (formItem!.isMandatory! && value!.isEmpty) {
       return 'Input required*';
+    }
+
+    if (formItem?.controlId == "STARTDATE" ||
+        formItem?.controlId == "ENDDATE") {
+      startenddate.addAll({formItem?.controlId: value});
     }
 
     if (inputType == TextInputType.number &&
@@ -254,19 +271,50 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       controller.text = DateFormat('yyyy-MM-dd').format(newText);
     });
   }
+
+  String? validateEmail(String? value) {
+    if (formItem!.isMandatory! && value!.isEmpty) {
+      return 'Input required*';
+    }
+
+    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+    final regex = RegExp(pattern);
+
+    if (value!.isNotEmpty && !regex.hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+
+    Provider.of<PluginState>(context, listen: false)
+        .addFormInput({"${formItem?.serviceParamId}": value});
+
+    return null;
+  }
 }
 
 class HiddenWidget implements IFormWidget {
   final _sharedPref = CommonSharedPref();
   List<dynamic>? formFields;
   FormItem? formItem;
+  List<Widget> children = [];
 
   HiddenWidget({this.formFields, this.formItem});
 
   @override
   Widget render() {
+    AppLogger.appLogD(
+        tag: "hidden widget",
+        message:
+            "values--> control id:${formItem?.controlId} ${formItem?.serviceParamId} ${formItem?.controlValue}");
+
     return Builder(builder: (context) {
       String controlValue = "";
+
       if (formItem?.controlFormat == ControlFormat.OWNNUMBER.name) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _sharedPref.getCustomerMobile().then((value) {
@@ -283,7 +331,28 @@ class HiddenWidget implements IFormWidget {
                 formItem?.controlId) {
               controlValue = formField[FormFieldProp.ControlValue.name];
               if (controlValue.isNotEmpty) {
+                children.add(SizedBox(
+                  height: 0,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        errorBorder: InputBorder.none),
+                    validator: (value) {
+                      AppLogger.appLogD(
+                          tag: "hidden widget",
+                          message: formItem?.serviceParamId);
+                      Provider.of<PluginState>(context, listen: false)
+                          .addFormInput(
+                              {formItem?.serviceParamId: controlValue});
+                    },
+                  ),
+                ));
                 WidgetsBinding.instance.addPostFrameCallback((_) {
+                  AppLogger.appLogD(
+                      tag: "hidden component",
+                      message: "${formItem?.serviceParamId} $controlValue");
                   Provider.of<PluginState>(context, listen: false).addFormInput(
                       {"${formItem?.serviceParamId}": controlValue});
                 });
@@ -292,15 +361,31 @@ class HiddenWidget implements IFormWidget {
           });
         } else {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Provider.of<PluginState>(context, listen: false).addFormInput(
-                {formItem?.serviceParamId: formItem?.controlValue});
+            AppLogger.appLogD(
+                tag: "hidden widget",
+                message: "adding values to hidden widget");
           });
+          children.add(SizedBox(
+            height: 0,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none),
+              validator: (value) {
+                AppLogger.appLogD(
+                    tag: "hidden widget", message: formItem?.serviceParamId);
+                Provider.of<PluginState>(context, listen: false).addFormInput(
+                    {formItem?.serviceParamId: formItem?.controlValue});
+              },
+            ),
+          ));
         }
       }
 
-      return const Visibility(
-        visible: false,
-        child: SizedBox(),
+      return Column(
+        children: children,
       );
     });
   }
@@ -363,7 +448,6 @@ class _DynamicButtonState extends State<DynamicButton> {
               moduleItem: module,
             ));
       });
-
       return;
     }
 
@@ -383,6 +467,15 @@ class _DynamicButtonState extends State<DynamicButton> {
             ));
         return;
       } else {
+        if (startenddate.isNotEmpty) {
+          String? validate = validateStartAndEndDate();
+          if (validate != null) {
+            AlertUtil.showAlertDialog(context, validate,
+                isInfoAlert: true, title: "Info");
+            return;
+          }
+        }
+
         Provider.of<PluginState>(context, listen: false).setRequestState(true);
         _dynamicRequest
             .dynamicRequest(moduleItem,
@@ -394,6 +487,8 @@ class _DynamicButtonState extends State<DynamicButton> {
                 context: context,
                 tappedButton: true)
             .then((value) {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
           if (value?.status != StatusCode.unknown.statusCode) {
             AppLogger.appLogD(
                 tag: "DYNAMIC BUTTON POST CALL",
@@ -401,12 +496,42 @@ class _DynamicButtonState extends State<DynamicButton> {
             DynamicPostCall.processDynamicResponse(
                 value!.dynamicData!, context, formItem!.controlId!,
                 moduleItem: moduleItem);
+            Provider.of<PluginState>(context, listen: false)
+                .clearDynamicInput();
           }
         });
       }
     } else {
       CommonUtils.vibrate();
     }
+  }
+
+  String? validateStartAndEndDate() {
+    try {
+      var start = startenddate["STARTDATE"];
+      var end = startenddate["ENDDATE"];
+
+      if (start != null && end != null) {
+        DateTime startDate = DateTime.parse(start);
+        DateTime endDate = DateTime.parse(end);
+
+        int differenceInDays = endDate.difference(startDate).inDays;
+
+        if (endDate.isBefore(startDate)) {
+          return "Invalid Dates Seleted!\nEnd date cannot be before start date";
+        }
+        if (selectedDateFrequency.value == 2 && differenceInDays < 7) {
+          return "Frequency selected as \nWeekly but invalid date range selected";
+        }
+        if (selectedDateFrequency.value == 3 && differenceInDays < 26) {
+          return "Frequency selected as \nMonthly but invalid date range selected";
+        }
+      }
+    } catch (e) {
+      AppLogger.appLogD(tag: "dynamic_components", message: e);
+    }
+
+    return null;
   }
 
   getModule(String moduleID) => _moduleRepository.getModuleById(moduleID);
@@ -424,11 +549,12 @@ class ImageDynamicDropDown extends StatefulWidget implements IFormWidget {
 
 class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
   final _apiService = APIService();
+  Map<String, dynamic> extraFieldMap = {};
+  List<dynamic> dropdownItems = [];
+
   FormItem? formItem;
   ModuleItem? moduleItem;
   String? _currentValue;
-  Map<String, dynamic> extraFieldMap = {};
-  List<dynamic> dropdownItems = [];
 
   Future<DynamicResponse?> getDropDownData(
           String actionID, ModuleItem moduleItem,
@@ -532,6 +658,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                 value: _currentValue,
                 items: dropdownPicks,
                 isExpanded: true,
+                decoration: InputDecoration(labelText: formItem?.controlText),
                 onChanged: (value) {},
                 validator: (value) {
                   String? input = value.toString();
@@ -631,7 +758,9 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
           );
           if (snapshot.hasData) {
             dropdownItems = snapshot.data?.dynamicList ?? [];
-            AppLogger.appLogD(tag: "dropdown data-->", message: dropdownItems);
+            AppLogger.appLogD(
+                tag: "dropdown data--> @${formItem?.controlId}",
+                message: dropdownItems);
 
             if (dropdownItems.isEmpty) {
               child = DropdownButtonFormField2(
@@ -646,6 +775,7 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                 items: const [],
               );
             } else {
+              addLoanAccounts(dropdownItems);
               _currentValue = formItem?.hasInitialValue ?? true
                   ? dropdownItems.first[formItem?.controlId]
                   : null;
@@ -693,6 +823,25 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
 
           return child;
         });
+  }
+
+  addLoanAccounts(List<dynamic> accounts) {
+    if (formItem?.controlId == ControlID.LOANACCOUNT.name) {
+      try {
+        if (accounts.isNotEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            for (var account in accounts) {
+              Provider.of<DropDownState>(context, listen: false)
+                  .addCurrentRepaymentAccounts({
+                formItem?.controlId ?? "": account[formItem?.controlId]
+              });
+            }
+          });
+        }
+      } catch (e) {
+        AppLogger.appLogD(tag: "dynamic_components", message: e);
+      }
+    }
   }
 
   getValueFromList(value) => dropdownItems
@@ -779,8 +928,8 @@ class _DropDownState extends State<DropDown> {
 
                 child =
                     Consumer<DropDownState>(builder: (context, state, child) {
-                  // dropdownItems = removeAllLoanAccounts(
-                  //     dropdownItems, state.currentRepaymentAccounts);
+                  dropdownItems = removeAllLoanAccounts(
+                      dropdownItems, state.currentRepaymentAccounts);
 
                   AppLogger.appLogD(
                       tag: classname,
@@ -1053,6 +1202,8 @@ class DynamicLabelWidget implements IFormWidget {
       var formItem = BaseFormInheritedComponent.of(context)?.formItem;
       var moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
 
+      AppLogger.appLogD(tag: "dynamic_components", message: "show label...");
+
       return formItem?.controlFormat == ControlFormat.LISTDATA.name
           ? FutureBuilder<DynamicResponse?>(
               future: getDynamicLabel(context, formItem, moduleItem!),
@@ -1074,7 +1225,8 @@ class DynamicLabelWidget implements IFormWidget {
               })
           : Text(
               formItem?.controlText ?? "",
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(
+                  fontSize: 16, color: Theme.of(context).primaryColor),
             );
     });
   }
@@ -1329,7 +1481,7 @@ class DynamicListWidget implements IFormWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<DynamicResponse?> snapshot) {
                 Widget child = Center(
-                  child: CircularLoadUtil(),
+                  child: LoadUtil(),
                 );
                 if (snapshot.hasData) {
                   dynamicResponse = snapshot.data;
@@ -1633,6 +1785,10 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
     AppLogger.appLogD(
         tag: "$classname@${formItem?.controlId}", message: "input $formInput");
 
+    AppLogger.appLogD(
+        tag: "$classname@${formItem?.controlId}",
+        message: "dropdown selection $dropdownSelection");
+
     return formInput == null
         ? const SizedBox()
         : Padding(
@@ -1640,14 +1796,34 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(formItem?.controlText ?? ""),
-                Text(
-                  formInput ?? "****",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.start,
-                )
+                Expanded(
+                    flex: 5, child: Text("${formItem?.controlText}:" ?? "")),
+                Expanded(
+                    flex: 5,
+                    child: Text(
+                      dropdownSelection[formItem?.controlId] ??
+                          getStringValue(
+                              formItem?.controlText ?? "", formInput) ??
+                          "****",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.right,
+                      softWrap: true,
+                    ))
               ],
             ));
+  }
+
+  String getStringValue(String key, String value) {
+    if (key.toLowerCase() == "frequency") {
+      if (value == "1") {
+        return "Daily";
+      } else if (value == "2") {
+        return "Weekly";
+      } else if (value == "3") {
+        return "Monthly";
+      }
+    }
+    return value;
   }
 }
 
@@ -1673,20 +1849,25 @@ class _TextLinkState extends State<TextLink> {
         future: _api.getDynamicLink(formItem?.actionId ?? "", moduleItem!),
         builder:
             (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
-          Widget child = TextButton(
-              onPressed: () {
-                CommonUtils.openUrl(Uri.parse(formItem?.controlValue ?? ""));
-              },
-              child: Text(formItem?.controlText ?? "Link"));
+          Widget child = SizedBox(
+            height: 28,
+            child: CircularLoadUtil(),
+          );
           if (snapshot.hasData) {
-            return Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                    onPressed: () {
-                      CommonUtils.openUrl(
-                          Uri.parse(snapshot.data?.otherText ?? ""));
-                    },
-                    child: Text(formItem?.controlText ?? "Link")));
+            String url = snapshot.data?.otherText ?? "";
+            if (url.isNotEmpty) {
+              child = Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                      onPressed: () {
+                        // context.navigate(ViewPDFScreen(
+                        //     moduleItem: moduleItem,
+                        //     documentUrl: snapshot.data?.otherText ?? ""));
+                      },
+                      child: Text(formItem?.controlText ?? "Link")));
+            } else {
+              child = const SizedBox();
+            }
           }
           return child;
         });
