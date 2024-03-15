@@ -59,7 +59,7 @@ class AndroidTextFormField implements ITextFormField {
       validator: validator,
       onChanged: properties.onChange ?? (input) {},
       inputFormatters: properties.isAmount
-          ? [CurrencyInputFormatter(leadingSymbol: 'UGH', mantissaLength: 0)]
+          ? [CurrencyInputFormatter(mantissaLength: 0)]
           : null,
     );
   }
