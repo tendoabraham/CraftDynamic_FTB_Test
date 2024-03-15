@@ -3,6 +3,7 @@ part of craft_dynamic;
 final _userAccountRepository = UserAccountRepository();
 final _initRepository = InitRepository();
 final _profileRepository = ProfileRepository();
+final _beneficiaryRepo = BeneficiaryRepository();
 
 class AuthRepository {
   final _services = APIService();
@@ -47,6 +48,7 @@ class AuthRepository {
         await _services.login(CryptLib.encryptField(pin));
     if (activationResponse.status == StatusCode.success.statusCode ||
         activationResponse.status == StatusCode.otp.statusCode) {
+      await _sharedPref.addCustomerMobile(activationResponse.phone ?? "");
       await _sharedPref.setIsListeningToFocusState(true);
       await _userAccountRepository.addUserAccountData(activationResponse);
       String? currentLanguageIDSetting = activationResponse.languageID;
