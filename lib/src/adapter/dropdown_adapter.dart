@@ -77,8 +77,8 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
     var customerNo = await _sharedPref.getCustomerMobile();
     var beneficiaries =
         await _beneficiaryRepository.getBeneficiariesByMerchantID(merchantID!);
-    if (merchantID == "AIRTELMONEY" ||
-        merchantID == "MTNMONEY" ||
+    if (merchantID == "007001016" ||
+        merchantID == "007001017" ||
         merchantID == 'MTNDB' ||
         merchantID == 'AIRTIME') {
       beneficiaries?.add(Beneficiary(
