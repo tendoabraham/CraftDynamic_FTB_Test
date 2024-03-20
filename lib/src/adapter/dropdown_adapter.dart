@@ -80,7 +80,11 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
     if (merchantID == "007001016" ||
         merchantID == "007001017" ||
         merchantID == 'MTNDB' ||
-        merchantID == 'AIRTIME') {
+        merchantID == 'AIRTIME' ||
+        merchantID == 'MTNUGAIRTIME' ||
+        merchantID == 'AIRTELUG' ||
+        merchantID == 'UGANDAMTNC2B' ||
+        merchantID == 'AIRTELC2B') {
       beneficiaries?.add(Beneficiary(
           merchantID: merchantID ?? "",
           merchantName: "global",
