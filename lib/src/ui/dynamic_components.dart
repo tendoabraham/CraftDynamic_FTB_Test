@@ -1156,6 +1156,7 @@ class DynamicPhonePickerFormWidget extends StatefulWidget
 class _DynamicPhonePickerFormWidgetState
     extends State<DynamicPhonePickerFormWidget> {
   String? code;
+  String pickedcontact = "";
 
   var controller = TextEditingController();
   PhoneNumber inputNumber = PhoneNumber(isoCode: APIService.countryIsoCode);
@@ -1198,10 +1199,11 @@ class _DynamicPhonePickerFormWidgetState
         } else if (input == "") {
           return "Enter your mobile";
         } else {
-          Provider.of<PluginState>(context, listen: false).addFormInput({
-            "${formItem?.serviceParamId}":
-                inputNumber.phoneNumber?.replaceAll("+", "")
-          });
+          var number = pickedcontact.isNotEmpty
+              ? "${APIService.countryCode}$pickedcontact"
+              : inputNumber.phoneNumber?.replaceAll("+", "");
+          Provider.of<PluginState>(context, listen: false)
+              .addFormInput({"${formItem?.serviceParamId}": number});
         }
 
         return null;
@@ -1214,9 +1216,12 @@ class _DynamicPhonePickerFormWidgetState
 
   pickPhoneContact() async {
     final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
+    var phone = formatPhone(contact.phoneNumber?.number ?? "")
+        .replaceAll(RegExp(r'^0'), '')
+        .replaceAll(" ", "");
     setState(() {
-      controller.text = formatPhone(contact.phoneNumber?.number ?? "")
-          .replaceAll(RegExp(r'^0'), '');
+      pickedcontact = phone;
+      controller.text = phone;
     });
   }
 
