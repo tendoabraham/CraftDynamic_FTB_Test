@@ -15,10 +15,10 @@ class TabWidget extends StatefulWidget {
 
   TabWidget(
       {super.key,
-      required this.title,
-      required this.formItems,
-      required this.moduleItem,
-      this.updateState});
+        required this.title,
+        required this.formItems,
+        required this.moduleItem,
+        this.updateState});
 
   @override
   State<TabWidget> createState() => _TabWidgetState();
@@ -50,8 +50,8 @@ class _TabWidgetState extends State<TabWidget> {
   List<FormItem> getContainerForms(List<FormItem> forms, FormItem container) {
     return forms
         .where((element) =>
-            element.containerID == container.controlId ||
-            element.linkedToControl == container.controlId)
+    element.containerID == container.controlId ||
+        element.linkedToControl == container.controlId)
         .toList();
   }
 
@@ -77,7 +77,7 @@ class _TabWidgetState extends State<TabWidget> {
       if (containers[i].controlType == ViewType.CONTAINER.name &&
           containers[i].controlFormat == ControlFormat.HorizontalScroll.name) {
         horizontalScroll.addAll(widget.formItems.where((item) =>
-            item.containerID == containers[i].controlId ||
+        item.containerID == containers[i].controlId ||
             item.linkedToControl == containers[i].controlId));
       }
     }
@@ -97,14 +97,14 @@ class _TabWidgetState extends State<TabWidget> {
   List<FormItem> getTabForms(List<FormItem> formItems, String linkControl) {
     List<FormItem> items = formItems
         .where((element) =>
-            element.linkedToControl == linkControl ||
-            element.linkedToControl == "" ||
-            element.linkedToControl == null)
+    element.linkedToControl == linkControl ||
+        element.linkedToControl == "" ||
+        element.linkedToControl == null)
         .toList();
 
     try {
       recentList = items.firstWhere(
-        (item) => item.controlType == ViewType.LIST.name,
+            (item) => item.controlType == ViewType.LIST.name,
       );
     } catch (e) {
       AppLogger.appLogE(tag: "tab forms error", message: e.toString());
@@ -130,53 +130,82 @@ class _TabWidgetState extends State<TabWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          if (Provider.of<PluginState>(context, listen: false)
-              .loadingNetworkData) {
-            CommonUtils.showToast("Please wait...");
-            return false;
-          }
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
           return true;
         },
         child: DefaultTabController(
             length: tabs.length,
             child: Builder(builder: (BuildContext context) {
               final TabController tabController =
-                  DefaultTabController.of(context);
+              DefaultTabController.of(context);
               tabController.addListener(() {
                 if (!tabController.indexIsChanging) {
                   Provider.of<PluginState>(context, listen: false)
                       .setRequestState(false,
-                          currentTab: linkControls[tabController.index]);
+                      currentTab: linkControls[tabController.index]);
                 }
               });
               return Scaffold(
-                appBar: AppBar(
-                  elevation: 2,
-                  actions: recentList != null
-                      ? [
-                          IconButton(
-                              onPressed: () {
-                                CommonUtils.navigateToRoute(
-                                    context: context,
-                                    widget: ListDataScreen(
-                                        widget: DynamicListWidget(
-                                                moduleItem: widget.moduleItem,
-                                                formItem: recentList)
-                                            .render(),
-                                        title: widget.moduleItem.moduleName));
-                              },
-                              icon: const Icon(
-                                Icons.view_list,
-                              ))
-                        ]
-                      : null,
-                  bottom: TabBar(
-                    tabs: tabs,
-                    isScrollable: true,
-                  ),
-                  title: Text(widget.moduleItem.moduleName),
-                ),
-                body: TabBarView(children: tabWidgetList),
+                  body:Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                        child: Card(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                              //set border radius more than 50% of height and width to make circle
+                            ),
+                            color: const Color.fromARGB(255, 0, 80, 170),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Image(
+                                      image: AssetImage("assets/images/back_arrow.png"),
+                                      width: 25,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                        widget.moduleItem?.moduleName ?? "",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "Myriad Pro",
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  Container(width: 25),
+                                ],
+                              ),
+                            )),
+                      ),
+                      Container(
+                          width: double.infinity,
+                          color: const Color.fromARGB(255, 0, 80, 170), // Add a background color for debugging
+                          child: Center(
+                            child: TabBar(
+                              tabs: tabs,
+                              isScrollable: true,
+                            ),
+                          )
+                      ),
+                      Expanded(child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+                        height: double.maxFinite,
+                        color: const Color.fromARGB(255, 219, 220, 221),
+                        child: TabBarView(children: tabWidgetList),))
+                    ],
+                  )
               );
             })));
   }
@@ -195,10 +224,10 @@ class TabWidgetList extends StatefulWidget {
 
   TabWidgetList(
       {super.key,
-      required this.formItems,
-      required this.moduleItem,
-      this.updateState,
-      this.horizontalScroll});
+        required this.formItems,
+        required this.moduleItem,
+        this.updateState,
+        this.horizontalScroll});
 
   @override
   State<TabWidgetList> createState() => _TabWidgetListState();
@@ -220,27 +249,27 @@ class _TabWidgetListState extends State<TabWidgetList> {
         height: double.infinity,
         child: SingleChildScrollView(
             child: Column(mainAxisSize: MainAxisSize.max, children: [
-          const SizedBox(
-            height: 12,
-          ),
-          Form(
-              key: _formKey,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sortedForms.length,
-                  itemBuilder: (context, index) {
-                    return BaseFormComponent(
-                        formItem: sortedForms[index],
-                        moduleItem: widget.moduleItem,
-                        formKey: _formKey,
-                        formItems: sortedForms,
-                        child: IFormWidget(
-                          sortedForms[index],
-                        ).render());
-                  }))
-        ])));
+              const SizedBox(
+                height: 12,
+              ),
+              Form(
+                  key: _formKey,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: sortedForms.length,
+                      itemBuilder: (context, index) {
+                        return BaseFormComponent(
+                            formItem: sortedForms[index],
+                            moduleItem: widget.moduleItem,
+                            formKey: _formKey,
+                            formItems: sortedForms,
+                            child: IFormWidget(
+                              sortedForms[index],
+                            ).render());
+                      }))
+            ])));
   }
 
   bool get wantKeepAlive => true;

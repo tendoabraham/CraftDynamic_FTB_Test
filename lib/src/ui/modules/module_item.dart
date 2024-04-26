@@ -9,9 +9,9 @@ class ModuleItemWidget extends StatelessWidget {
 
   ModuleItemWidget(
       {super.key,
-      this.isMain = false,
-      this.isSearch = false,
-      required this.moduleItem});
+        this.isMain = false,
+        this.isSearch = false,
+        required this.moduleItem});
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +55,15 @@ class VerticalModule extends StatelessWidget {
 
     return Card(
         surfaceTintColor:
-            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "#fffff"),
-        elevation: menuProperties?.elevation ?? 0,
+        CommonUtils.parseColor(menuProperties?.backgroundColor ?? "#ffffff"),
+        elevation: menuProperties?.elevation ?? 1,
         shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: menuBorder?.width ?? 1.5,
-                color: CommonUtils.parseColor(menuBorder?.color ?? "#fffff")),
-            borderRadius: BorderRadius.all(
-              Radius.circular(menuBorder?.radius ?? 12),
-            )),
+                color: CommonUtils.parseColor(menuBorder?.color ?? "#ffffff")),
+            borderRadius: BorderRadius.zero),
         child: Padding(
-            padding: EdgeInsets.all(menuProperties?.padding ?? 4),
+            padding: EdgeInsets.all(menuProperties?.padding ?? 8),
             child: Center(
               child: Column(
                 mainAxisAlignment: getAlignment(),
@@ -73,20 +71,18 @@ class VerticalModule extends StatelessWidget {
                 children: [
                   MenuItemImage(
                     imageUrl: moduleItem.moduleUrl ?? "",
-                    iconSize: menuProperties?.iconSize ?? 44,
+                    iconSize:  24,
                   ),
                   SizedBox(
-                    height: double.parse(menuProperties?.spaceBetween ?? "12"),
+                    height: double.parse("12"),
                   ),
-                  Flexible(
-                      child: MenuItemTitle(
-                    title: moduleItem.moduleName,
-                    textSize: menuProperties?.textSize,
-                    fontWeight:
-                        menuProperties?.fontWeight?.toLowerCase() == "bold"
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                  ))
+                  Flexible(child: Text(moduleItem.moduleName,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontFamily: "Myriad Pro",
+                        fontSize: 12,
+                        height: 1.1,
+                        color: const Color.fromARGB(255, 0, 80, 170)),))
                 ],
               ),
             )));
@@ -121,7 +117,7 @@ class HorizontalModule extends StatelessWidget {
 
     return Card(
         surfaceTintColor:
-            CommonUtils.parseColor(menuProperties?.backgroundColor ?? "ffffff"),
+        CommonUtils.parseColor(menuProperties?.backgroundColor ?? "ffffff"),
         elevation: menuProperties?.elevation ?? 0,
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -146,13 +142,13 @@ class HorizontalModule extends StatelessWidget {
                   ),
                   Flexible(
                       child: MenuItemTitle(
-                    title: moduleItem.moduleName,
-                    textSize: menuProperties?.textSize,
-                    fontWeight:
+                        title: moduleItem.moduleName,
+                        textSize: menuProperties?.textSize,
+                        fontWeight:
                         menuProperties?.fontWeight?.toLowerCase() == "bold"
                             ? FontWeight.bold
                             : FontWeight.normal,
-                  ))
+                      ))
                 ],
               ),
             )));
@@ -203,9 +199,9 @@ class ModuleUtil {
       dataObject.addAll({"MerchantID": moduleItem.merchantID});
       _dynamicRequest
           .dynamicRequest(moduleItem,
-              dataObj: dataObject,
-              action: ActionType.PAYBILL,
-              url: RouteUrl.account.name)
+          dataObj: dataObject,
+          action: ActionType.PAYBILL,
+          url: RouteUrl.account.name)
           .then((value) {
         Navigator.of(context).pop();
         DynamicPostCall.processDynamicResponse(
@@ -242,8 +238,52 @@ class ModuleUtil {
         {
           CommonUtils.navigateToRoute(
               context: context,
-              widget: ViewStandingOrder(moduleItem: moduleItem));
+              widget: StandingOrderScreen(
+              ));
+          // CommonUtils.navigateToRoute(
+          //     context: context,
+          //     widget: ViewStandingOrder(moduleItem: moduleItem));
           break;
+        }
+      case ModuleId.LOANLPAYMENT:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: LoanRepayment(
+                ));
+            break;
+          }
+        }
+      case ModuleId.ADDBENEFICIARY:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: AddBeneficiary(
+                ));
+            break;
+          }
+        }
+      case ModuleId.QUICKPAY:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: QuickPay(
+                ));
+            break;
+          }
+        }
+      case ModuleId.RAOEXISTNGCUSTOMER:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: RAOExistingCustomerScreen(
+                ));
+            break;
+          }
         }
       case ModuleId.BOOKCAB:
         {

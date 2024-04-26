@@ -467,10 +467,10 @@ class APIService {
 
   Future<ActivationResponse> standardOTPVerify(
       {mobileNumber,
-      key,
-      merchantID,
-      serviceName,
-      RouteUrl url = RouteUrl.auth}) async {
+        key,
+        merchantID,
+        serviceName,
+        RouteUrl url = RouteUrl.other}) async {
     var decrypted;
     // final encryptedKey = CryptLib.encryptField(key);
     ActivationResponse? activationResponse;
@@ -486,7 +486,7 @@ class APIService {
       "OTPKEY": "$key"
     };
 
-    final route = await _sharedPref.getRoute(url.name.toLowerCase());
+    final route = await _sharedPref.getRoute("other".toLowerCase());
     var res = await performDioRequest(
         await dioRequestBodySetUp(FormId.DBCALL.name,
             objectMap: requestObj, isAuthenticate: true),
@@ -494,7 +494,7 @@ class APIService {
 
     try {
       decrypted = jsonDecode(res ?? "{}") ?? "{}";
-      logger.d("\n\nOTP VERIFICATION RESPONSE: $decrypted");
+      logger.d("\n\nSTND OTP VERIFICATION RESPONSE: $decrypted");
       activationResponse = ActivationResponse.fromJson(decrypted);
     } catch (e) {
       AppLogger.appLogE(tag: "DECODE:ERROR", message: e.toString());

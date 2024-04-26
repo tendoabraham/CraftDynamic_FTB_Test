@@ -15,11 +15,11 @@ class RegularFormWidget extends StatefulWidget {
 
   const RegularFormWidget(
       {super.key,
-      required this.moduleItem,
-      required this.sortedForms,
-      required this.jsonDisplay,
-      required this.formFields,
-      this.hasRecentList = false});
+        required this.moduleItem,
+        required this.sortedForms,
+        required this.jsonDisplay,
+        required this.formFields,
+        this.hasRecentList = false});
 
   @override
   State<RegularFormWidget> createState() => _RegularFormWidgetState();
@@ -34,7 +34,7 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
   @override
   initState() {
     recentList = widget.sortedForms.toList().firstWhereOrNull(
-        (formItem) => formItem.controlType == ViewType.LIST.name);
+            (formItem) => formItem.controlType == ViewType.LIST.name);
     super.initState();
   }
 
@@ -59,60 +59,88 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
           return true;
         },
         child: Scaffold(
-            appBar: AppBar(
-              elevation: 2,
-              title: Text(widget.moduleItem.moduleName),
-              actions: recentList != null
-                  ? [
-                      IconButton(
-                          onPressed: () {
-                            CommonUtils.navigateToRoute(
-                                context: context,
-                                widget: ListDataScreen(
-                                    widget: DynamicListWidget(
-                                            moduleItem: widget.moduleItem,
-                                            formItem: recentList)
-                                        .render(),
-                                    title: widget.moduleItem.moduleName));
-                          },
-                          icon: const Icon(
-                            Icons.view_list,
-                          ))
-                    ]
-                  : null,
-            ),
-            body: SizedBox(
-                height: double.infinity,
-                child: Scrollbar(
-                    thickness: 6,
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const SizedBox(
-                          height: 12,
+            body: Column(
+              children: [
+                const SizedBox(
+                  height: 35,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                  child: Card(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                        //set border radius more than 50% of height and width to make circle
+                      ),
+                      color: const Color.fromARGB(255, 0, 80, 170),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Image(
+                                image: AssetImage("assets/images/back_arrow.png"),
+                                width: 25,
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                                  widget.moduleItem?.moduleName ?? "",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: "Myriad Pro",
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            Container(width: 25),
+                          ],
                         ),
-                        Form(
-                            key: _formKey,
-                            child: ListView.builder(
-                                padding: const EdgeInsets.only(
-                                    left: 18, right: 18, top: 8),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: formItems.length,
-                                itemBuilder: (context, index) {
-                                  return BaseFormComponent(
-                                      formItem: formItems[index],
-                                      moduleItem: widget.moduleItem,
-                                      formItems: formItems,
-                                      formKey: _formKey,
-                                      child: IFormWidget(formItems[index],
-                                              jsonText: widget.jsonDisplay,
-                                              formFields: widget.formFields)
-                                          .render());
-                                }))
-                      ],
-                    ))))));
+                      )),
+                ),
+                Expanded(
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        color: const Color.fromARGB(255, 219, 220, 221),
+                        child:     SizedBox(
+                            height: double.infinity,
+                            child: Scrollbar(
+                                thickness: 6,
+                                controller: _scrollController,
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                        Form(
+                                            key: _formKey,
+                                            child: ListView.builder(
+                                                padding: const EdgeInsets.only(
+                                                    left: 18, right: 18, top: 8),
+                                                shrinkWrap: true,
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                itemCount: formItems.length,
+                                                itemBuilder: (context, index) {
+                                                  return BaseFormComponent(
+                                                      formItem: formItems[index],
+                                                      moduleItem: widget.moduleItem,
+                                                      formItems: formItems,
+                                                      formKey: _formKey,
+                                                      child: IFormWidget(formItems[index],
+                                                          jsonText: widget.jsonDisplay,
+                                                          formFields: widget.formFields)
+                                                          .render());
+                                                }))
+                                      ],
+                                    ))))
+                    )
+                )
+              ],
+            )
+        ));
   }
 }

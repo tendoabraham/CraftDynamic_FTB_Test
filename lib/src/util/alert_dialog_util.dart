@@ -3,12 +3,12 @@ part of craft_dynamic;
 class AlertUtil {
   static showAlertDialog(BuildContext context, String message,
       {isConfirm = false,
-      isInfoAlert = false,
-      showTitleIcon = true,
-      formFields,
-      title,
-      confirmButtonText = "Ok",
-      cancelButtonText = "Cancel"}) {
+        isInfoAlert = false,
+        showTitleIcon = true,
+        formFields,
+        title,
+        confirmButtonText = "Ok",
+        cancelButtonText = "Cancel"}) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -21,105 +21,31 @@ class AlertUtil {
         return Transform.scale(
             scale: curve,
             child: Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: AlertDialog(
-                actionsPadding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 14),
-                insetPadding: const EdgeInsets.symmetric(horizontal: 34),
-                titlePadding: const EdgeInsets.only(
-                    top: 12, left: 12, right: 12, bottom: 12),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                title: Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    title == null
-                        ? const SizedBox()
-                        : Text(
-                            title,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                    const SizedBox(
-                      width: 8,
+                alignment: FractionalOffset.bottomCenter,
+                child: AlertDialog(
+                  title: const Text(
+                    "Error!",
+                    style: TextStyle(
+                        fontFamily: "Myriad Pro", fontWeight: FontWeight.bold),
+                  ),
+                  content: Text(
+                    message,
+                    style: TextStyle(
+                      fontFamily: "Myriad Pro",
                     ),
-                    showTitleIcon
-                        ? isInfoAlert
-                            ? Icon(
-                                Icons.info_outline,
-                                color:
-                                    APIService.appPrimaryColor.withOpacity(.4),
-                                size: 28,
-                              )
-                            : const Icon(
-                                Icons.error_outline,
-                                color: Colors.redAccent,
-                                size: 28,
-                              )
-                        : const SizedBox()
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text(
+                        "OK",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ],
-                )),
-                content: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
-                        child: ListBody(
-                      children: <Widget>[
-                        Center(
-                            child: Text(
-                          message,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center,
-                        )),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Divider(
-                          color: APIService.appPrimaryColor.withOpacity(.2),
-                        )
-                      ],
-                    ))),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: isConfirm
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.center,
-                    children: [
-                      isConfirm
-                          ? Row(
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(false);
-                                    },
-                                    child: Text(
-                                      cancelButtonText,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: APIService.appSecondaryColor),
-                                    ).tr()),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop(true);
-                          },
-                          child: Text(
-                            confirmButtonText,
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ).tr()),
-                    ],
-                  )
-                ],
-              ),
+                )
             ));
       },
       transitionDuration: const Duration(milliseconds: 300),
@@ -137,7 +63,7 @@ class AlertUtil {
       builder: (BuildContext context) {
         return Container(
             padding:
-                const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 4),
+            const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 4),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),

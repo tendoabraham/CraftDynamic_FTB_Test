@@ -27,113 +27,166 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.moduleItem.moduleName),
-      ),
-      body: BlurrLoadScreen(
-          mainWidget: FutureBuilder<List<Beneficiary>>(
-              future: viewBeneficiaries(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Beneficiary>> snapshot) {
-                Widget widget = Center(child: LoadUtil());
+      // appBar: AppBar(
+      //   title: Text(widget.moduleItem.moduleName),
+      // ),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const SizedBox(
+              height: 35,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                    //set border radius more than 50% of height and width to make circle
+                  ),
+                  color: const Color.fromARGB(255, 0, 80, 170),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Image(
+                            image: AssetImage("assets/images/back_arrow.png"),
+                            width: 25,
+                          ),
+                        ),
+                        Expanded(
+                            child: Text(
+                              widget.moduleItem?.moduleName ?? "",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "Myriad Pro",
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ))
+                      ],
+                    ),
+                  )),
+            ),
+            Expanded(child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+              height: double.maxFinite,
+              color: const Color.fromARGB(255, 219, 220, 221),
+              child: BlurrLoadScreen(
+                  mainWidget: FutureBuilder<List<Beneficiary>>(
+                      future: viewBeneficiaries(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Beneficiary>> snapshot) {
+                        Widget widget = Center(child: LoadUtil());
 
-                if (snapshot.hasData) {
-                  final itemCount = snapshot.data?.length ?? 0;
+                        if (snapshot.hasData) {
+                          final itemCount = snapshot.data?.length ?? 0;
 
-                  if (itemCount == 0) {
-                    widget = const EmptyUtil();
-                  } else {
-                    widget = ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                              color: Colors.grey[300],
-                            ),
-                        itemCount: itemCount,
-                        itemBuilder: (context, index) {
-                          final beneficiary = snapshot.data![index];
-
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      beneficiary.merchantName,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: APIService.appPrimaryColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              "Alias name",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Text(beneficiary.accountAlias),
-                                          ],
-                                        )),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              "Account ID",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Text(beneficiary.accountID),
-                                          ],
-                                        ))
-                                  ],
+                          if (itemCount == 0) {
+                            widget = const EmptyUtil();
+                          } else {
+                            widget = ListView.separated(
+                                padding: EdgeInsets.only(left: 0, right: 0, top: 15),
+                                separatorBuilder: (context, index) => Divider(
+                                  color: Colors.grey[300],
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      AlertUtil.showAlertDialog(context,
-                                              "Confirm action to delete ${beneficiary.merchantName}",
-                                              isConfirm: true,
-                                              title: "Delete",
-                                              confirmButtonText: "Delete")
-                                          .then((value) {
-                                        if (value) {
-                                          deleteBeneficiary(
-                                              beneficiary, context);
-                                        }
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete_outline_outlined,
-                                      color: Colors.red,
-                                      size: 34,
-                                    ))
-                              ],
-                            ),
-                          );
-                        });
-                  }
-                }
-                return widget;
-              })),
+                                itemCount: itemCount,
+                                itemBuilder: (context, index) {
+                                  final beneficiary = snapshot.data![index];
+
+                                  return Padding(padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 1),
+                                    child: Material(
+                                        elevation: 1.5,
+                                        borderRadius: BorderRadius.zero,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 15),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    beneficiary.merchantName,
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontFamily: "Myriad Pro",
+                                                        color: APIService.appPrimaryColor,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  const Text(
+                                                    "Alias",
+                                                    style: TextStyle(
+                                                        fontFamily: "Myriad Pro",
+                                                        color: Colors.grey,
+                                                        fontWeight: FontWeight.normal),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Text(beneficiary.accountAlias,
+                                                    style: TextStyle(
+                                                        fontFamily: "Myriad Pro",
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold
+                                                    ),),
+                                                  const SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  const Text(
+                                                    "Meter/Account ID",
+                                                    style: TextStyle(
+                                                      fontFamily: "Myriad Pro",
+                                                      color: Colors.grey,),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Text(beneficiary.accountID,
+                                                    style: TextStyle(
+                                                        fontFamily: "Myriad Pro",
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold
+                                                    ),),
+                                                ],
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    AlertUtil.showAlertDialog(context,
+                                                        "Confirm action to delete ${beneficiary.merchantName}",
+                                                        isConfirm: true, title: "Delete")
+                                                        .then((value) {
+                                                      if (value) {
+                                                        deleteBeneficiary(
+                                                            beneficiary, context);
+                                                      }
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.delete_outline_outlined,
+                                                    color: Colors.red,
+                                                    size: 34,
+                                                  ))
+                                            ],
+                                          ),
+                                        )
+                                    ),);
+                                });
+                          }
+                        }
+                        return widget;
+                      })),
+            ))
+          ],
+        )
     );
   }
 
@@ -153,9 +206,9 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
 
     await _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
-            dataObj: DynamicInput.formInputValues,
-            context: context,
-            listType: ListType.BeneficiaryList)
+        dataObj: DynamicInput.formInputValues,
+        context: context,
+        listType: ListType.BeneficiaryList)
         .then((value) {
       isCallingService.value = false;
       if (value?.status == StatusCode.success.statusCode) {
@@ -184,9 +237,9 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
     DynamicInput.formInputValues.addAll({"HEADER": "DELETEBENEFICIARY"});
     _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
-            dataObj: DynamicInput.formInputValues,
-            context: context,
-            listType: ListType.BeneficiaryList)
+        dataObj: DynamicInput.formInputValues,
+        context: context,
+        listType: ListType.BeneficiaryList)
         .then((value) {
       isCallingService.value = false;
 

@@ -64,7 +64,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:camera/camera.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
-
+import 'package:ftbbank/src/home/StandingOrder.dart';
+import 'package:ftbbank/src/home/LoanRepayment.dart';
+import 'package:ftbbank/src/home/add_beneficiary.dart';
+import 'package:ftbbank/src/home/quick_pay.dart';
+import 'package:ftbbank/src/rao/rao_existing_customer_screen.dart';
 import 'src/builder/factory_builder.dart';
 import 'src/native_binder/native_bind.dart';
 import 'src/network/api_util.dart';

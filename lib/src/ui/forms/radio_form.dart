@@ -15,10 +15,10 @@ class RadioWidget extends StatefulWidget {
 
   RadioWidget(
       {super.key,
-      required this.title,
-      required this.formItems,
-      required this.moduleItem,
-      this.updateState});
+        required this.title,
+        required this.formItems,
+        required this.moduleItem,
+        this.updateState});
 
   @override
   State<RadioWidget> createState() => _RadioWidgetState();
@@ -33,7 +33,7 @@ class _RadioWidgetState extends State<RadioWidget> {
     radioFormControls = widget.formItems;
     try {
       recentList = radioFormControls.firstWhere(
-        (item) => item.controlType == ViewType.LIST.name,
+            (item) => item.controlType == ViewType.LIST.name,
       );
     } catch (e) {
       AppLogger.appLogE(tag: "recent list error", message: e.toString());
@@ -45,41 +45,59 @@ class _RadioWidgetState extends State<RadioWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          if (Provider.of<PluginState>(context, listen: false)
-              .loadingNetworkData) {
-            CommonUtils.showToast("Please wait...");
-            return false;
-          }
-          return true;
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              actions: recentList != null
-                  ? [
-                      IconButton(
-                          onPressed: () {
-                            CommonUtils.navigateToRoute(
-                                context: context,
-                                widget: ListDataScreen(
-                                    widget: DynamicListWidget(
-                                            moduleItem: widget.moduleItem,
-                                            formItem: recentList)
-                                        .render(),
-                                    title: widget.moduleItem.moduleName));
-                          },
-                          icon: const Icon(
-                            Icons.view_list,
-                          ))
-                    ]
-                  : null,
-              title: Text(widget.moduleItem.moduleName),
+    return Scaffold(
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 35,
             ),
-            body: RadioWidgetList(
-              formItems: radioFormControls,
-              moduleItem: widget.moduleItem,
-            )));
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              child: Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                    //set border radius more than 50% of height and width to make circle
+                  ),
+                  color: const Color.fromARGB(255, 0, 80, 170),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Image(
+                            image: AssetImage("assets/images/back_arrow.png"),
+                            width: 25,
+                          ),
+                        ),
+                        Expanded(
+                            child: Text(
+                              widget.moduleItem?.moduleName ?? "",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "Myriad Pro",
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        Container(width: 25),
+                      ],
+                    ),
+                  )),
+            ),
+            Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  color: const Color.fromARGB(255, 219, 220, 221),
+                  child: RadioWidgetList(
+                    formItems: radioFormControls,
+                    moduleItem: widget.moduleItem,),
+                )
+            )
+          ],
+        ));
   }
 
   @override
@@ -129,7 +147,7 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                 side: _value == index
                     ? null
                     : BorderSide(
-                        color: Theme.of(context).primaryColor.withOpacity(.4)),
+                    color: Theme.of(context).primaryColor.withOpacity(.4)),
                 labelStyle: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: _value == index
@@ -157,9 +175,9 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
     rButtonForms.clear();
     rButtonForms = widget.formItems
         .where((element) =>
-            element.linkedToControl == formItem.controlId ||
-            element.linkedToControl == "" ||
-            element.linkedToControl == null)
+    element.linkedToControl == formItem.controlId ||
+        element.linkedToControl == "" ||
+        element.linkedToControl == null)
         .toList();
 
     rButtonForms
@@ -182,36 +200,36 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
             height: double.infinity,
             child: SingleChildScrollView(
                 child: Column(mainAxisSize: MainAxisSize.max, children: [
-              const SizedBox(
-                height: 12,
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
-                  child: Align(
-                      child: Row(
-                    children: chips,
-                  ))),
-              const SizedBox(
-                height: 18,
-              ),
-              Form(
-                  key: _formKey,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      padding:
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18, top: 8),
+                      child: Align(
+                          child: Row(
+                            children: chips,
+                          ))),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          padding:
                           const EdgeInsets.only(left: 14, right: 14, top: 8),
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: sortedForms.length,
-                      itemBuilder: (context, index) {
-                        return BaseFormComponent(
-                            formItem: sortedForms[index],
-                            moduleItem: widget.moduleItem,
-                            formKey: _formKey,
-                            formItems: sortedForms,
-                            child: IFormWidget(
-                              sortedForms[index],
-                            ).render());
-                      }))
-            ]))));
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: sortedForms.length,
+                          itemBuilder: (context, index) {
+                            return BaseFormComponent(
+                                formItem: sortedForms[index],
+                                moduleItem: widget.moduleItem,
+                                formKey: _formKey,
+                                formItems: sortedForms,
+                                child: IFormWidget(
+                                  sortedForms[index],
+                                ).render());
+                          }))
+                ]))));
   }
 }
