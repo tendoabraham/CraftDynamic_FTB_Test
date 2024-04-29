@@ -23,7 +23,7 @@ class AlertUtil {
             child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: AlertDialog(
-                  title: const Text(
+                  title: Text(
                     "Error!",
                     style: TextStyle(
                         fontFamily: "Myriad Pro", fontWeight: FontWeight.bold),
@@ -36,9 +36,9 @@ class AlertUtil {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text(
+                      child: Text(
                         "OK",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Myriad Pro", fontSize: 18, color: APIService.appSecondaryColor),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
