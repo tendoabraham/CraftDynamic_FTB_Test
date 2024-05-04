@@ -105,8 +105,17 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
 
   @override
   Widget render() {
-    return DynamicTextFormField(
-      formFields: formFields,
+    return Container(
+      margin: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.only(top: 16, bottom: 0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.zero
+      ),
+      child: DynamicTextFormField(
+        formFields: formFields,
+      ),
     );
   }
 
@@ -194,9 +203,13 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           maxLength: formItem?.maxLength,
           maxLines: formItem?.maxLines,
           inputDecoration: InputDecoration(
-            // border: const OutlineInputBorder(),
               labelText: formItem?.controlText,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+              hintText: "Enter " + (formItem?.controlText ?? ""),
+              hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
               suffixIcon: textFieldParams['suffixIcon'],
+
               contentPadding: formItem?.verticalPadding != null
                   ? EdgeInsets.symmetric(
                   vertical: formItem?.verticalPadding ?? 18, horizontal: 14)
@@ -338,7 +351,7 @@ class _DynamicButtonState extends State<DynamicButton> {
     return Builder(builder: (BuildContext context) {
       return Container(
           alignment: Alignment.bottomCenter,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
                 ? LoadUtil()
@@ -837,46 +850,61 @@ class _DropDownState extends State<DropDown> {
                           message:
                           "current relationid is --> ${state.currentRelationID} and current value set is $_currentValue");
 
-                      return DropdownButtonFormField(
-                        iconEnabledColor: const Color.fromARGB(255, 0, 80, 170),
-                        value: _currentValue,
-                        decoration:
-                        InputDecoration(labelText: formItem?.controlText),
-                        isExpanded: true,
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
-                        onChanged: ((value) => {
-                          setState(() {
-                            _currentValue = value.toString();
+                      return Container(
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.only(top: 16, bottom: 0),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.zero
+                        ),
+                        child: DropdownButtonFormField(
+                          iconEnabledColor: const Color.fromARGB(255, 0, 80, 170),
+                          value: _currentValue,
+                          decoration: InputDecoration(
+                            labelText: formItem?.controlText,
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                            hintText: formItem?.controlText,
+                            hintStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),),
+                          isExpanded: true,
+                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                          onChanged: ((value) => {
+                            setState(() {
+                              _currentValue = value.toString();
+                            }),
+                            Provider.of<PluginState>(context, listen: false)
+                                .addDynamicDropDownData({
+                              formItem?.controlId ?? "": {
+                                formItem?.controlId ?? "": getValueFromList(value)
+                              }
+                            }),
+                            state.addCurrentDropDownValue(
+                                {formItem?.controlId: value}),
+                            if (isBillerType(formItem?.controlId ?? ""))
+                              {
+                                state.addCurrentRelationID(
+                                    getRelationIDValue(value)),
+                              },
+                            if (isFromAccountField(formItem?.controlId ?? ""))
+                              {
+                                state.setCurrentSelections(
+                                    {formItem?.controlId: _currentValue}),
+                              }
                           }),
-                          Provider.of<PluginState>(context, listen: false)
-                              .addDynamicDropDownData({
-                            formItem?.controlId ?? "": {
-                              formItem?.controlId ?? "": getValueFromList(value)
+                          validator: (value) {
+                            String? input = value.toString();
+                            if ((formItem?.isMandatory ?? false) && input == "null") {
+                              return 'Input required*';
                             }
-                          }),
-                          state.addCurrentDropDownValue(
-                              {formItem?.controlId: value}),
-                          if (isBillerType(formItem?.controlId ?? ""))
-                            {
-                              state.addCurrentRelationID(
-                                  getRelationIDValue(value)),
-                            },
-                          if (isFromAccountField(formItem?.controlId ?? ""))
-                            {
-                              state.setCurrentSelections(
-                                  {formItem?.controlId: _currentValue}),
-                            }
-                        }),
-                        validator: (value) {
-                          String? input = value.toString();
-                          if ((formItem?.isMandatory ?? false) && input == "null") {
-                            return 'Input required*';
-                          }
-                          Provider.of<PluginState>(context, listen: false)
-                              .addFormInput({"${formItem?.serviceParamId}": value});
-                          return null;
-                        },
-                        items: dropdownPicks,
+                            Provider.of<PluginState>(context, listen: false)
+                                .addFormInput({"${formItem?.serviceParamId}": value});
+                            return null;
+                          },
+                          items: dropdownPicks,
+                        ),
                       );
                     });
               }
@@ -1173,48 +1201,62 @@ class _DynamicPhonePickerFormWidgetState
     AppLogger.appLogD(
         tag: "phone input::max digits", message: formItem?.maxLength);
 
-    return InternationalPhoneNumberInput(
-      maxLength: formItem?.maxLength ?? 11,
-      onInputChanged: (PhoneNumber number) {
-        inputNumber = number;
-      },
-      selectorConfig: const SelectorConfig(
-          selectorType: PhoneInputSelectorType.DIALOG,
-          setSelectorButtonAsPrefixIcon: true,
-          leadingPadding: 14),
-      ignoreBlank: false,
-      autoValidateMode: AutovalidateMode.disabled,
-      initialValue: inputNumber,
-      textFieldController: controller,
-      inputDecoration: InputDecoration(
-          labelText: formItem?.controlText,
-          suffixIcon: IconButton(
-              onPressed: pickPhoneContact,
-              icon:
-              Icon(Icons.contacts, color: Theme.of(context).primaryColor))),
-      validator: (value) {
-        var input = value?.replaceAll(" ", "");
-        var leadingDigits = formItem?.leadingDigits ?? [];
-        if (input?.length != 9) {
-          return "Invalid mobile";
-        } else if (leadingDigits.isNotEmpty &&
-            (!leadingDigits.contains(value?[0]))) {
-          return "Mobile must start with $leadingDigits";
-        } else if (input == "") {
-          return "Enter your mobile";
-        } else {
-          var number = pickedcontact.isNotEmpty
-              ? "${APIService.countryCode}$pickedcontact"
-              : inputNumber.phoneNumber?.replaceAll("+", "");
-          Provider.of<PluginState>(context, listen: false)
-              .addFormInput({"${formItem?.serviceParamId}": number});
-        }
+    return Container(
+      margin: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.only(top: 16, bottom: 0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.zero
+      ),
+      child:
+      InternationalPhoneNumberInput(
+        maxLength: formItem?.maxLength ?? 11,
+        onInputChanged: (PhoneNumber number) {
+          inputNumber = number;
+        },
+        selectorConfig: const SelectorConfig(
+            selectorType: PhoneInputSelectorType.DIALOG,
+            setSelectorButtonAsPrefixIcon: true,
+            leadingPadding: 14),
+        ignoreBlank: false,
+        autoValidateMode: AutovalidateMode.disabled,
+        initialValue: inputNumber,
+        textFieldController: controller,
+        inputDecoration: InputDecoration(
+            labelText: "Phone Number",
+            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: "Enter Phone Number",
+            hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
+            suffixIcon: IconButton(
+                onPressed: pickPhoneContact,
+                icon:
+                Icon(Icons.contacts, color: Color.fromARGB(255, 0, 80, 170),))),
+        validator: (value) {
+          var input = value?.replaceAll(" ", "");
+          var leadingDigits = formItem?.leadingDigits ?? [];
+          if (input?.length != 9) {
+            return "Invalid mobile";
+          } else if (leadingDigits.isNotEmpty &&
+              (!leadingDigits.contains(value?[0]))) {
+            return "Mobile must start with $leadingDigits";
+          } else if (input == "") {
+            return "Enter your mobile";
+          } else {
+            var number = pickedcontact.isNotEmpty
+                ? "${APIService.countryCode}$pickedcontact"
+                : inputNumber.phoneNumber?.replaceAll("+", "");
+            Provider.of<PluginState>(context, listen: false)
+                .addFormInput({"${formItem?.serviceParamId}": number});
+          }
 
-        return null;
-      },
-      countries: (formItem?.countries?.isNotEmpty ?? false)
-          ? formItem?.countries
-          : null,
+          return null;
+        },
+        countries: (formItem?.countries?.isNotEmpty ?? false)
+            ? formItem?.countries
+            : null,
+      ),
     );
   }
 
@@ -1525,11 +1567,14 @@ class CheckboxFormField extends FormField<bool> {
       initialValue: initialValue,
       builder: (FormFieldState<bool> state) {
         return CheckboxListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+          activeColor: Color.fromARGB(255, 0, 80, 170),
           dense: state.hasError,
           title: title,
           value: state.value,
+          splashRadius: 100,
           onChanged: state.didChange,
-          controlAffinity: ListTileControlAffinity.platform,
+          controlAffinity: ListTileControlAffinity.leading,
         );
       });
 }

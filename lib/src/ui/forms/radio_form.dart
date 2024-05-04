@@ -148,16 +148,18 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                 side: _value == index
                     ? null
                     : BorderSide(
-                    color: Theme.of(context).primaryColor.withOpacity(.4)),
+                    width: 0.5,
+                    color: Color.fromARGB(255, 0, 80, 170)),
                 labelStyle: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: _value == index
                       ? Colors.white
-                      : APIService.appSecondaryColor,
+                      : Color.fromARGB(255, 0, 80, 170),
                 ),
                 label: SizedBox(
                   width: double.infinity,
-                  child: Text(formItem.controlText ?? ""),
+                  child: Text(formItem.controlText ?? "",
+                    textAlign: TextAlign.center,),
                 ),
                 selected: _value == index,
                 onSelected: (bool selected) {
