@@ -163,7 +163,8 @@ enum ModuleId {
   MAIN,
   LOANLPAYMENT,
   QUICKPAY,
-  RAOEXISTNGCUSTOMER
+  RAOEXISTNGCUSTOMER,
+  MTNDATA
 }
 
 enum LittleProduct {

@@ -285,6 +285,16 @@ class ModuleUtil {
             break;
           }
         }
+      case ModuleId.MTNDATA:
+        {
+          {
+            CommonUtils.navigateToRoute(
+                context: context,
+                widget: Data(
+                ));
+            break;
+          }
+        }
       case ModuleId.BOOKCAB:
         {
           NativeBinder.invokeMethod(LittleProduct
