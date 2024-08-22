@@ -1,15 +1,15 @@
 part of craft_dynamic;
 
 class DeviceInfo {
-  getDeviceUniqueID() async {
+  static getDeviceUniqueID() async {
     if (kIsWeb) {
       return "123";
     }
-
+ß
     if (Platform.isAndroid) {
       return await UniqueIdentifier.serial;
     } else if (Platform.isIOS) {
-      return generateRandomString(10);
+      // return generateRandomString(10);
     }
     // return await UniqueIdentifier.serial;
   }
