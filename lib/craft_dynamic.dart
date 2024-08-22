@@ -28,7 +28,7 @@ import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 import 'package:local_session_timeout/local_session_timeout.dart'
     hide SessionTimeoutState, SessionTimeoutManager;
-
+import 'dart:math';
 // import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:logger/logger.dart';
 import 'package:logging/logging.dart' as weblogger;
