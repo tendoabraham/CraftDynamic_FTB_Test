@@ -5,16 +5,16 @@ class DeviceInfo {
     if (kIsWeb) {
       return "123";
     }
-ß
+
     if (Platform.isAndroid) {
       return await UniqueIdentifier.serial;
     } else if (Platform.isIOS) {
-      // return generateRandomString(10);
+      return generateRandomString(10);
     }
     // return await UniqueIdentifier.serial;
   }
 
-  String generateRandomString(int length) {
+  static String generateRandomString(int length) {
     const characters =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final random = Random();
