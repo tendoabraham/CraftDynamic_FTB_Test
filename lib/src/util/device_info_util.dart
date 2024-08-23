@@ -2,26 +2,19 @@ part of craft_dynamic;
 
 class DeviceInfo {
   static getDeviceUniqueID() async {
+    String? serial;
     if (kIsWeb) {
       return "123";
     }
-
-    if (Platform.isAndroid) {
-      return await UniqueIdentifier.serial;
-    } else if (Platform.isIOS) {
-      return generateRandomString(10);
+    try {
+      serial = Platform.isAndroid
+          ? await UniqueIdentifier.serial
+          : CryptLib.toSHA256(await UniqueIdentifier.serial ?? "", 16);
+    } catch (e) {
+      AppLogger.appLogD(tag: "device info", message: e);
     }
-    // return await UniqueIdentifier.serial;
-  }
 
-  static String generateRandomString(int length) {
-    const characters =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final random = Random();
-    return String.fromCharCodes(Iterable.generate(
-      length,
-      (_) => characters.codeUnitAt(random.nextInt(characters.length)),
-    ));
+    return serial;
   }
 
   static performDeviceSecurityScan() async {
