@@ -16,11 +16,11 @@ class DynamicInput {
 class BaseFormComponent extends StatelessWidget {
   const BaseFormComponent(
       {super.key,
-        required this.child,
-        required this.formItem,
-        required this.moduleItem,
-        required this.formItems,
-        required this.formKey});
+      required this.child,
+      required this.formItem,
+      required this.moduleItem,
+      required this.formItems,
+      required this.formKey});
 
   final Widget child;
   final FormItem formItem;
@@ -40,20 +40,20 @@ class BaseFormComponent extends StatelessWidget {
           formKey: formKey,
         ),
         formItem.controlType == ViewType.HIDDEN.name ||
-            formItem.controlType == ViewType.CONTAINER.name ||
-            formItem.controlType == ViewType.RBUTTON.name ||
-            formItem.controlType == ViewType.TAB.name ||
-            formItem.controlType == ViewType.LIST.name ||
-            formItem.controlType == ViewType.TITLE.name ||
-            formItem.controlType == ViewType.SELECTEDTEXT.name ||
-            formItem.controlType == ViewType.FORM.name ||
-            formItem.controlType == ViewType.IMAGE.name ||
-            formItem.controlType == ViewType.TEXTVIEW.name ||
-            formItem.controlType == ViewType.HORIZONTALTEXT.name
+                formItem.controlType == ViewType.CONTAINER.name ||
+                formItem.controlType == ViewType.RBUTTON.name ||
+                formItem.controlType == ViewType.TAB.name ||
+                formItem.controlType == ViewType.LIST.name ||
+                formItem.controlType == ViewType.TITLE.name ||
+                formItem.controlType == ViewType.SELECTEDTEXT.name ||
+                formItem.controlType == ViewType.FORM.name ||
+                formItem.controlType == ViewType.IMAGE.name ||
+                formItem.controlType == ViewType.TEXTVIEW.name ||
+                formItem.controlType == ViewType.HORIZONTALTEXT.name
             ? const SizedBox()
             : const SizedBox(
-          height: 18,
-        )
+                height: 18,
+              )
       ],
     );
   }
@@ -69,12 +69,12 @@ class BaseFormInheritedComponent extends InheritedWidget {
 
   BaseFormInheritedComponent(
       {super.key,
-        required this.widget,
-        required this.formItem,
-        required this.moduleItem,
-        required this.formItems,
-        required this.formKey,
-        this.jsonText})
+      required this.widget,
+      required this.formItem,
+      required this.moduleItem,
+      required this.formItems,
+      required this.formKey,
+      this.jsonText})
       : super(child: widget);
 
   static BaseFormInheritedComponent? of(BuildContext context) {
@@ -97,11 +97,11 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
 
   DynamicTextFormField(
       {super.key,
-        this.isEnabled = true,
-        this.func,
-        this.customText,
-        this.controller,
-        this.formFields});
+      this.isEnabled = true,
+      this.func,
+      this.customText,
+      this.controller,
+      this.formFields});
 
   @override
   Widget render() {
@@ -111,8 +111,7 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.zero
-      ),
+          borderRadius: BorderRadius.zero),
       child: DynamicTextFormField(
         formFields: formFields,
       ),
@@ -156,7 +155,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
     return Consumer<PluginState>(builder: (context, state, child) {
       isObscured = formItem?.controlFormat == ControlFormat.PinNumber.name ||
-          formItem?.controlFormat == ControlFormat.PIN.name
+              formItem?.controlFormat == ControlFormat.PIN.name
           ? true
           : false;
 
@@ -166,12 +165,12 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           isObscure: isObscured,
           refreshParent: refreshParent);
       inputType = formItem?.controlFormat == ControlFormat.PinNumber.name ||
-          formItem?.controlFormat == ControlFormat.PIN.name
+              formItem?.controlFormat == ControlFormat.PIN.name
           ? TextInputType.number
           : textFieldParams['inputType'];
       var formFieldValue = widget.formFields?.firstWhereOrNull((formField) =>
-      formField[FormFieldProp.ControlID.name].toLowerCase() ==
-          formItem?.controlId?.toLowerCase()) ??
+              formField[FormFieldProp.ControlID.name].toLowerCase() ==
+              formItem?.controlId?.toLowerCase()) ??
           "";
 
       if (formFieldValue.isNotEmpty) {
@@ -183,7 +182,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
             tag: "all dynamic dropdown data ${formItem?.linkedToRowID}",
             message: state.dynamicDropDownData);
         linkedToControlText = state.dynamicDropDownData[formItem?.linkedToRowID]
-        ?[formItem?.linkedToRowID] ??
+                ?[formItem?.linkedToRowID] ??
             "";
       }
 
@@ -193,8 +192,8 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
 
       var properties = TextFormFieldProperties(
           isEnabled: formFieldValue.isNotEmpty ||
-              linkedToControlText.isNotEmpty ||
-              isEnabled
+                  linkedToControlText.isNotEmpty ||
+                  isEnabled
               ? false
               : true,
           isObscured: isObscured ? state.obscureText : false,
@@ -205,14 +204,21 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           inputDecoration: InputDecoration(
               labelText: formItem?.controlText,
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+              labelStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 0, 80, 170),
+                  fontFamily: "Myriad Pro"),
               hintText: "Enter " + (formItem?.controlText ?? ""),
-              hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
+              hintStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                  fontFamily: "Myriad Pro"),
               suffixIcon: textFieldParams['suffixIcon'],
-
               contentPadding: formItem?.verticalPadding != null
                   ? EdgeInsets.symmetric(
-                  vertical: formItem?.verticalPadding ?? 18, horizontal: 14)
+                      vertical: formItem?.verticalPadding ?? 18, horizontal: 14)
                   : null),
           isAmount: formItem?.controlFormat == ControlFormat.Amount.name);
 
@@ -246,7 +252,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
     if (isObscured) {
       Provider.of<PluginState>(context, listen: false).addEncryptedFields({
         "${formItem?.serviceParamId}":
-        CryptLib.encryptField(formattedValue.replaceAll(" ", ""))
+            CryptLib.encryptField(formattedValue.replaceAll(" ", ""))
       });
     } else {
       Provider.of<PluginState>(context, listen: false)
@@ -356,7 +362,7 @@ class _DynamicButtonState extends State<DynamicButton> {
             return state.loadingNetworkData
                 ? LoadUtil()
                 : WidgetFactory.buildButton(context, onClick,
-                formItem?.controlText?.capitalizeFirstLetter() ?? "Submit");
+                    formItem?.controlText?.capitalizeFirstLetter() ?? "Submit");
           }));
     });
   }
@@ -399,13 +405,13 @@ class _DynamicButtonState extends State<DynamicButton> {
         Provider.of<PluginState>(context, listen: false).setRequestState(true);
         _dynamicRequest
             .dynamicRequest(moduleItem,
-            formItem: formItem,
-            dataObj: Provider.of<PluginState>(context, listen: false)
-                .formInputValues,
-            encryptedField: Provider.of<PluginState>(context, listen: false)
-                .encryptedFields,
-            context: context,
-            tappedButton: true)
+                formItem: formItem,
+                dataObj: Provider.of<PluginState>(context, listen: false)
+                    .formInputValues,
+                encryptedField: Provider.of<PluginState>(context, listen: false)
+                    .encryptedFields,
+                context: context,
+                tappedButton: true)
             .then((value) {
           if (value?.status != StatusCode.unknown.statusCode) {
             AppLogger.appLogD(
@@ -444,8 +450,8 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
   List<dynamic> dropdownItems = [];
 
   Future<DynamicResponse?> getDropDownData(
-      String actionID, ModuleItem moduleItem,
-      {formID = "DBCALL", route = "other", merchantID}) =>
+          String actionID, ModuleItem moduleItem,
+          {formID = "DBCALL", route = "other", merchantID}) =>
       _apiService.getDynamicDropDownValues(actionID, moduleItem,
           formID ?? "DBCALL", route ?? "other", merchantID);
 
@@ -472,8 +478,8 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
             value: _currentValue,
             decoration: InputDecoration(
                 prefixIcon: ThreeLoadUtil(
-                  size: 24,
-                )),
+              size: 24,
+            )),
             hint: Text(
               formItem?.controlText ?? "",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -520,7 +526,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                               imageUrl: image ?? formItem?.controlText,
                               placeholder: (context, url) => PulseLoadUtil(),
                               errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                                  const Icon(Icons.error),
                               width: 70,
                               height: 70,
                               fit: BoxFit.contain,
@@ -530,9 +536,9 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
                             ),
                             Expanded(
                                 child: Text(
-                                  label ?? formItem?.controlText,
-                                  overflow: TextOverflow.ellipsis,
-                                ))
+                              label ?? formItem?.controlText,
+                              overflow: TextOverflow.ellipsis,
+                            ))
                           ],
                         )));
               }).toList();
@@ -575,7 +581,7 @@ class _ImageDynamicDropDownState extends State<ImageDynamicDropDown> {
             .isEmpty) {
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData(
-              {formItem?.controlId.toString() ?? "": initialValue});
+                  {formItem?.controlId.toString() ?? "": initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -603,8 +609,8 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
   List<dynamic> dropdownItems = [];
 
   Future<DynamicResponse?> getDropDownData(
-      String actionID, ModuleItem moduleItem,
-      {formID = "DBCALL", route = "other", merchantID}) async =>
+          String actionID, ModuleItem moduleItem,
+          {formID = "DBCALL", route = "other", merchantID}) async =>
       _apiService.getDynamicDropDownValues(
           actionID, moduleItem, formID, route, merchantID);
 
@@ -632,14 +638,18 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
             value: _currentValue,
             decoration: InputDecoration(
                 prefixIcon: ThreeLoadUtil(
-                  size: 24,
-                )),
+              size: 24,
+            )),
             hint: Text(
               formItem?.controlText ?? "",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             isExpanded: true,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 0, 80, 170),
+                fontFamily: "Myriad Pro"),
             items: const [],
           );
           if (snapshot.hasData) {
@@ -652,10 +662,17 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                 hint: Text(
                   snapshot.data?.message ?? formItem?.controlText ?? "",
                   style: const TextStyle(
-                      fontSize: 1, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                      fontSize: 1,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 0, 80, 170),
+                      fontFamily: "Myriad Pro"),
                 ),
                 isExpanded: true,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 0, 80, 170),
+                    fontFamily: "Myriad Pro"),
                 items: const [],
               );
             } else {
@@ -665,10 +682,14 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
               var dropdownPicks = dropdownItems.asMap().entries.map((item) {
                 return DropdownMenuItem(
                   value:
-                  item.value[formItem?.controlId] ?? formItem?.controlText,
+                      item.value[formItem?.controlId] ?? formItem?.controlText,
                   child: Text(
                     item.value[formItem?.controlId] ?? formItem?.controlText,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 0, 80, 170),
+                        fontFamily: "Myriad Pro"),
                   ),
                 );
               }).toList();
@@ -682,11 +703,15 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                 value: _currentValue,
                 decoration: InputDecoration(labelText: formItem?.controlText),
                 isExpanded: true,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+                style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 0, 80, 170),
+                    fontFamily: "Myriad Pro"),
                 onChanged: (value) {
                   Provider.of<PluginState>(context, listen: false)
                       .addDynamicDropDownData(
-                      {formItem?.controlId ?? "": getValueFromList(value)});
+                          {formItem?.controlId ?? "": getValueFromList(value)});
                 },
                 validator: (value) {
                   String? input = value.toString();
@@ -696,7 +721,7 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
                   Provider.of<PluginState>(context, listen: false)
                       .addFormInput({
                     "${formItem?.serviceParamId}":
-                    getValueFromList(value)[formItem?.controlId ?? ""]
+                        getValueFromList(value)[formItem?.controlId ?? ""]
                   });
                   return null;
                 },
@@ -720,7 +745,7 @@ class _DynamicDropDownState extends State<DynamicDropDown> {
             .isEmpty) {
           Provider.of<PluginState>(context, listen: false)
               .addDynamicDropDownData(
-              {formItem?.controlId ?? "": initialValue});
+                  {formItem?.controlId ?? "": initialValue});
         }
       } catch (e) {
         AppLogger.appLogE(tag: "Dropdown error", message: e.toString());
@@ -783,102 +808,121 @@ class _DropDownState extends State<DropDown> {
 
                 child =
                     Consumer<DropDownState>(builder: (context, state, child) {
-                      AppLogger.appLogD(
-                          tag: classname,
-                          message:
+                  AppLogger.appLogD(
+                      tag: classname,
+                      message:
                           "all values @${formItem?.controlId} --------> $data");
 
-                      AppLogger.appLogD(
-                          tag: "$classname:relationid @${formItem?.controlId}",
-                          message:
+                  AppLogger.appLogD(
+                      tag: "$classname:relationid @${formItem?.controlId}",
+                      message:
                           Provider.of<DropDownState>(context, listen: false)
                               .currentRelationID);
 
-                      var dropdownPicks = dropdownItems.entries.map((item) {
-                        return DropdownMenuItem(
-                          value: item.key,
-                          child: Text(
-                            item.value,
-                            style: const TextStyle(fontSize: 13, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
-                          ),
-                        );
-                      }).toList();
-                      dropdownPicks.toSet().toList();
+                  var dropdownPicks = dropdownItems.entries.map((item) {
+                    return DropdownMenuItem(
+                      value: item.key,
+                      child: Text(
+                        item.value,
+                        style: const TextStyle(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 0, 80, 170),
+                            fontFamily: "Myriad Pro"),
+                      ),
+                    );
+                  }).toList();
+                  dropdownPicks.sort((a, b) => (a.child as Text)
+                      .data!
+                      .compareTo((b.child as Text).data!));
+                  dropdownPicks.toSet().toList();
 
-                      // if (dropdownPicks.isNotEmpty &&
-                      //     (formItem?.hasInitialValue ?? true)) {
-                      //   addInitialValueToLinkedField(context,
-                      //       getFirstSubcodeID(dropdownItems.entries.first));
-                      // }
+                  // if (dropdownPicks.isNotEmpty &&
+                  //     (formItem?.hasInitialValue ?? true)) {
+                  //   addInitialValueToLinkedField(context,
+                  //       getFirstSubcodeID(dropdownItems.entries.first));
+                  // }
 
-                      if (!isToAccountField(formItem?.controlId ?? "") &&
-                          !isBillerName(formItem?.controlId ?? "")) {
-                        _currentValue = formItem?.hasInitialValue ?? true
-                            ? dropdownItems.isNotEmpty
+                  if (!isToAccountField(formItem?.controlId ?? "") &&
+                      !isBillerName(formItem?.controlId ?? "")) {
+                    _currentValue = formItem?.hasInitialValue ?? true
+                        ? dropdownItems.isNotEmpty
                             ? dropdownItems.entries.first.key
                             : null
-                            : null;
-                      }
+                        : null;
+                  }
 
-                      if (isToAccountField(formItem?.controlId ?? "")) {
-                        var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
+                  if (isToAccountField(formItem?.controlId ?? "")) {
+                    var dropdowns = dropdownPicks.firstWhereOrNull((item) =>
                         item.value ==
-                            state.currentSelections?[ControlID.BANKACCOUNTID.name]);
-                        dropdownPicks.remove(dropdowns);
+                        state.currentSelections?[ControlID.BANKACCOUNTID.name]);
+                    dropdownPicks.remove(dropdowns);
 
-                        if (_currentValue ==
-                            state
-                                .currentSelections?[ControlID.BANKACCOUNTID.name]) {
-                          _currentValue = formItem?.hasInitialValue ?? true
-                              ? dropdownPicks.isNotEmpty
+                    if (_currentValue ==
+                        state
+                            .currentSelections?[ControlID.BANKACCOUNTID.name]) {
+                      _currentValue = formItem?.hasInitialValue ?? true
+                          ? dropdownPicks.isNotEmpty
                               ? "${dropdownPicks[0].value}"
                               : null
-                              : null;
-                        }
-                      }
+                          : null;
+                    }
+                  }
 
-                      if (isBillerName(formItem?.controlId ?? "")) {
-                        _currentValue = formItem?.hasInitialValue ?? true
-                            ? dropdownPicks.isNotEmpty
+                  if (isBillerName(formItem?.controlId ?? "")) {
+                    _currentValue = formItem?.hasInitialValue ?? true
+                        ? dropdownPicks.isNotEmpty
                             ? "${dropdownPicks[0].value}"
                             : null
-                            : null;
-                      }
+                        : null;
+                  }
 
-                      AppLogger.appLogD(
-                          tag: "$classname@${formItem?.controlId}",
-                          message:
+                  AppLogger.appLogD(
+                      tag: "$classname@${formItem?.controlId}",
+                      message:
                           "current relationid is --> ${state.currentRelationID} and current value set is $_currentValue");
 
-                      return Container(
-                        margin: EdgeInsets.zero,
-                        padding: EdgeInsets.only(top: 16, bottom: 0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.zero
-                        ),
-                        child: DropdownButtonFormField(
-                          iconEnabledColor: const Color.fromARGB(255, 0, 80, 170),
-                          value: _currentValue,
-                          decoration: InputDecoration(
-                            labelText: formItem?.controlText,
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
-                            hintText: formItem?.controlText,
-                            hintStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),),
-                          isExpanded: true,
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
-                          onChanged: ((value) => {
+                  return Container(
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.only(top: 16, bottom: 0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.zero),
+                    child: DropdownButtonFormField(
+                      iconEnabledColor: const Color.fromARGB(255, 0, 80, 170),
+                      value: _currentValue,
+                      decoration: InputDecoration(
+                        labelText: formItem?.controlText,
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 0, 80, 170),
+                            fontFamily: "Myriad Pro"),
+                        hintText: formItem?.controlText,
+                        hintStyle: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontFamily: "Myriad Pro"),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                      ),
+                      isExpanded: true,
+                      style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 0, 80, 170),
+                          fontFamily: "Myriad Pro"),
+                      onChanged: ((value) => {
                             setState(() {
                               _currentValue = value.toString();
                             }),
                             Provider.of<PluginState>(context, listen: false)
                                 .addDynamicDropDownData({
                               formItem?.controlId ?? "": {
-                                formItem?.controlId ?? "": getValueFromList(value)
+                                formItem?.controlId ?? "":
+                                    getValueFromList(value)
                               }
                             }),
                             state.addCurrentDropDownValue(
@@ -894,19 +938,21 @@ class _DropDownState extends State<DropDown> {
                                     {formItem?.controlId: _currentValue}),
                               }
                           }),
-                          validator: (value) {
-                            String? input = value.toString();
-                            if ((formItem?.isMandatory ?? false) && input == "null") {
-                              return 'Input required*';
-                            }
-                            Provider.of<PluginState>(context, listen: false)
-                                .addFormInput({"${formItem?.serviceParamId}": value});
-                            return null;
-                          },
-                          items: dropdownPicks,
-                        ),
-                      );
-                    });
+                      validator: (value) {
+                        String? input = value.toString();
+                        if ((formItem?.isMandatory ?? false) &&
+                            input == "null") {
+                          return 'Input required*';
+                        }
+                        Provider.of<PluginState>(context, listen: false)
+                            .addFormInput(
+                                {"${formItem?.serviceParamId}": value});
+                        return null;
+                      },
+                      items: dropdownPicks,
+                    ),
+                  );
+                });
               }
               return child;
             });
@@ -949,10 +995,10 @@ class _DropDownState extends State<DropDown> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         if (Provider.of<PluginState>(context, listen: false)
-            .dynamicDropDownData[formItem?.rowID?.toString()] ==
-            {} ||
+                    .dynamicDropDownData[formItem?.rowID?.toString()] ==
+                {} ||
             Provider.of<PluginState>(context, listen: false)
-                .dynamicDropDownData[formItem?.rowID?.toString()] ==
+                    .dynamicDropDownData[formItem?.rowID?.toString()] ==
                 null) {
           Map<String, dynamic> map = {};
 
@@ -983,7 +1029,7 @@ class _DropDownState extends State<DropDown> {
         formItem.controlFormat != ControlFormat.SELECTBENEFICIARY.name) {
       try {
         userCodes =
-        await _userCodeRepository.getUserCodesById(formItem.dataSourceId);
+            await _userCodeRepository.getUserCodesById(formItem.dataSourceId);
         extraFieldMap = userCodes.fold<Map<String, dynamic>>(
             {}, (acc, curr) => acc..[curr.subCodeId] = curr.extraField);
         relationIDMap = userCodes.fold<Map<String, dynamic>>(
@@ -1001,14 +1047,14 @@ class DynamicLabelWidget implements IFormWidget {
   final _dynamicRequest = DynamicFormRequest();
 
   getDynamicLabel(
-      BuildContext context, FormItem? formItem, ModuleItem moduleItem) =>
+          BuildContext context, FormItem? formItem, ModuleItem moduleItem) =>
       _dynamicRequest.dynamicRequest(
         moduleItem,
         formItem: formItem,
         dataObj:
-        Provider.of<PluginState>(context, listen: false).formInputValues,
+            Provider.of<PluginState>(context, listen: false).formInputValues,
         encryptedField:
-        Provider.of<PluginState>(context, listen: false).encryptedFields,
+            Provider.of<PluginState>(context, listen: false).encryptedFields,
         isList: true,
         context: context,
       );
@@ -1021,27 +1067,27 @@ class DynamicLabelWidget implements IFormWidget {
 
       return formItem?.controlFormat == ControlFormat.LISTDATA.name
           ? FutureBuilder<DynamicResponse?>(
-          future: getDynamicLabel(context, formItem, moduleItem!),
-          builder: (BuildContext context,
-              AsyncSnapshot<DynamicResponse?> snapshot) {
-            Widget child = Text(formItem?.controlText ?? "");
-            if (snapshot.hasData) {
-              var dynamicResponse = snapshot.data;
-              DynamicPostCall.processDynamicResponse(
-                  dynamicResponse!.dynamicData!,
-                  context,
-                  formItem?.controlId);
+              future: getDynamicLabel(context, formItem, moduleItem!),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DynamicResponse?> snapshot) {
+                Widget child = Text(formItem?.controlText ?? "");
+                if (snapshot.hasData) {
+                  var dynamicResponse = snapshot.data;
+                  DynamicPostCall.processDynamicResponse(
+                      dynamicResponse!.dynamicData!,
+                      context,
+                      formItem?.controlId);
 
-              child = DynamicTextViewWidget(
-                  jsonText: dynamicResponse.dynamicList)
-                  .render();
-            }
-            return child;
-          })
+                  child = DynamicTextViewWidget(
+                          jsonText: dynamicResponse.dynamicList)
+                      .render();
+                }
+                return child;
+              })
           : Text(
-        formItem?.controlText ?? "",
-        style: const TextStyle(fontSize: 16),
-      );
+              formItem?.controlText ?? "",
+              style: const TextStyle(fontSize: 16),
+            );
     });
   }
 }
@@ -1062,62 +1108,61 @@ class DynamicTextViewWidget implements IFormWidget {
 
     return mapItems.isNotEmpty
         ? Builder(builder: (BuildContext context) {
-      return Column(children: [
-        ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: mapItems.length,
-          itemBuilder: (context, index) {
-            var mapItem = mapItems[index];
-            mapItem.removeWhere((key, value) =>
-            key == null || value == null || value == "");
+            return Column(children: [
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: mapItems.length,
+                itemBuilder: (context, index) {
+                  var mapItem = mapItems[index];
+                  mapItem.removeWhere((key, value) =>
+                      key == null || value == null || value == "");
 
-            return Material(
-                surfaceTintColor: const Color.fromARGB(255, 0, 80, 170),
-                elevation: 3,
-                borderRadius:
-                const BorderRadius.all(Radius.zero),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 8.0),
-                  child: Column(
-                    children: mapItem
-                        .map((key, value) => MapEntry(
-                        key,
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "$key:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium,
-                                ),
-                                Flexible(
-                                    child: Text(
-                                      value.toString(),
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                          fontFamily: "Roboto"),
-                                    ))
-                              ],
-                            ))))
-                        .values
-                        .toList(),
-                  ),
-                ));
-          },
-        ),
-        const SizedBox(
-          height: 18,
-        )
-      ]);
-    })
+                  return Material(
+                      surfaceTintColor: const Color.fromARGB(255, 0, 80, 170),
+                      elevation: 3,
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 8.0),
+                        child: Column(
+                          children: mapItem
+                              .map((key, value) => MapEntry(
+                                  key,
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "$key:",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                          Flexible(
+                                              child: Text(
+                                            value.toString(),
+                                            textAlign: TextAlign.right,
+                                            style: const TextStyle(
+                                                fontFamily: "Roboto"),
+                                          ))
+                                        ],
+                                      ))))
+                              .values
+                              .toList(),
+                        ),
+                      ));
+                },
+              ),
+              const SizedBox(
+                height: 18,
+              )
+            ]);
+          })
         : const SizedBox();
   }
 }
@@ -1163,7 +1208,7 @@ class DynamicQRScanner implements IFormWidget {
           ),
           Consumer<PluginState>(
             builder: (context, state, child) =>
-            state.scanvalidationloading ? LoadUtil() : const SizedBox(),
+                state.scanvalidationloading ? LoadUtil() : const SizedBox(),
           )
         ],
       );
@@ -1207,10 +1252,8 @@ class _DynamicPhonePickerFormWidgetState
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.zero
-      ),
-      child:
-      InternationalPhoneNumberInput(
+          borderRadius: BorderRadius.zero),
+      child: InternationalPhoneNumberInput(
         maxLength: formItem?.maxLength ?? 11,
         onInputChanged: (PhoneNumber number) {
           inputNumber = number;
@@ -1225,14 +1268,24 @@ class _DynamicPhonePickerFormWidgetState
         textFieldController: controller,
         inputDecoration: InputDecoration(
             labelText: "Phone Number",
-            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 80, 170), fontFamily: "Myriad Pro"),
+            labelStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 0, 80, 170),
+                fontFamily: "Myriad Pro"),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: "Enter Phone Number",
-            hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: "Myriad Pro"),
+            hintStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+                fontFamily: "Myriad Pro"),
             suffixIcon: IconButton(
                 onPressed: pickPhoneContact,
-                icon:
-                Icon(Icons.contacts, color: Color.fromARGB(255, 0, 80, 170),))),
+                icon: Icon(
+                  Icons.contacts,
+                  color: Color.fromARGB(255, 0, 80, 170),
+                ))),
         validator: (value) {
           var input = value?.replaceAll(" ", "");
           var leadingDigits = formItem?.leadingDigits ?? [];
@@ -1285,15 +1338,15 @@ class DynamicListWidget implements IFormWidget {
   DynamicListWidget({this.moduleItem, this.formItem});
 
   getDynamicList(context, formItem, module) => _dynamicRequest.dynamicRequest(
-    module,
-    formItem: formItem,
-    dataObj:
-    Provider.of<PluginState>(context, listen: false).formInputValues,
-    encryptedField:
-    Provider.of<PluginState>(context, listen: false).encryptedFields,
-    isList: true,
-    context: context,
-  );
+        module,
+        formItem: formItem,
+        dataObj:
+            Provider.of<PluginState>(context, listen: false).formInputValues,
+        encryptedField:
+            Provider.of<PluginState>(context, listen: false).encryptedFields,
+        isList: true,
+        context: context,
+      );
 
   @override
   Widget render() {
@@ -1303,45 +1356,45 @@ class DynamicListWidget implements IFormWidget {
 
       Provider.of<PluginState>(context, listen: false).addFormInput({
         RequestParam.HEADER.name:
-        inheritedFormItem?.actionId ?? formItem?.actionId
+            inheritedFormItem?.actionId ?? formItem?.actionId
       });
 
       return isEmptyList()
           ? const Center(
-        child: Text("Nothing was found!"),
-      )
+              child: Text("Nothing was found!"),
+            )
           : FutureBuilder<DynamicResponse?>(
-          future: getDynamicList(
-              context, formItem, inheritedModuleItem ?? moduleItem),
-          builder: (BuildContext context,
-              AsyncSnapshot<DynamicResponse?> snapshot) {
-            Widget child = Center(
-              child: CircularLoadUtil(),
-            );
-            if (snapshot.hasData) {
-              dynamicResponse = snapshot.data;
-              // DynamicPostCall.processDynamicResponse(
-              //     dynamicResponse?.dynamicData,
-              //     context,
-              //     formItem?.controlId);
+              future: getDynamicList(
+                  context, formItem, inheritedModuleItem ?? moduleItem),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DynamicResponse?> snapshot) {
+                Widget child = Center(
+                  child: CircularLoadUtil(),
+                );
+                if (snapshot.hasData) {
+                  dynamicResponse = snapshot.data;
+                  // DynamicPostCall.processDynamicResponse(
+                  //     dynamicResponse?.dynamicData,
+                  //     context,
+                  //     formItem?.controlId);
 
-              child = ListWidget(
-                dynamicList: dynamicResponse?.dynamicList,
-                summary: dynamicResponse?.summary,
-                scrollable: false,
-                controlID: formItem?.controlId,
-                moduleItem: moduleItem,
-                serviceParamID: formItem?.serviceParamId,
-              );
-            }
-            return child;
-          });
+                  child = ListWidget(
+                    dynamicList: dynamicResponse?.dynamicList,
+                    summary: dynamicResponse?.summary,
+                    scrollable: false,
+                    controlID: formItem?.controlId,
+                    moduleItem: moduleItem,
+                    serviceParamID: formItem?.serviceParamId,
+                  );
+                }
+                return child;
+              });
     });
   }
 
   bool isEmptyList() {
     if (formItem?.controlFormat != null &&
-        formItem!.controlFormat!.isNotEmpty ||
+            formItem!.controlFormat!.isNotEmpty ||
         formItem?.actionId == null ||
         formItem?.actionId == "") {
       return false;
@@ -1396,7 +1449,7 @@ class _DynamicImageUpload extends State<DynamicImageUpload> {
                 borderRadius: BorderRadius.circular(8.0),
                 onTap: () async {
                   final XFile? photo =
-                  await _picker.pickImage(source: ImageSource.camera);
+                      await _picker.pickImage(source: ImageSource.camera);
                   setState(() {
                     imageFile = photo?.path;
                   });
@@ -1419,24 +1472,24 @@ class _DynamicImageUpload extends State<DynamicImageUpload> {
                       height: 177,
                       child: imageFile == null
                           ? const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo,
-                              size: 34,
-                              color: Colors.blueGrey,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            Text("Tap to take picture")
-                          ])
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  Icon(
+                                    Icons.add_a_photo,
+                                    size: 34,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  SizedBox(
+                                    height: 8.0,
+                                  ),
+                                  Text("Tap to take picture")
+                                ])
                           : ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.file(
-                            File(imageFile!),
-                            fit: BoxFit.fitWidth,
-                          )),
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                File(imageFile!),
+                                fit: BoxFit.fitWidth,
+                              )),
                     )
                   ],
                 ));
@@ -1480,21 +1533,21 @@ class _DynamicLinkedContainerState extends State<DynamicLinkedContainer> {
           ));
           widgets.add(Consumer<GroupButtonModel>(
               builder: (context, selectedItem, child) {
-                _controller.text = selectedItem.selectedItem;
-                return WidgetFactory.buildTextField(
-                    context,
-                    TextFormFieldProperties(
-                        controller: _controller,
-                        textInputType: TextInputType.name,
-                        inputDecoration:
+            _controller.text = selectedItem.selectedItem;
+            return WidgetFactory.buildTextField(
+                context,
+                TextFormFieldProperties(
+                    controller: _controller,
+                    textInputType: TextInputType.name,
+                    inputDecoration:
                         InputDecoration(hintText: formItem?.controlText)),
-                        (string) {
-                      Provider.of<PluginState>(context, listen: false).addFormInput(
-                          {"${formItem?.serviceParamId}": _controller.text});
+                (string) {
+              Provider.of<PluginState>(context, listen: false).addFormInput(
+                  {"${formItem?.serviceParamId}": _controller.text});
 
-                      return null;
-                    });
-              }));
+              return null;
+            });
+          }));
           widgets.add(const SizedBox(
             height: 8,
           ));
@@ -1538,11 +1591,10 @@ class _DynamicCheckBoxState extends State<DynamicCheckBox> {
   Widget build(BuildContext context) {
     formItem = BaseFormInheritedComponent.of(context)?.formItem;
     return CheckboxFormField(
-        title: Text(formItem?.controlText ?? "",
-          style: TextStyle(
-              fontFamily: "Myriad Pro",
-              fontSize: 13
-          ),),
+        title: Text(
+          formItem?.controlText ?? "",
+          style: TextStyle(fontFamily: "Myriad Pro", fontSize: 13),
+        ),
         validator: (value) {
           validate(value);
           return null;
@@ -1558,25 +1610,26 @@ class _DynamicCheckBoxState extends State<DynamicCheckBox> {
 class CheckboxFormField extends FormField<bool> {
   CheckboxFormField(
       {super.key,
-        required Widget title,
-        required FormFieldValidator<bool> validator,
-        bool initialValue = false,
-        bool autovalidate = false})
+      required Widget title,
+      required FormFieldValidator<bool> validator,
+      bool initialValue = false,
+      bool autovalidate = false})
       : super(
-      validator: validator,
-      initialValue: initialValue,
-      builder: (FormFieldState<bool> state) {
-        return CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          activeColor: Color.fromARGB(255, 0, 80, 170),
-          dense: state.hasError,
-          title: title,
-          value: state.value,
-          splashRadius: 100,
-          onChanged: state.didChange,
-          controlAffinity: ListTileControlAffinity.leading,
-        );
-      });
+            validator: validator,
+            initialValue: initialValue,
+            builder: (FormFieldState<bool> state) {
+              return CheckboxListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                activeColor: Color.fromARGB(255, 0, 80, 170),
+                dense: state.hasError,
+                title: title,
+                value: state.value,
+                splashRadius: 100,
+                onChanged: state.didChange,
+                controlAffinity: ListTileControlAffinity.leading,
+              );
+            });
 }
 
 class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
@@ -1589,8 +1642,8 @@ class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
 
   @override
   Widget render() => DynamicHorizontalText(
-    input: input,
-  );
+        input: input,
+      );
 }
 
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
@@ -1630,18 +1683,18 @@ class _DynamicHorizontalText extends State<DynamicHorizontalText> {
     return formInput == null
         ? const SizedBox()
         : Padding(
-        padding: const EdgeInsets.symmetric(vertical: 9),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(formItem?.controlText ?? ""),
-            Text(
-              formInput ?? "****",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
-            )
-          ],
-        ));
+            padding: const EdgeInsets.symmetric(vertical: 9),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(formItem?.controlText ?? ""),
+                Text(
+                  formInput ?? "****",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                )
+              ],
+            ));
   }
 }
 
