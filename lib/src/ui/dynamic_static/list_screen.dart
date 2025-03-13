@@ -47,6 +47,16 @@ class ListWidget extends StatelessWidget {
 
     AppLogger.appLogD(tag: "summary list", message: summaryItems);
 
+    bool checkDate(String date) {
+      // final RegExp regex = RegExp(r'^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$');
+      final RegExp regex = RegExp(r'^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$');
+      if (regex.hasMatch(date)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return dynamicList != null && dynamicList!.isNotEmpty
         ? Column(children: [
             summaryItems.isNotEmpty
@@ -254,8 +264,17 @@ class ListWidget extends StatelessWidget {
                                                             fontFamily:
                                                                 "Myriad Pro",
                                                             fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 14,
+                                                                checkDate(value
+                                                                        .toString())
+                                                                    ? FontWeight
+                                                                        .normal
+                                                                    : FontWeight
+                                                                        .bold,
+                                                            fontSize: checkDate(
+                                                                    value
+                                                                        .toString())
+                                                                ? 12
+                                                                : 14,
                                                             color:
                                                                 primaryColor),
                                                         textAlign:
