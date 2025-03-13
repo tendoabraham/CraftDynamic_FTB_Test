@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:pinput/pinput.dart';
 
+const primaryColor = Color(0xff0D4C92);
+
 class ListWidget extends StatelessWidget {
   ListWidget(
       {Key? key,
@@ -144,12 +146,24 @@ class ListWidget extends StatelessWidget {
                     ))
                 : const SizedBox(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("${mapItems.length} transactions found"),
+                    mapItems.length == 1
+                        ? Text(
+                            "${mapItems.length} transaction found",
+                            style: TextStyle(
+                                fontFamily: "Myriad Pro", color: primaryColor),
+                          )
+                        : Text(
+                            "${mapItems.length} transactions found",
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: "Myriad Pro",
+                            ),
+                          ),
                     CachedNetworkImage(
                       imageUrl: moduleItem?.moduleUrl ?? "",
                       errorWidget: (context, url, error) => const SizedBox(),
@@ -159,14 +173,14 @@ class ListWidget extends StatelessWidget {
                     )
                   ]),
             ),
-            const SizedBox(
-              height: 4,
-            ),
+            // const SizedBox(
+            //   height: 4,
+            // ),
             Expanded(
                 child: ListView.builder(
               shrinkWrap: true,
               itemCount: mapItems.length,
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               itemBuilder: (context, index) {
                 var mapItem = mapItems[index];
                 var status = mapItem["Status"]?.toLowerCase();
@@ -175,10 +189,15 @@ class ListWidget extends StatelessWidget {
                 mapItem
                     .removeWhere((key, value) => key == null || value == null);
                 return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                    margin: EdgeInsets.zero,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                      //set border radius more than 50% of height and width to make circle
+                    ),
+                    surfaceTintColor: Colors.white,
+                    elevation: 3,
                     child: InkWell(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.zero,
                         onTap: () {
                           PDFUtil.downloadReceipt(
                               receiptdetails: mapItem as Map<String, dynamic>);
@@ -191,8 +210,8 @@ class ListWidget extends StatelessWidget {
                               decoration: BoxDecoration(
                                   color: color,
                                   borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(8),
-                                      bottomLeft: Radius.circular(8))),
+                                      topLeft: Radius.zero,
+                                      bottomLeft: Radius.zero)),
                             ),
                             Expanded(
                                 child: Column(children: [
@@ -221,6 +240,9 @@ class ListWidget extends StatelessWidget {
                                                       Text(
                                                         "$key:",
                                                         style: TextStyle(
+                                                            fontFamily:
+                                                                "Myriad Pro",
+                                                            fontSize: 14,
                                                             color: Theme.of(
                                                                     context)
                                                                 .primaryColor),
@@ -229,14 +251,13 @@ class ListWidget extends StatelessWidget {
                                                           child: Text(
                                                         value.toString(),
                                                         style: TextStyle(
+                                                            fontFamily:
+                                                                "Myriad Pro",
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 12,
-                                                            color: getTextColor(
-                                                                context,
-                                                                value
-                                                                    .toString()
-                                                                    .toLowerCase())),
+                                                            fontSize: 14,
+                                                            color:
+                                                                primaryColor),
                                                         textAlign:
                                                             TextAlign.right,
                                                       ))
