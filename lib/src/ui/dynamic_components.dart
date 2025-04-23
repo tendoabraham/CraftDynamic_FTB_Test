@@ -1315,13 +1315,35 @@ class _DynamicPhonePickerFormWidgetState
     );
   }
 
+  // pickPhoneContact() async {
+  //   try {
+  //     final Contact? contact = await _contactPicker.selectPhoneNumber();
+  //     if (contact != null) {
+  //       setState(() {
+  //         controller.text = formatPhone(contact.selectedPhoneNumber ?? "")
+  //             .replaceAll(RegExp(r'^0'), '');
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print("Failed to pick contact: $e");
+  //   }
+  // }
+
   pickPhoneContact() async {
     try {
       final Contact? contact = await _contactPicker.selectPhoneNumber();
       if (contact != null) {
+        String formatted = formatPhone(contact.selectedPhoneNumber ?? "")
+            .replaceAll(RegExp(r'^0'), '');
+
+        PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(
+          "+256$formatted", // assuming you're always dealing with UG numbers
+          APIService.countryIsoCode,
+        );
+
         setState(() {
-          controller.text = formatPhone(contact.selectedPhoneNumber ?? "")
-              .replaceAll(RegExp(r'^0'), '');
+          controller.text = formatted;
+          inputNumber = number;
         });
       }
     } catch (e) {
