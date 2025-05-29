@@ -248,6 +248,12 @@ class ModuleUtil {
           //     widget: ViewStandingOrder(moduleItem: moduleItem));
           break;
         }
+      case ModuleId.AUTHENTICATOR:
+        {
+          CommonUtils.navigateToRoute(
+              context: context, widget: AppAuthenticator());
+          break;
+        }
       case ModuleId.LOANLPAYMENT:
         {
           {
