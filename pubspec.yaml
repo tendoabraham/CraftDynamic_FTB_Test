@@ -50,8 +50,8 @@ dependencies:
   convert: ^3.1.2
   easy_localization: ^3.0.1
   # vpn_connection_detector: ^1.0.9
-  # connectivity_plus: ^3.0.3
-  connectivity_plus: ^6.1.4
+  connectivity_plus: ^3.0.3
+  # connectivity_plus: ^6.1.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   flutter_multi_formatter: ^2.11.0
