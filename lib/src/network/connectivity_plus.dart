@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
+import 'package:flutter/cupertino.dart';
 
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
@@ -18,13 +19,28 @@ class ConnectivityService {
         tag: "connection changed",
         message: "connection state has changed to: $results",
       );
-      connectionState.value = results.contains(ConnectivityResult.vpn)
+
+      connectionState.value = isVpnLikely(results,
+              Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android)
           ? ConnectivityResult.vpn
           : results.first;
+
+      // connectionState.value = results.contains(ConnectivityResult.vpn)
+      //     ? ConnectivityResult.vpn
+      //     : results.first;
 
       // connectionState.value = results.first;
       connectionStatusController.add(results);
     });
+  }
+
+  bool isVpnLikely(List<ConnectivityResult> results, TargetPlatform platform) {
+    if (results.contains(ConnectivityResult.vpn)) return true;
+    if (platform == TargetPlatform.iOS &&
+        results.contains(ConnectivityResult.other)) {
+      return true; // Treat "other" as VPN on iOS
+    }
+    return false;
   }
 
   void dispose() {
