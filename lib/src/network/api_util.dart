@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/connection_error_screen.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/vpn_error_screen.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../craft_dynamic.dart';
@@ -35,6 +36,11 @@ class APIUtil {
     if (!kIsWeb) {
       if (connectionState.value == ConnectivityResult.none) {
         CommonUtils.getxNavigate(widget: const ConnectionErrorScreen());
+        return false;
+      }
+
+      if (connectionState.value == ConnectivityResult.vpn) {
+        CommonUtils.getxNavigate(widget: const VPNErrorScreen());
         return false;
       }
       return true;

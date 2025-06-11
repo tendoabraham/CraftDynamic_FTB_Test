@@ -2,37 +2,65 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:flutter/foundation.dart';
 
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
-  final StreamController<ConnectivityResult> connectionStatusController =
-      StreamController<ConnectivityResult>.broadcast();
-
-  // Optional: expose current state with ValueNotifier
-  final ValueNotifier<ConnectivityResult> connectionState =
-      ValueNotifier<ConnectivityResult>(ConnectivityResult.none);
+  final StreamController<List<ConnectivityResult>> connectionStatusController =
+      StreamController<List<ConnectivityResult>>.broadcast();
 
   Future<void> initialize() async {
-    final ConnectivityResult result =
-        (await _connectivity.checkConnectivity()) as ConnectivityResult;
-    connectionState.value = result;
-    connectionStatusController.add(result);
+    List<ConnectivityResult> results = await _connectivity.checkConnectivity();
+    connectionStatusController.add(results);
 
-    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+    _connectivity.onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
       AppLogger.appLogD(
         tag: "connection changed",
-        message: "Connection state has changed to: $result",
+        message: "connection state has changed to: $results",
       );
-      connectionState.value = result;
-      connectionStatusController.add(result);
-    } as void Function(List<ConnectivityResult> event)?);
+      connectionState.value = results.contains(ConnectivityResult.vpn)
+          ? ConnectivityResult.vpn
+          : results.first;
+
+      // connectionState.value = results.first;
+      connectionStatusController.add(results);
+    });
   }
 
   void dispose() {
     connectionStatusController.close();
   }
 }
+
+// class ConnectivityService {
+//   final Connectivity _connectivity = Connectivity();
+//   final StreamController<ConnectivityResult> connectionStatusController =
+//       StreamController<ConnectivityResult>.broadcast();
+
+//   // Optional: expose current state with ValueNotifier
+//   final ValueNotifier<ConnectivityResult> connectionState =
+//       ValueNotifier<ConnectivityResult>(ConnectivityResult.none);
+
+//   Future<void> initialize() async {
+//     final ConnectivityResult result =
+//         (await _connectivity.checkConnectivity()) as ConnectivityResult;
+//     connectionState.value = result;
+//     connectionStatusController.add(result);
+
+//     _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+//       AppLogger.appLogD(
+//         tag: "connection changed",
+//         message: "Connection state has changed to: $result",
+//       );
+//       connectionState.value = result;
+//       connectionStatusController.add(result);
+//     } as void Function(List<ConnectivityResult> event)?);
+//   }
+
+//   void dispose() {
+//     connectionStatusController.close();
+//   }
+// }
 
 // class ConnectivityService {
 //   final Connectivity _connectivity = Connectivity();
