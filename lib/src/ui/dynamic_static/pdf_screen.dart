@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
@@ -171,15 +171,28 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
       await requestStoragePermission();
       File(widget.path ?? "").copy(receiptPath).then((value) {
         if (isDownload) {
-          CommonUtils.showActionSnackBar(
-            context: context,
-            message: "$receipt saved successfully",
-          );
+          // CommonUtils.showActionSnackBar(
+          //   context: context,
+          //   message: "$receipt saved successfully",
+          // );
+          if (Platform.isIOS) {
+            sharePdfFile(receiptPath); // Show share/save sheet
+          } else {
+            CommonUtils.showActionSnackBar(
+              context: context,
+              message: "$receipt saved successfully",
+            );
+          }
         } else {
           openFile(receiptPath, widget.pdfName ?? "", isDownload: isDownload);
         }
       });
     } catch (e) {}
+  }
+
+  Future<void> sharePdfFile(String filePath) async {
+    final file = XFile(filePath);
+    await Share.shareXFiles([file], text: 'Download your PDF receipt');
   }
 
   requestStoragePermission() async {
