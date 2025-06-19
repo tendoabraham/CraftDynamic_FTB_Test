@@ -368,6 +368,7 @@ class _DynamicButtonState extends State<DynamicButton> {
   }
 
   onClick() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (formItem?.controlId == "CLOSE") {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
@@ -1266,7 +1267,9 @@ class _DynamicPhonePickerFormWidgetState
             leadingPadding: 14),
         ignoreBlank: false,
         autoValidateMode: AutovalidateMode.disabled,
-        initialValue: inputNumber,
+        initialValue:
+            PhoneNumber(isoCode: 'UG'), // Set your desired fixed country
+        countries: ['UG'],
         textFieldController: controller,
         inputDecoration: InputDecoration(
             labelText: "Phone Number",
@@ -1308,9 +1311,9 @@ class _DynamicPhonePickerFormWidgetState
 
           return null;
         },
-        countries: (formItem?.countries?.isNotEmpty ?? false)
-            ? formItem?.countries
-            : null,
+        // countries: (formItem?.countries?.isNotEmpty ?? false)
+        //     ? formItem?.countries
+        //     : null,
       ),
     );
   }

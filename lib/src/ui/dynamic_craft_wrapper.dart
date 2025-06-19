@@ -54,9 +54,9 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     }
 
     await getAppLaunchCount();
-    if (!kIsWeb) {
-      await PermissionUtil.checkRequiredPermissions();
-    }
+    // if (!kIsWeb) {
+    //   await PermissionUtil.checkRequiredPermissions();
+    // }
     getCurrentLatLong();
     await getAppData();
   }
