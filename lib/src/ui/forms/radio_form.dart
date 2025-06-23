@@ -145,12 +145,10 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           flex: 1,
           child: Container(
               padding: EdgeInsets.zero,
-              margin: const EdgeInsets.only(right: 7),
+              margin: EdgeInsets.zero,
               child: ChoiceChip(
-                side: _value == index
-                    ? null
-                    : BorderSide(
-                        width: 0.5, color: Color.fromARGB(255, 0, 80, 170)),
+                side: BorderSide(
+                    width: 1.5, color: Color.fromARGB(255, 0, 80, 170)),
                 labelStyle: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: _value == index
