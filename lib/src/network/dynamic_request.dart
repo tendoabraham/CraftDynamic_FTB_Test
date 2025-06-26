@@ -32,6 +32,14 @@ class DynamicFormRequest {
     DynamicResponse? dynamicResponse =
         DynamicResponse(status: StatusCode.unknown.statusCode);
     try {
+      if (moduleItem?.merchantID == 'EFT' || moduleItem?.merchantID == 'RTGS') {
+        final bankAccountId = dataObj['BANKACCOUNTID'];
+
+        if (bankAccountId != null) {
+          dataObj['INFOFIELD11'] = bankAccountId;
+        }
+      }
+
       formvalues.addAll(dataObj);
       encryptedvalues.addAll(encryptedField);
     } catch (e) {
