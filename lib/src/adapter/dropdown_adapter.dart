@@ -85,12 +85,14 @@ class _BeneficiaryDropDown implements IDropDownAdapter {
         merchantID == 'AIRTELUG' ||
         merchantID == 'UGANDAMTNC2B' ||
         merchantID == 'AIRTELC2B') {
-      beneficiaries?.add(Beneficiary(
-          merchantID: merchantID ?? "",
-          merchantName: "global",
-          accountID: customerNo,
-          accountAlias: "Own Number",
-          rowId: 0));
+      beneficiaries?.insert(
+          0,
+          Beneficiary(
+              merchantID: merchantID ?? "",
+              merchantName: "global",
+              accountID: customerNo,
+              accountAlias: "Own Number",
+              rowId: 0));
     }
 
     return beneficiaries?.fold<Map<String, dynamic>>(
