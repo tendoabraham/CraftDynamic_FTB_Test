@@ -216,6 +216,13 @@ class PDFUtil {
       PdfGridRow row = grid.rows.add();
       String title = item.key;
       String value = row.cells[1].value = item.value ?? "****";
+
+      // Mask account number except last 4 digits
+      if (title.toLowerCase() == "from account number" && value.length >= 4) {
+        value =
+            value.replaceRange(0, value.length - 4, '*' * (value.length - 4));
+      }
+
       if (title.toLowerCase() == "reference no" ||
           title.toLowerCase() == "bankreference" ||
           title.toLowerCase() == "reference id" ||

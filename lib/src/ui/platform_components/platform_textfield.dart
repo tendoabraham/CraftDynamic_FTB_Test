@@ -38,6 +38,13 @@ class IOSTextFormField implements ITextFormField {
       validator: validator,
       onChanged: properties.onChange,
       inputFormatters: properties.isAmount ? [CurrencyInputFormatter()] : null,
+      enableInteractiveSelection: properties.isObscured ? false : true,
+      contextMenuBuilder: properties.isObscured
+          ? (context, editableTextState) {
+              // Return an empty container to disable the menu
+              return const SizedBox.shrink();
+            }
+          : null,
     );
   }
 }
@@ -60,6 +67,13 @@ class AndroidTextFormField implements ITextFormField {
       onChanged: properties.onChange ?? (input) {},
       inputFormatters: properties.isAmount
           ? [CurrencyInputFormatter(mantissaLength: 0)]
+          : null,
+      enableInteractiveSelection: properties.isObscured ? false : true,
+      contextMenuBuilder: properties.isObscured
+          ? (context, editableTextState) {
+              // Return an empty container to disable the menu
+              return const SizedBox.shrink();
+            }
           : null,
     );
   }
