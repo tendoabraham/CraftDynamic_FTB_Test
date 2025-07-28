@@ -1,6 +1,10 @@
 part of craft_dynamic;
 
-const storage = FlutterSecureStorage();
+const storage = FlutterSecureStorage(
+  aOptions: const AndroidOptions(
+    encryptedSharedPreferences: true, // Forces AES-GCM with authentication
+  ),
+);
 final prefs = SharedPreferences.getInstance();
 
 class CommonSharedPref {
