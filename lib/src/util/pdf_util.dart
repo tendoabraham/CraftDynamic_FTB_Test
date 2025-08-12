@@ -223,6 +223,11 @@ class PDFUtil {
             value.replaceRange(0, value.length - 4, '*' * (value.length - 4));
       }
 
+      if (title.toLowerCase() == "to account number" && value.length >= 4) {
+        value =
+            value.replaceRange(0, value.length - 4, '*' * (value.length - 4));
+      }
+
       if (title.toLowerCase() == "reference no" ||
           title.toLowerCase() == "bankreference" ||
           title.toLowerCase() == "reference id" ||
